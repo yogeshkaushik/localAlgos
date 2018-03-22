@@ -1,12 +1,14 @@
 package madr.sp.emira.array;
 
-import java.io.*;
-import java.util.*;
-import java.text.*;
-import java.math.*;
-import java.util.regex.*;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
+/**
+ * Hacker rank
+ * @author yogeshk
+ *
+ */
 public class MainArrayClass {
 	
 	static int max = Integer.MIN_VALUE;
