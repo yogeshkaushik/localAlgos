@@ -83,17 +83,16 @@ public class IBitArray {
 		if (posibleSum == sumOfAllPositiveNum) {
 			return maxPositiveNum+1;
 		} else {
-			int diff = (int)(posibleSum - sumOfAllPositiveNum);
 			int num = 0;
 			int i = 1;
 			for (; i<=set.size(); i++) {
-				if(!set.contains(i++)) {
-					num = i-1;
+				if(!set.contains(i)) {
+					num = i;
 					break;
 				}
 			}
-			if (num == 0 && i > 1) {
-				num = i-1;
+			if (num == 0 && i >= 1) {
+				num = i;
 			}
 			return num;
 		}
