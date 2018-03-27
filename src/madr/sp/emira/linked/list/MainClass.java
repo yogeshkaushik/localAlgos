@@ -3,10 +3,6 @@ package madr.sp.emira.linked.list;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.print.PrintServiceLookup;
-
-import org.w3c.dom.Node;
-
 public class MainClass {
 	
 	public static void main(String[] args) {
@@ -35,22 +31,206 @@ public class MainClass {
 		printDLL(dll);*/
 		
 		//System.out.println("Ans : " + CompareLists(n1, n2));
-		Node n = createLinkedList(8,3,4,2,6,9,7,0,1,5);
-		printLL(n);
-		System.out.println();
-		Node sorted = sortLinkedList(n);
-		System.out.println();
-		printLL(sorted);
+		//Node n = createLinkedList(1,1,1,1,2,3,3,3,4,4,4,4,5,6,6,6,6);
+		/*Node n1 = createLinkedList(7,8);
+		n1.next.next = n.next.next.next;
 		
+		System.out.println(getIntersectionNode(n, n1).data);*/
+		//printLL(deleteDuplicates(n));
+		
+		/*Node sorted = sortLinkedList(n);
+		System.out.println();
+		printLL(sorted);*/
+		
+		/*Node n1 = createLinkedList(9,9,1);
+		Node n2 = createLinkedList(1);
+		printLL(addTwoNumbers(n1, n2));*/
+		
+		/*Node n = createLinkedList(8,9,1,4,3,2,1,3,5,1,7,0);
+		printLL(partition(n, 3));*/
+		
+		Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
+		printLL(swapPairs(n));
 	}
 	
-	public static Node createLinkedList(int... values) {
+	/**
+	 * Given a linked list, swap every two adjacent nodes and return its head.
+	 * For example,
+	 * 
+	 * Given 1->2->3->4, you should return the list as 2->1->4->3.
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public static Node swapPairs(Node A) {
+        if (A==null || A.next==null) return A;
+        Node x = A;
+        Node y = A.next;
+        Node prev = null;
+        while (x!=null) {
+            Node next = y.next;
+            x.next = next;
+            y.next = x;
+            if (prev == null) {
+                A = y;
+                prev = x;
+            } else {
+                prev.next = y;
+                prev = x;
+            }
+            if (prev.next !=null && prev.next.next != null) {
+                x = prev.next;
+                y = prev.next.next;
+            } else {
+            	break;
+            }
+        }
+        return A;
+    }
+	
+	/**
+	 * Given a linked list and a value x, partition it such that all nodes less than x come before nodes greater than or equal to x.
+	 * You should preserve the original relative order of the nodes in each of the two partitions.
+	 * For example,
+	 * 
+	 * Given 1->4->3->2->5->2 and x = 3,
+	 * return 1->2->2->4->3->5.
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public static Node partition(Node A, int B) {
+        if (A ==null || A.next == null) return A;
+        Node tmp = A;
+        Node prev = null;
+        while (tmp.next != null) {
+            if (tmp.data < B) {
+                prev = tmp;
+                tmp = tmp.next;
+            } else {
+            	break;
+            }
+        }
+        Node curr = tmp;
+        Node p = tmp;
+        while (tmp !=null) {
+            if (tmp.data < B) {
+                Node t = tmp;
+                p.next = t.next;
+                t.next = curr;
+                if (prev == null) {
+                    prev = t;
+                    A = prev;
+                } else {
+                    prev.next = t;
+                    prev = prev.next;
+                }
+            }
+            p = tmp;
+            tmp = tmp.next;
+        }
+        return A;
+    }
+	
+	/**
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public static Node addTwoNumbers(Node A, Node B) {
+        if (A == null || B == null) {
+            return B == null ? A : B;
+        }
+        Node res = null;
+        Node head = null;
+        int rem = 0;
+        while (A != null && B != null) {
+            int sum = 0;
+            sum = A.data + B.data + rem;
+            if (sum>9) {
+                rem = 1;
+                sum = sum%10;
+            } else {
+                rem = 0;
+            }
+            Node node = new Node();
+            node.data = sum;
+            if (res == null) {
+                res = node;
+                head = node;
+            } else {
+                res.next = node;
+                res = res.next;
+            }
+            A = A.next;
+            B = B.next;
+        }
+        Node temp = A == null ? B : A;
+        while (temp != null) {
+            int sum = rem + temp.data;
+            if (sum>9) {
+                rem = 1;
+                sum = sum%10;
+            } else {
+                rem = 0;
+            }
+            Node node = new Node();
+            node.data = sum;
+            res.next = node;
+            res = res.next;
+            temp = temp.next;
+        }
+        return head;
+    }
+	
+	/**
+	 * 
+	 * Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only distinct numbers from the original list.
+	 * 
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public static Node deleteDuplicates(Node A) {
+        if (A == null || A.next == null) {
+            return A;
+        }
+        Node prev = null;
+        Node curr = A;
+        while (curr != null) {
+            if (curr.next != null && curr.data == curr.next.data) {
+                while (curr != null && curr.next != null && curr.data == curr.next.data) {
+                    curr = curr.next;
+                }
+                Node temp = curr.next;
+                curr.next = null;
+                curr = temp;
+            } else {
+                if (prev == null) {
+                    A = curr;
+                    prev = curr;
+                    curr = curr.next;
+                    prev.next = null;
+                } else {
+	                prev.next = curr;
+	                curr = curr.next;
+	                prev = prev.next;
+	                prev.next = null;
+                }
+            }
+        }
+        return prev == null ? prev : A;
+    }
+	
+	public static Node createLinkedList(int... dataues) {
 		Node head = new Node();
-		head.data = values[0];
+		head.data = dataues[0];
 		Node prev = head;
-		for (int i=1; i<values.length; i++) {
+		for (int i=1; i<dataues.length; i++) {
 			Node current = new Node();
-			current.data = values[i];
+			current.data = dataues[i];
 			prev.next = current;
 			prev = current;
 		}
@@ -69,8 +249,8 @@ public class MainClass {
 		int i=0;
 		int len = arr.length;
 		for (;i<len;i++) map.put(arr[i], i);
-		Node curr = node;
-		Node head = node;
+//		Node curr = node;
+//		Node head = node;
 		while (node != null && node.next != null) {
 			
 		}
@@ -106,15 +286,15 @@ public class MainClass {
 		return root;
 	}
 	
-	private static DoubleNode createdoublyLinkedList(int... v) {
+	public static DoubleNode createdoublyLinkedList(int... v) {
 		DoubleNode curr = null;
 		DoubleNode root = null;
-		for (int val : v) {
+		for (int data : v) {
 			if (curr == null) {
-				curr = getDLLNode(val);
+				curr = getDLLNode(data);
 				root = curr;
 			} else {
-				DoubleNode temp = getDLLNode(val);
+				DoubleNode temp = getDLLNode(data);
 				curr.next = temp;
 				temp.prev = curr;
 				curr = curr.next;
@@ -123,7 +303,7 @@ public class MainClass {
 		return root;
 	}
 	
-	private static void printDLL(DoubleNode root) {
+	public static void printDLL(DoubleNode root) {
 		System.out.print("Null");
 		while(root != null) {
 			System.out.print("<-->"+root.data);
@@ -263,6 +443,74 @@ public class MainClass {
 	        headB = headB.next;
 	    }	    
 	    return headA.data;
+	}
+	
+	/**
+	 * 
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public static Node getIntersectionNode(Node a, Node b) {
+	    int lenA = 0;
+	    int lenB = 0;
+	    Node tempA = a, tempB = b;
+	    while (a != null) {
+	        a = a.next;
+	        lenA++;
+	    }
+	    while (b != null) {
+	        b = b.next;
+	        lenB++;
+	    }
+	    if (lenA > lenB) {
+	        int diff = lenA-lenB;
+	        Node tA = tempA, tB = tempB;
+	        while (diff-- != 0) {
+	            tA = tA.next;
+	        }
+	        while (tA!=null && tB!=null && tA != tB) {
+	            tA = tA.next;
+	            tB = tB.next;
+	        }
+	        a = tempA;
+	        b = tempB;
+	        if (tA == null || tB == null) {
+	            return null;
+	        } else {
+	            return tA;
+	        }
+	    } else if(lenA < lenB) {
+	        int diff = lenB-lenA;
+	        Node tA = tempA, tB = tempB;
+	        while (diff-- == 0) {
+	            tB = tB.next;
+	        }
+	        while (tA!=null && tB!=null && tA != tB) {
+	            tA = tA.next;
+	            tB = tB.next;
+	        }
+	        a = tempA;
+	        b = tempB;
+	        if (tA == null || tB == null) {
+	            return null;
+	        } else {
+	            return tA;
+	        }
+	    } else {
+	    	Node tA = tempA, tB = tempB;
+	        while (tA!=null && tB!=null && tA != tB) {
+	            tA = tA.next;
+	            tB = tB.next;
+	        }
+	        a = tempA;
+	        b = tempB;
+	        if (tA == null || tB == null) {
+	            return null;
+	        } else {
+	            return tA;
+	        }
+	    }
 	}
 	
 	/*
@@ -411,7 +659,6 @@ public class MainClass {
 	    Node currA = headA;
 	    Node prevA = null;
 	    Node currB = headB;
-	    Node prevB = null;
 	    while (currA != null && currB != null) {
 	        if (currA.data <= currB.data) {
 	            prevA = currA;
@@ -597,6 +844,19 @@ public class MainClass {
 	public static class Node {
 		int data;
 		Node next;
+		
+		@Override
+		public String toString() {
+			StringBuilder s = new StringBuilder();
+			Node temp = next;
+			s.append(data + "--->");
+			while(temp != null) {
+				s.append(temp.data + "--->");
+				temp = temp.next;
+			}
+			s.append("Null");
+			return s.toString();
+		}
 	}
 }
 

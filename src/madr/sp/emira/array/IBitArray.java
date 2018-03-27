@@ -2,10 +2,15 @@ package madr.sp.emira.array;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+
+import madr.sp.emira.tree.bst.Heap;
 
 public class IBitArray {
 
@@ -62,10 +67,575 @@ public class IBitArray {
 		/*String[] str = {"0.628934", "0.939859", "0.898308"};
 		System.out.println(cl.findTripletInRange(str));*/
 		
-		int[] arr = {417, 929, 845, 462, 675, 175, 73, 867, 14, 201, 777, 407, 80, 882, 785, 563, 209, 261, 776, 362, 730, 74, 649, 465, 353, 801, 503, 154, 998, 286, 520, 692, 68, 805, 835, 210, 819, 341, 564, 215, 984, 643, 381, 793, 726, 213, 866, 706, 97, 538, 308, 797, 883, 59, 328, 743, 694, 607, 729, 821, 32, 672, 130, 13, 76, 724, 384, 444, 884, 192, 917, 75, 551, 96, 418, 840, 235, 433, 290, 954, 549, 950, 21, 711, 781, 132, 296, 44, 439, 164, 401, 505, 923, 136, 317, 548, 787, 224, 23, 185, 6, 350, 822, 457, 489, 133, 31, 830, 386, 671, 999, 255, 222, 944, 952, 637, 523, 494, 916, 95, 734, 908, 90, 541, 470, 941, 876, 264, 880, 761, 535, 738, 128, 772, 39, 553, 656, 603, 868, 292, 117, 966, 259, 619, 836, 818, 493, 592, 380, 500, 599, 839, 268, 67, 591, 126, 773, 635, 800, 842, 536, 668, 896, 260, 664, 506, 280, 435, 618, 398, 533, 647, 373, 713, 745, 478, 129, 844, 640, 886, 972, 62, 636, 79, 600, 263, 52, 719, 665, 376, 351, 623, 276, 66, 316, 813, 663, 831, 160, 237, 567, 928, 543, 508, 638, 487, 234, 997, 307, 480, 620, 890, 216, 147, 271, 989, 872, 994, 488, 291, 331, 8, 769, 481, 924, 166, 89, 824, -4, 590, 416, 17, 814, 728, 18, 673, 662, 410, 727, 667, 631, 660, 625, 683, 33, 436, 930, 91, 141, 948, 138, 113, 253, 56, 432, 744, 302, 211, 262, 968, 945, 396, 240, 594, 684, 958, 343, 879, 155, 395, 288, 550, 482, 557, 826, 598, 795, 914, 892, 690, 964, 981, 150, 179, 515, 205, 265, 823, 799, 190, 236, 24, 498, 229, 420, 753, 936, 191, 366, 935, 434, 311, 920, 167, 817, 220, 219, 741, -2, 674, 330, 909, 162, 443, 412, 974, 294, 864, 971, 760, 225, 681, 689, 608, 931, 427, 687, 466, 894, 303, 390, 242, 339, 252, 20, 218, 499, 232, 184, 490, 4, 957, 597, 477, 354, 677, 691, 25, 580, 897, 542, 186, 359, 346, 409, 655, 979, 853, 411, 344, 358, 559, 765, 383, 484, 181, 82, 514, 582, 593, 77, 228, 921, 348, 453, 274, 449, 106, 657, 783, 782, 811, 333, 305, 784, 581, 746, 858, 249, 479, 652, 270, 429, 614, 903, 102, 378, 575, 119, 196, 12, 990, 356, 277, 169, 70, 518, 282, 676, 137, 622, 616, 357, 913, 161, 3, 589, 327};
+		/*int[] arr = {417, 929, 845, 462, 675, 175, 73, 867, 14, 201, 777, 407, 80, 882, 785, 563, 209, 261, 776, 362, 730, 74, 649, 465, 353, 801, 503, 154, 998, 286, 520, 692, 68, 805, 835, 210, 819, 341, 564, 215, 984, 643, 381, 793, 726, 213, 866, 706, 97, 538, 308, 797, 883, 59, 328, 743, 694, 607, 729, 821, 32, 672, 130, 13, 76, 724, 384, 444, 884, 192, 917, 75, 551, 96, 418, 840, 235, 433, 290, 954, 549, 950, 21, 711, 781, 132, 296, 44, 439, 164, 401, 505, 923, 136, 317, 548, 787, 224, 23, 185, 6, 350, 822, 457, 489, 133, 31, 830, 386, 671, 999, 255, 222, 944, 952, 637, 523, 494, 916, 95, 734, 908, 90, 541, 470, 941, 876, 264, 880, 761, 535, 738, 128, 772, 39, 553, 656, 603, 868, 292, 117, 966, 259, 619, 836, 818, 493, 592, 380, 500, 599, 839, 268, 67, 591, 126, 773, 635, 800, 842, 536, 668, 896, 260, 664, 506, 280, 435, 618, 398, 533, 647, 373, 713, 745, 478, 129, 844, 640, 886, 972, 62, 636, 79, 600, 263, 52, 719, 665, 376, 351, 623, 276, 66, 316, 813, 663, 831, 160, 237, 567, 928, 543, 508, 638, 487, 234, 997, 307, 480, 620, 890, 216, 147, 271, 989, 872, 994, 488, 291, 331, 8, 769, 481, 924, 166, 89, 824, -4, 590, 416, 17, 814, 728, 18, 673, 662, 410, 727, 667, 631, 660, 625, 683, 33, 436, 930, 91, 141, 948, 138, 113, 253, 56, 432, 744, 302, 211, 262, 968, 945, 396, 240, 594, 684, 958, 343, 879, 155, 395, 288, 550, 482, 557, 826, 598, 795, 914, 892, 690, 964, 981, 150, 179, 515, 205, 265, 823, 799, 190, 236, 24, 498, 229, 420, 753, 936, 191, 366, 935, 434, 311, 920, 167, 817, 220, 219, 741, -2, 674, 330, 909, 162, 443, 412, 974, 294, 864, 971, 760, 225, 681, 689, 608, 931, 427, 687, 466, 894, 303, 390, 242, 339, 252, 20, 218, 499, 232, 184, 490, 4, 957, 597, 477, 354, 677, 691, 25, 580, 897, 542, 186, 359, 346, 409, 655, 979, 853, 411, 344, 358, 559, 765, 383, 484, 181, 82, 514, 582, 593, 77, 228, 921, 348, 453, 274, 449, 106, 657, 783, 782, 811, 333, 305, 784, 581, 746, 858, 249, 479, 652, 270, 429, 614, 903, 102, 378, 575, 119, 196, 12, 990, 356, 277, 169, 70, 518, 282, 676, 137, 622, 616, 357, 913, 161, 3, 589, 327};
 		int[] arr1 = {1, 1, 1};
-		System.out.println(cl.firstMissingPositive(arr1));
+		System.out.println(cl.firstMissingPositive(arr1));*/
+		
+		/*int num = 10; {1, 1, 2, 3, 3, 4, 8, 9, 11, 9, 11, 12, 12, 11, 9, 14, 19, 20, 20}
+		cl.generatePascalTriangle(num);*/
+		
+		/*int[] arr = {1, 1, 2, 3, 3, 4, 8, 9, 11, 9, 11, 12, 12, 11, 9, 14, 19, 20, 20};
+		cl.printArr(cl.subUnsort(arr));*/
+		
+		/*int[] arr = {1,10,5};//{83564666, 2976674, 46591497, 24720696, 16376995, 63209921, 25486800, 49369261, 20465079, 64068560, 7453256, 14180682, 65396173, 45808477, 10172062, 28790225, 82942061, 88180229, 62446590, 77573854, 79342753, 2472968, 74250054, 17223599, 47790265, 24757250, 40512339, 24505824, 30067250, 82972321, 32482714, 76111054, 74399050, 65518880, 94248755, 76948016, 76621901, 46454881, 40376566, 13867770, 76060951, 71404732, 21608002, 26893621, 27370182, 35088766, 64827587, 67610608, 90182899, 66469061, 67277958, 92926221, 58156218, 44648845, 37817595, 46518269, 44972058, 27607545, 99404748, 39262620, 98825772, 89950732, 69937719, 78068362, 78924300, 91679939, 52530444, 71773429, 57678430, 75699274, 5835797, 74160501, 51193131, 47950620, 4572042, 85251576, 49493188, 77502342, 3244395, 51211050, 44229120, 2135351, 47258209, 77312779, 37416880, 59038338, 96069936, 20766025, 35497532, 67316276, 38312269, 38357645, 41600875, 58590177, 99257528, 99136750, 4796996, 84369137, 54237155, 64368327, 94789440, 40718847, 12226041, 80504660, 8177227, 85151842, 36165763, 72764013, 36326808, 80969323, 22947547, 76322099, 7536094, 18346503, 65759149, 45879388, 53114170, 92521723, 15492250, 42479923, 20668783, 64053151, 68778592, 3669297, 73903133, 28973293, 73195487, 64588362, 62227726, 17909010, 70683505, 86982984, 64191987, 71505285, 45949516, 28244755, 33863602, 18256044, 25110337, 23997763, 81020611, 10135495, 925679, 98158797, 73400633, 27282156, 45863518, 49288993, 52471826, 30553639, 76174500, 28828417, 41628693, 80019078, 64260962, 5577578, 50920883, 16864714, 54950300, 9267396, 56454292, 40872286, 33819401, 75369837, 6552946, 26963596, 22368984, 43723768, 39227673, 98188566, 1054037, 28292455, 18763814, 72776850, 47192134, 58393410, 14487674, 4852891, 44100801, 9755253, 37231060, 42836447, 38104756, 77865902, 67635663, 43494238, 76484257, 80555820, 8632145, 3925993, 81317956, 12645616, 23438120, 48241610, 20578077, 75133501, 46214776, 35621790, 15258257, 20145132, 32680983, 94521866, 43456056, 19341117, 29693292, 38935734, 62721977, 31340268, 91841822, 22303667, 96935307, 29160182, 61869130, 33436979, 32438444, 87945655, 43629909, 88918708, 85650550, 4201421, 11958347, 74203607, 37964292, 56174257, 20894491, 33858970, 45292153, 22249182, 77695201, 34240048, 36320401, 64890030, 81514017, 58983774, 88785054, 93832841, 12338671, 46297822, 26489779, 85959340};
+		System.out.println(cl.getMaximumSuccesiveGap2(arr));*/
+		
+		/*int[] x = {-4, 1, -4, 8, -11, -12, -13, -3, -4, -4, -14, 7, -2, -2, -5, 5, -1, 0};
+		int[] y = {-8, -15, -4, 3, 11, 8, -15, 4, 1, 7, 3, 9, -9, -9, -13, 10, -14, -8};
+		System.out.println(cl.coverPoints(x, y));*/
+		
+		//int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
+		//cl.diagonal(arr);
+		/*ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
+		ArrayList<Integer> row = new ArrayList<Integer>();
+		row.add(0,1); row.add(1,0); //row.add(2,3);
+		list.add(0,row);
+		ArrayList<Integer> row1 = new ArrayList<Integer>();
+		row1.add(0,1); row1.add(1,0); //row1.add(2,6);
+		list.add(1,row1);
+		//ArrayList<Integer> row2 = new ArrayList<Integer>();
+		//row2.add(0,7); row2.add(1,8); row2.add(2,9);
+		//list.add(2,row2);
+		//cl.rotate2DArrayBy90Degree(list);
+		cl.setZeroes(list);
+		System.out.println(list);*/
+		
+		/*ArrayList<Integer> arr = new ArrayList<Integer>();
+		arr.add(3);arr.add(0);arr.add(1);arr.add(4);arr.add(2); //4,3,0,2,1
+		cl.arrange_arr_i_At_arr_arr_i(arr);
+		System.out.println(arr);*/
+		
+		int[] arr = {8, 16, 80, 55, 32, 8, 38, 40, 65, 18, 15, 45, 50, 38, 54, 52, 23, 74, 81, 42, 28, 16, 66, 35, 91, 36, 44, 9, 85, 58, 59, 49, 75, 20, 87, 60, 17, 11, 39, 62, 20, 17, 46, 26, 81, 92};
+		System.out.println(cl.kthsmallest(arr, 9));
 	}
+	
+	public int kthsmallestWithHeap(final int[] A, int B) {
+		return 0;		
+	}
+	
+	/**
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public int kthsmallest(final int[] A, int B) {
+        int len = A.length;
+        int[] small = new int[B];
+        int pointer = 0;
+        int smallest = Integer.MAX_VALUE;
+        int count = 0;
+        int n =0;
+        while (n<B) {
+            for(int i=0; i<len; i++) {
+                int m = A[i];
+                if (m<smallest && m > pointer){
+                    smallest = m;
+                    count = 1;
+                } else if (m == smallest) {
+                    count++;
+                }
+            }
+            while (count != 0 && n<B) {
+                small[n] = smallest;
+                n++;
+                count--;
+            }
+            pointer = smallest;
+            smallest = Integer.MAX_VALUE;
+        }
+        return small[B-1];
+    }
+	
+	/**
+	 * 
+	 * @param a
+	 */
+	public void arrange_arr_i_At_arr_arr_i(ArrayList<Integer> a) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+	    int index = 0;
+	    int indexValue = 0;
+	    int i = 0;
+	    map.put(i, a.get(i));
+	    int j = 0;
+	    while (j<a.size()) {
+	    	index = a.get(i);
+	    	if (map.containsKey(index)) {
+	    		indexValue = map.get(index);
+	    	} else {
+	    		indexValue = a.get(index);
+	    	}
+	        a.set(i,indexValue);
+	        i = index;
+	        j++;
+	    }
+	}
+	
+	/**
+	 * Given an m x n matrix of 0s and 1s, if an element is 0, set its entire row and column to 0.
+	 * 
+	 * @param a
+	 */
+	public void setZeroes(ArrayList<ArrayList<Integer>> a) {
+		int columnSize = a.get(0).size();
+		ArrayList<Integer> zerosInRow = new ArrayList<Integer>();
+		for (int i=0; i<a.size(); i++) {
+			if (a.get(i).contains(0)) {
+				zerosInRow.add(i);
+			}
+		}
+		ArrayList<Integer> zeros = new ArrayList<Integer>();
+		for (int i=0; i<a.size(); i++) {
+			if (zerosInRow.contains(i)) {
+				for (int j=0; j<columnSize; j++) {
+					if (!zeros.contains(j) && a.get(i).get(j) == 0) {
+						zeros.add(j);
+						setZerosInColumn(a, j);
+					}
+				}
+			}
+		}
+		for (Integer x : zerosInRow) {
+			setZerosInRow(a, x);
+		}
+	}
+	
+	private void setZerosInRow(ArrayList<ArrayList<Integer>> a, int x) {
+		int column = a.get(x).size();
+		for (int i=0; i<column; i++) {
+			a.get(x).set(i, 0);
+		}
+	}
+	
+	private void setZerosInColumn(ArrayList<ArrayList<Integer>> a, int y) {
+		int row = a.size();
+		for (int i=0; i<row; i++) {
+			a.get(i).set(y, 0);
+		}
+	}
+
+	/**
+	 * You are given an n x n 2D matrix representing an image.
+	 * Rotate the image by 90 degrees (clockwise).
+	 * You need to do this in place.
+	 * 
+	 * Note that if you end up using an additional array, you will only receive partial score.
+	 * 
+	 * @param a
+	 */
+	public void rotate2DArrayBy90Degree(ArrayList<ArrayList<Integer>> a) {
+		for (ArrayList<Integer> arr : a) {
+			Collections.reverse(arr);
+		}
+		int size = a.size();
+		int start = size - 1;
+		int i = 0;
+		while (start > 0) {
+			int k = size-1;
+			ArrayList<Integer> arr = a.get(i++);
+			for (int j=0; j<start; j++) {
+				Integer temp = arr.get(j);
+				arr.set(j, a.get(k).get(start));
+				a.get(k).set(start, temp);
+				k--;
+			}
+			start--;
+		}
+	}
+	
+	/**
+	 * Give a N*N square matrix, return an array of its anti-diagonals. Look at the example for more details.
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public int[][] diagonal(int[][] A) {
+        int len = A.length;
+        int[][] res = new int[2*len-1][];
+        int k=0, size = 0;
+        int j= 0;
+        for (int i=0; i<len; i++) {
+            while (j!=-1 && j!=len) {
+                res[k++] = new int[++size];
+                int x = i-1, y = j+1;
+                int n = 0;
+                while (x+1<len && y-1>-1) {
+                    x++;
+                    y--;
+                    res[k-1][n++] = A[x][y];
+                }
+                if (j<len) {
+                	j++;
+                } else {
+                	j--;
+                }
+            }
+            j = len -1;
+            size-=2;
+        }
+        return res;
+    }
+	
+	/**
+	 * Print 2D array in spiral manner.
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public int[] spiralOrder(final int[][] A) {
+        int lenRow = A.length;
+        int lenColumn = A[0].length;
+        int[] res = new int[lenRow*lenColumn];
+        int k = 0;
+        int T=0, B = lenRow -1, L = 0, R = lenColumn -1;
+        int dir = 0;
+        while (T<=B && L<=R) {
+            if (dir == 0) {
+                for (int i=L; i<=R; i++) {
+                    res[k++] = A[T][i];
+                }
+                T++;
+            } else if (dir == 1) {
+                for (int i=T; i<=B; i++) {
+                    res[k++] = A[i][R];
+                }
+                R--;
+            } else if (dir == 2) {
+                for (int i=R; i>=L; i--) {
+                    res[k++] = A[B][i];
+                }
+                B--;
+            } else if (dir == 3) {
+                for (int i=B; i>=T; i--) {
+                    res[k++] = A[i][L];
+                }
+                L++;
+            }
+            dir = (dir+1)%4;
+        }
+        return res;
+    }
+	
+	/**
+	 * 
+	 * You are in an infinite 2D grid where you can move in any of the 8 directions 
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public int coverPoints(int[] A, int[] B) {
+        int len = A.length;// length of both will be same.
+        int startx = A[0];
+        int starty = B[0];
+        int shortestPath = 0;
+        for (int i=1; i<len; i++) {
+        	/*int x = Math.abs(startx - A[i]);
+            int y = Math.abs(starty - B[i]);
+            startx = A[i];
+            starty = B[i];
+            shortestPath += Math.max(x,y);*/
+            shortestPath += getShortestBetween(startx,starty,A[i],B[i]);
+            startx = A[i];
+            starty = B[i];
+        }
+        return shortestPath;
+    }
+    
+    private int getShortestBetween(int x1, int y1, int x2, int y2) {
+        if (Math.abs(x1-x2) <=1 && Math.abs(y1-y2) <=1) {
+        	if(Math.abs(x1-x2) == 0 && Math.abs(y1-y2) == 0) return 0;
+            return 1;
+        } else {
+            int diffX = Math.abs(x1-x2);
+            int diffY = Math.abs(y1-y2);
+            if (diffX == diffY) {
+                return diffX;
+            } else {
+                return diffX > diffY ? diffX : diffY;
+            }
+        }
+    }
+	
+	/**
+	 * You’re given a read only array of n integers. Find out if any integer occurs 
+	 * more than n/3 times in the array in linear time and constant additional space.
+	 * 
+	 * https://www.quora.com/Given-an-array-of-n-elements-what-is-a-linear-time-algorithm-that-finds-all-elements-that-appear-more-than-n-3-times
+	 * 
+	 * https://www.sciencedirect.com/science/article/pii/0167642382900120#
+	 * 
+	 * https://stackoverflow.com/questions/14955634/number-which-appears-more-than-n-3-times-in-an-array
+	 * 
+	 * @param a
+	 * @return
+	 */
+	public int repeatedNumber(final List<Integer> a) {
+		int len = a.size();
+	    Map<Integer, Integer> map = new HashMap<Integer, Integer>(3);
+	    for (Integer i : a) {
+	    	map.put(i, map.containsKey(i) ? map.get(i) + 1 : 1);
+	    	if (map.size() == 3) {
+	    		for (Map.Entry<Integer, Integer> e : map.entrySet()) {
+	    			if (e.getValue() == 1) {
+	    				map.remove(e);
+	    			}
+	    		}
+	    	}
+	    }
+	    if (map.isEmpty()) {
+	    	return -1;
+	    }
+	    Map<Integer, Integer> count = new HashMap<Integer, Integer>(3);
+	    for (Integer i : a) {
+	    	if (map.containsKey(i)) {
+	    		count.put(i, count.containsKey(i) ? count.get(i) + 1 : 1);
+	    	}
+	    }
+	    for (Map.Entry<Integer, Integer> e : count.entrySet()) {
+	    	if (e.getValue() > len/3) {
+	    		return e.getKey();
+	    	}
+	    }
+	    return -1;
+	}
+	
+	/**
+	 * 
+	 * Now, first try to think if you were already given the minimum value MIN and maximum value MAX in the array of size N, under what circumstances would the max gap be minimum and maximum ?
+	 * Obviously, maximum gap will be maximum when all elements are either MIN or MAX making maxgap = MAX - MIN.
+	 * Maximum gap will be minimum when all the elements are equally spaced apart between MIN and MAX. Lets say the spacing between them is gap.
+	 * So, they are arranged as
+	 * MIN, MIN + gap, MIN + 2*gap, MIN + 3*gap, ... MIN + (N-1)*gap
+	 * where
+	 * MIN + (N-1)*gap = MAX
+	 * => gap = (MAX - MIN) / (N - 1).
+	 * So, we know now that our answer will lie in the range [gap, MAX - MIN].
+	 * Now, if we know the answer is more than gap, what we do is create buckets of size gap for ranges
+	 * [MIN, MIN + gap), [Min + gap, `MIN` + 2* gap) ... and so on
+	 * There will only be (N-1) such buckets. We place the numbers in these buckets based on their value.
+	 * If you pick any 2 numbers from a single bucket, their difference will be less than gap, and hence they would never 
+	 * contribute to maxgap ( Remember maxgap >= gap ). We only need to store the largest number and the smallest number in each bucket, 
+	 * and we only look at the numbers across bucket.
+	 * Now, we just need to go through the bucket sequentially ( they are already sorted by value ), 
+	 * and get the difference of min_value with max_value of previous bucket with at least one value. We take maximum of all such values.
+	 * 
+	 * try link ::  {@link http://cgm.cs.mcgill.ca/~godfried/teaching/dm-reading-assignments/Maximum-Gap-Problem.pdf}
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	int getMaximumSuccesiveGap2(int[] arr) {
+		int len = arr.length;
+		if (len<2) {
+            return 0;
+        }
+		int min = findMinInArray(arr, 0, len-1);
+		int max = findMaxInArray(arr, 0, len-1);
+		int gap = (int) Math.ceil((float)(max-min)/(float)(len-1));
+		if (gap == 0) return 0;
+		int[][] buckets = new int[len+1][2];
+		for(int i=0; i<len+1;i++) {
+			buckets[i][0] = Integer.MAX_VALUE;
+			buckets[i][1] = Integer.MIN_VALUE;
+		}
+		for (int i=0;i<len;i++) {
+			int k = (int)Math.ceil((float)(arr[i]-min)/(float)gap);
+			if (buckets[k][0] > arr[i]) buckets[k][0] = arr[i];
+			if (buckets[k][1] < arr[i]) buckets[k][1] = arr[i];
+		}
+		int globalMax = 0;
+		int localMax = 0;
+		int j = 1;
+		for (int i=0; i<len && j<len;) {
+			if (buckets[i][0] == Integer.MAX_VALUE) {
+				i = j;
+				j++;
+			} else if (buckets[j][0] == Integer.MAX_VALUE) {
+				j++;
+			} else {
+				localMax = buckets[j][0] - buckets[i][1];
+				globalMax = globalMax > localMax ? globalMax : localMax;
+				i = j;
+				j++;
+			}
+		}
+		return globalMax;
+	}
+	
+	/**
+	 * Given an unsorted array, find the maximum difference between the successive elements in its sorted form.
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	int getMaximumSuccesiveGap(int[] arr) {
+		int len = arr.length;
+		if (len<2) {
+            return 0;
+        }
+		int min = findMinInArray(arr, 0, len-1);
+		int max = findMaxInArray(arr, 0, len-1);
+		int possibleLength = max-min+1;
+		int[] space = new int[possibleLength];
+		for (int i=0; i < len; i++) {
+			space[arr[i]-min] = 1;
+		}
+		int maxSubLength = Integer.MIN_VALUE;
+		int localMax = 0;
+		int indexI = 0;
+		int indexJ = -1;
+		while(indexI < possibleLength) {
+			if (space[indexI] == 1) break;
+			indexI++;
+		}
+		int i = indexI;
+		for (int j=indexI+1; j<possibleLength; j++) {
+			if (space[j] == 1) {
+				if (maxSubLength < localMax) {
+					maxSubLength = localMax;
+					indexJ = j;
+					indexI = i;
+				}
+				localMax = 0;
+				i = j;
+			} else {
+				localMax++;
+			}
+		}
+		return indexJ-indexI;
+	}
+	
+	/**
+	 * You are given an array (zero indexed) of N non-negative integers, A0, A1 ,…, AN-1.
+	 * Find the minimum sub array Al, Al+1 ,…, Ar so if we sort(in ascending order) 
+	 * that sub array, then the whole array should get sorted.
+	 * If A is already sorted, output -1.
+	 * 
+	 * 
+	 * Solution
+	 * make 3 arrays
+	 * 
+	 *0 - (l-1), l - r, r - N; 
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public int[] subUnsort(int[] A) {
+		int len = A.length;
+		int l = -1;
+		int i = 1;
+		while (i < len) {
+			if (A[i-1] > A[i]) {
+				l = i-1;
+				break;
+			}
+			i++;
+		}
+		if (l == -1) {
+			return new int[] {-1};
+		}
+		int r = -1;
+		for (int j=len-1; j>=0; j--) {
+			if (A[j] < A[j-1]) {
+				r = j-1;
+				break;
+			}
+		}
+		//sortedArrayFrom(A, l+1);
+		int min = 0;
+		int max = 0;
+		if (r == -1) {
+			min = max = A[l];
+			r=l;
+		} else {
+			min = findMinInArray(A, l, r);
+			max = findMaxInArray(A, l, r);
+		}
+		int[] result = new int[2];
+		
+		if (!(l>0 && r< len-1 && min>=A[l-1] && max <= A[r+1])) {
+			//find num > max in rightSide array
+			if (r < len-1) {
+				for (int k=r+1;k<len;k++) {
+					if (A[k]>=max) {
+						r = k-1;
+						break;
+					}
+					if (k == len -1) {
+						r = len-1;
+					}
+				}
+			}
+			min = findMinInArray(A, l, r);
+			if (l > 0) {
+				for (int k=l-1;k>=0;k--) {
+					if (A[k]<=min) {
+						l = k+1;
+						break;
+					}
+					if (k == 0) {
+						l = 0;
+					}
+				}
+			}
+		}
+		result[0] = l;
+		result[1] = r;
+		return result;
+    }
+	
+	private int findMinInArray(int[] a, int l, int r) {
+		if (l<0 || r>a.length-1) return -1;
+		int min = Integer.MAX_VALUE;
+		while (l <= r) {
+			min = min < a[l] ? min : a[l];
+			l++;
+		}
+		return min;
+	}
+
+	private int findMaxInArray(int[] a, int l, int r) {
+		if (l<0 || r>a.length-1) return -1;
+		int max = Integer.MIN_VALUE;
+		while (l <= r) {
+			max = max > a[l] ? max : a[l];
+			l++;
+		}
+		return max;
+	}
+	
+	int sortedArrayFrom(int[] arr, int index) {
+		int len = arr.length;
+		while (index < len -1) {
+			if (arr[index+1] < arr[index]) {
+				int i = sortedArrayFrom(arr, index+1);
+				if (i == -1) {
+					return index;
+				}
+			}
+			index++;
+		}
+		return -1;
+	}
+	
+	public int[][] generatePascalTriangle(int A) {
+		if (A < 1) {
+			return new int[0][];
+		}
+		int[][] arr = new int[A][];
+		arr[0] = new int[1];
+		arr[0][0] = 1;
+		for (int i=1; i<A; i++) {
+			arr[i] = new int[i+1];
+			arr[i][0] = 1;//first
+			arr[i][i] = 1;//last
+			for (int j=1; j<i; j++) {				
+				arr[i][j] = arr[i-1][j] + arr[i-1][j-1];
+			}
+		}
+		return arr;
+    }
 	
 	int firstMissingPositive(int[] arr) {
 		int maxPositiveNum = Integer.MIN_VALUE;
@@ -873,5 +1443,54 @@ public class IBitArray {
 		for (int a : arr)
 			System.out.print(a+" ");
 		System.out.println();
+	}
+	
+	public class BinaryMaxHeap {
+		int size;
+		int[] heap;
+		
+		public BinaryMaxHeap(int n) {
+			size = n;
+		}
+		
+		public BinaryMaxHeap(int[] arr) {
+			size = arr.length - 1;
+			System.arraycopy(arr, 0, heap, 0, arr.length);
+			buildHeap();
+		}
+
+		private void buildHeap() {
+			//for()
+		}
+		
+		public void insertNode(int k) {
+			if (size == heap.length-1) doubleSize();
+			int pos = ++size;
+			for (;pos > 0 && heap[(pos - 1)/2] < k;) {
+				heap [pos] = heap[(pos - 1)/2];
+				pos = (pos - 1)/2;
+			}
+			heap[pos] = k;
+		}
+
+		private void percolateUp() {
+			for (int i = (size+1)/2; i>0; i--) {
+				bottomUp(i-1);
+			}
+		}
+
+		private void bottomUp(int i) {
+			if (heap[i]>heap[(i-1)/2]) {
+				
+			}
+		}
+
+		private void doubleSize() {
+			int[] temp = heap;
+			heap = new int[heap.length*2];
+			System.arraycopy(temp, 0, heap, 0, size+1);
+		}
+		
+		
 	}
 }
