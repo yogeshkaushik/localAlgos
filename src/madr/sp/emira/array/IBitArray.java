@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import madr.sp.emira.tree.bst.Heap;
-
 public class IBitArray {
 
 	public static void main(String[] args) {
@@ -105,15 +103,51 @@ public class IBitArray {
 		cl.arrange_arr_i_At_arr_arr_i(arr);
 		System.out.println(arr);*/
 		
-		int[] arr = {8, 16, 80, 55, 32, 8, 38, 40, 65, 18, 15, 45, 50, 38, 54, 52, 23, 74, 81, 42, 28, 16, 66, 35, 91, 36, 44, 9, 85, 58, 59, 49, 75, 20, 87, 60, 17, 11, 39, 62, 20, 17, 46, 26, 81, 92};
-		System.out.println(cl.kthsmallest(arr, 9));
-	}
-	
-	public int kthsmallestWithHeap(final int[] A, int B) {
-		return 0;		
+		/*int[] arr = {8, 16, 80, 55, 32, 8, 38, 40, 65, 18, 15, 45, 50, 38, 54, 52, 23, 74, 81, 42, 28, 16, 66, 35, 91, 36, 44, 9, 85, 58, 59, 49, 75, 20, 87, 60, 17, 11, 39, 62, 20, 17, 46, 26, 81, 92};
+		System.out.println(cl.kthsmallestWithHeap(arr, 9));*/
+		
+		int[] a = {80, 97, 78, 45, 23, 38, 38, 93, 83, 16, 91, 69, 18, 82, 60, 50, 61, 70, 15, 6, 52, 90};
+		System.out.println(cl.sumInRange(a, 99, 269));
 	}
 	
 	/**
+	 * 
+	 * Given an array of non negative integers A, and a range (B, C),
+	 * find the number of continuous subsequences in the array which have sum S in the range [B, C] or B <= S <= C
+	 * Continuous subsequence is defined as all the numbers A[i], A[i + 1], .... A[j]
+	 * where 0 <= i <= j < size(A)
+	 * 
+	 *  
+	 * @param arr
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public int sumInRange(int[] arr, int x, int y) {
+		int len = arr.length;
+		int sum = arr[0];
+		int j = 1, i = 0;
+		int count = 0;
+		for (int k=1; k<len; k++) {
+			sum += arr[k];
+			if (sum > y) {
+				sum = 0;
+				i = k;
+				j = k;
+				k--;
+			} else if (sum < x){
+				j++;				
+			} else {
+				if (j-i != 0) count++;
+				j++;
+			}
+		}
+		return count;
+	}
+	
+	/**
+	 * O(k*n)
+	 * O(k+(n-k)logk) -- > {@link IBitArray#kthsmallestWithHeap}
 	 * 
 	 * @param A
 	 * @param B
@@ -147,6 +181,18 @@ public class IBitArray {
         return small[B-1];
     }
 	
+	public int kthsmallestWithHeap(final int[] A, int B) {
+		int len = A.length;
+		BinaryMaxHeap m = new IBitArray.BinaryMaxHeap(Arrays.copyOfRange(A, 0, B));
+		for (int i=B; i<len; i++) {
+			if (A[i] < m.peekMax()) {
+				m.heap[0] = A[i];
+				m.percolateDown(0);
+			}
+		}
+		return m.heap[0];		
+	}
+
 	/**
 	 * 
 	 * @param a
@@ -1445,7 +1491,7 @@ public class IBitArray {
 		System.out.println();
 	}
 	
-	public class BinaryMaxHeap {
+	public static class BinaryMaxHeap {
 		int size;
 		int[] heap;
 		
@@ -1455,12 +1501,13 @@ public class IBitArray {
 		
 		public BinaryMaxHeap(int[] arr) {
 			size = arr.length - 1;
+			heap = new int[arr.length];
 			System.arraycopy(arr, 0, heap, 0, arr.length);
 			buildHeap();
 		}
 
 		private void buildHeap() {
-			//for()
+			percolateUp();
 		}
 		
 		public void insertNode(int k) {
@@ -1478,10 +1525,38 @@ public class IBitArray {
 				bottomUp(i-1);
 			}
 		}
+		
+		public int peekMax() {
+			return heap[0];
+		}
 
 		private void bottomUp(int i) {
-			if (heap[i]>heap[(i-1)/2]) {
+			int temp = heap[i];
+			int childIndex = -1;
+			while (2*i<size) {
+				childIndex = 2*i+1;
+				if (childIndex < size && heap[childIndex] < heap[childIndex+1]) {
+					childIndex = childIndex + 1;
+				}
 				
+				if (temp < heap[childIndex]) {
+					heap[i] = heap[childIndex];
+				} else break;
+				
+				i = childIndex;
+			}
+			heap[i] = temp;
+		}
+		
+		public void percolateDown(int i) {
+			if (2*i<size) {
+				int index = (2*i+1)<size && heap[2*i + 1] < heap[2*i+2] ? 2*i+2 : 2*i + 1;
+				if (heap[i] < heap[index]) {
+					int temp = heap[i];
+					heap[i] = heap[index];
+					heap[index] = temp;
+					percolateDown(index);
+				} else return;
 			}
 		}
 
@@ -1491,6 +1566,11 @@ public class IBitArray {
 			System.arraycopy(temp, 0, heap, 0, size+1);
 		}
 		
-		
+		public int deleteMax() {
+			int res = heap[0];
+			heap[0] = heap[size--];
+			bottomUp(0);
+			return res;
+		}
 	}
 }
