@@ -9,8 +9,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Stack;
 
 public class IBitArray {
+	
+	static int stackCount = 0;
 
 	public static void main(String[] args) {
 		IBitArray cl = new IBitArray();
@@ -106,10 +109,539 @@ public class IBitArray {
 		/*int[] arr = {8, 16, 80, 55, 32, 8, 38, 40, 65, 18, 15, 45, 50, 38, 54, 52, 23, 74, 81, 42, 28, 16, 66, 35, 91, 36, 44, 9, 85, 58, 59, 49, 75, 20, 87, 60, 17, 11, 39, 62, 20, 17, 46, 26, 81, 92};
 		System.out.println(cl.kthsmallestWithHeap(arr, 9));*/
 		
-		int[] a = {80, 97, 78, 45, 23, 38, 38, 93, 83, 16, 91, 69, 18, 82, 60, 50, 61, 70, 15, 6, 52, 90};
-		System.out.println(cl.sumInRange(a, 99, 269));
+		/*int[] a = {4, 7, 7, 7, 8, 10, 10};
+		System.out.println(cl.findCount(a, 7));*/
+		
+		
+		
+		/*List<Integer> l1 = new ArrayList<Integer>();
+		l1.add(10000000);
+		List<Integer> l2 = new ArrayList<Integer>();
+		l2.add(10000000);
+		System.out.println(cl.intersect(l1, l2));*/
+		/*stackCount = 0;
+		int n = 7;
+		System.out.println(cl.stepsRequired(n));
+		System.out.println(cl.stepsRequiredNoRecurr(n));
+		System.out.println(stackCount);*/
+		
+		
+		//Permutation of a string with and without duplicates.
+		/*ArrayList<Character> arr = new ArrayList<Character>();
+		arr.add('A');arr.add('A');arr.add('B');arr.add('B');
+		cl.allPermutation(arr,true);*/
+		
+		/*int[] a = {1,2,4,1,7,8,9,11,6,2};
+		System.out.println(cl.contiguousSubArrSum_equals_k(a, 8));*/
+		
+		/*int[] A = {13, 14, 36, 19, 44, 1, 45, 4, 48, 23, 32, 16, 37, 44, 47, 28, 8, 47, 4, 31, 25, 48, 49, 12, 7, 8};
+		int[] B = {28, 27, 61, 34, 73, 18, 50, 5, 86, 28, 34, 32, 75, 45, 68, 65, 35, 91, 13, 76, 60, 90, 67, 22, 51, 53};
+		int C = 23;*/
+		//System.out.println(cl.hotel(A, B, C));
+		
+		//int[] arr = {80, 97, 78, 45, 23, 38, 38, 93, 83, 16, 91, 69, 18, 82, 60, 50, 61, 70, 15, 6, 52, 90};//{10, 5, 1, 0, 2};
+		//System.out.println(cl.sumInRange(arr, 99, 269));
+		
+		int[] a = {-3,1,2,-4,-1,7,8,-9,11,-6,3};
+		System.out.println(cl.contiguousSubArrSum_equals_k_includesNegative(a, 5));
+		System.out.println(cl.recursive_777LineUtil(a, 5));
 	}
 	
+	/**
+	 * MUST SEE	
+	 * Rearrange a given array so that Arr[i] becomes Arr[Arr[i]] with O(1) extra space.
+	 * All elements in the array are in the range [0, N-1]
+	 * 
+	 * Input : [1, 0]
+	 * Return : [0, 1]
+	 * 
+	 * @param a
+	 */
+	public void rearrangeArray(ArrayList<Integer> a) {
+	    int n = a.size();
+	    for (int i=0; i<n; i++) {
+	        int num = a.get(i) + (a.get(a.get(i))%n)*n;
+	        a.set(i,num);
+	    }
+	    for (int i=0; i<n; i++) {
+	        a.set(i,a.get(i)/n);
+	    }
+	}
+	
+	/**
+	 * A hotel manager has to process N advance bookings of rooms for the next season. 
+	 * His hotel has K rooms. Bookings contain an arrival date and a departure date. 
+	 * He wants to find out whether there are enough rooms in the hotel to satisfy the demand. 
+	 * Write a program that solves this problem in time O(N log N).
+	 * 
+	 * couldn't Solve
+	 * 
+	 * @param arrive
+	 * @param depart
+	 * @param K
+	 * @return
+	 */
+	/*public boolean hotel(int[] arrive, int[] depart, int K) {
+        int len = depart.length;
+        List<Pair> list = new ArrayList<Pair>();
+        for (int i=0; i<len; i++) {
+            list.add(new Pair(arrive[i],depart[i]));
+        }
+        Collections.sort(list);
+        int count = 1;
+        Stack<Pair> stack = new Stack<Pair>();
+		stack.push(list.get(0));
+		for (int i=1; i<list.size(); i++) {
+		    Pair in = list.get(i);
+			Pair stIn = stack.peek();
+			if (in.arrive < stIn.depart) {
+			    count++;
+				if (in.depart > stIn.depart) stIn.depart = in.depart;
+			} else {
+				stack.push(in);
+			}
+		}
+		if (count>K) return false;
+		else return true;
+    }    
+    public class Pair implements Comparable<Pair> {
+        Integer arrive;
+        Integer depart;
+        
+        public Pair(Integer a, Integer d) {
+            arrive = a;
+            depart = d;
+        }
+        
+        @Override
+    	public String toString() {
+    		return "{ " + arrive.toString() + " : " + depart.toString() + " }"; 
+    	}
+        
+        @Override
+    	public int compareTo(Pair o) {
+    		return this.arrive.compareTo(o.arrive);
+    	}
+    }*/
+	
+	
+	/**
+	 * Given a collection of intervals, merge all overlapping intervals.
+	 * Might not be sorted
+	 * @param intervals
+	 * @return
+	 */
+	public ArrayList<Interval> mergeOverlappingIntervals(ArrayList<Interval> intervals) {
+		Collections.sort(intervals, new Comparator<Interval>() {
+			@Override
+			public int compare(Interval o1, Interval o2) {
+				return o1.start - o2.start;
+			}
+		});
+		Stack<Interval> stack = new Stack<Interval>();
+		stack.push(intervals.get(0));
+		for (int i=1; i<intervals.size(); i++) {
+			Interval in = intervals.get(i);
+			Interval stIn = stack.peek();
+			if (in.start <= stIn.end) {
+				if (in.end > stIn.end) stIn.end = in.end;
+			} else {
+				stack.push(in);
+			}
+		}
+		intervals.clear();
+		for (int i=0; i<stack.size(); i++) {
+			intervals.add(stack.get(i));
+		}
+		return intervals;
+    }
+	public class Interval {
+		int start;
+		int end;
+		Interval() { start = 0; end = 0; }
+		Interval(int s, int e) { start = s; end = e; }
+	}
+	
+	/**
+	 * There are 3 approaches to this solution:
+	 * 
+	 * Let the sum be T and n be the size of array
+	 * 
+	 * Approach 1: The naive way to do this would be to check all combinations (n choose 2). This exhaustive search is O(n2).
+	 * Approach 2: A better way would be to sort the array. This takes O(n log n), 
+	 * 			   Then for each x in array A, use binary search to look for T-x. This will take O(nlogn).
+	 * 			   (or keep two pointer and converge to middle)
+	 * 			   So, overall search is  O(n log n)
+	 * Approach 3 : The best way would be to insert every element into a hash table (without sorting).
+	 * 				This takes O(n) as constant time insertion.
+	 * 				Then for every x, we can just look up its complement, T-x, which is O(1).
+	 * 				Overall the run time of this approach is O(n).
+	 * {@link https://stackoverflow.com/questions/2070359/finding-three-elements-in-an-array-whose-sum-is-closest-to-a-given-number}
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int[][] pairsWithSum_k(int[] arr) {
+		return null;
+	}
+	/**
+	 * sort the array O(n^2)
+	 * for each arr[i] iterate using two pointers in between i+1 & n-1;
+	 * 
+	 * 
+	 * 
+	 * {@link https://stackoverflow.com/a/34382390/6517886 
+	 * 		  https://stackoverflow.com/questions/2070359/finding-three-elements-in-an-array-whose-sum-is-closest-to-a-given-number
+	 * 		  https://stackoverflow.com/a/8926458/6517886
+	 * 		  https://stackoverflow.com/questions/8916539/sum-subset-with-a-fixed-subset-size
+	 * 		  https://en.wikipedia.org/wiki/Subset_sum_problem}
+	 * 
+	 * 
+	 * @param arr
+	 * @return
+	 * 
+	 * O(nlogn) as claimed by this ans, is not possible. It's a known problem which takes O(n^2) minimum. https://en.wikipedia.org/wiki/3SUM
+	 */
+	public boolean tripletSum(int[] arr) {
+		/*
+		 * def triplet_sum(alist, total):
+		    alist.sort() #modifies the list in place - more efficient than sorted() but not great if we need the list unmodified
+		    left, right = 0, len(alist) - 1
+		    while right > left:
+		        elem = total - alist[left] - alist[right]
+		        mid = binary_search(alist, elem, left, right)
+		        if mid >= 0: #found
+		            return (alist[left], alist[mid], alist[right])
+		        elif mid == -10: #terminated left 
+		            right -= 1
+		        elif mid == -20: #terminated right
+		            left += 1
+		    return None
+		 */
+		return false;
+	}
+
+	public <T extends Comparable<T>> void allPermutation(ArrayList<T> arr, boolean duplicate) {
+		System.out.println("1 is " + arr);
+		long size = factorial(arr.size());
+		if (duplicate) {
+			Map<T, Integer> m = new HashMap<T, Integer>();
+			for (T t : arr) {
+				m.put(t, m.containsKey(t) ? m.get(t) + 1 : 1);
+			}
+			long fact = 1;
+			for (Map.Entry<T, Integer> e : m.entrySet()) {
+				if (e.getValue() > 1) {
+					fact *= factorial(e.getValue());
+				}
+			}
+			size = size/fact;
+		}
+		for (int i=1; i<size; i++) {
+			nextPermutation(arr);
+			System.out.format("%d is %s%n", i+1, arr);
+		}
+	}
+	
+	/**
+	 * Given a target position on infinite number line, i.e -infinity to +infinity. 
+	 * Starting form 0 you have to reach the target by moving as described : 
+	 * 			In ith move you can take i steps forward or backward. 
+	 * 
+	 * Find the minimum number of moves require to reach the target
+	 * 
+	 * @param n
+	 * @return
+	 */
+	public int stepsRequiredOnInfiniteLine(int n) {
+		return stepsRequiredUtil(0,0,Math.abs(n));
+	}
+	
+	/**
+	 * after x steps if sumX == n, return x;
+	 * if sumX > n :
+	 * 		reverse any i-th move then sumX-2i = n;
+	 * 		sumX - n = 2i;
+	 * 		1) if (sumX - n) is even, return x; that will be answer, and i-th move we need to reverse;
+	 * 		2) if (sumX - n) is odd, add x+1, check again, add x+2, this will do. (break it more).
+	 * 				think again //a) if x is odd, meaning x is even, then adding n+2 only will help, so that is the answer.
+	 * 				think again //b) if x is even, meaning x is odd, then adding n+1 is sufficient, so n+1 is answer.
+	 * 				
+	 * @param n
+	 * @return
+	 */
+	public int stepsRequiredNoRecurr(int dest_n) {
+		int steps_x = 0, reach_sumX = 0;
+		while (reach_sumX < dest_n || (reach_sumX - dest_n)%2 !=0 ) {
+			steps_x++;
+			reach_sumX += steps_x;
+		}
+		return steps_x;
+	}
+	
+	private int stepsRequiredUtil(int start, int steps, int n) {
+		if (start == n) return steps;
+		if (Math.abs(start) > n) return Integer.MAX_VALUE;
+		stackCount++;
+		int pos = stepsRequiredUtil(start + steps + 1, steps + 1, n);
+		int neg = stepsRequiredUtil(start - steps - 1, steps + 1, n);
+		return pos < neg ? pos : neg;
+	}
+
+	/**
+	 * Next Permutation is a library method itself in C++
+	 * 
+	 * {@link https://en.wikipedia.org/wiki/Permutation#Generation_in_lexicographic_order}
+	 * {@link https://stackoverflow.com/questions/352203/generating-permutations-lazily}
+	 * @param a
+	 */	
+	public <T extends Comparable<T>> void nextPermutation(ArrayList<T> a) {
+	    int size = a.size();
+	    int indexK = -1;
+	    int indexL = 0;
+	    for (int i=0; i<size-1; i++) {
+	        if (a.get(i).compareTo(a.get(i+1)) < 0) {
+	            indexK = indexK > i ? indexK : i;
+	        }
+	    }
+	    if (indexK == -1) {
+	        reverse(a,0,size-1);
+	        return;
+	    }
+	    T t = a.get(indexK);
+	    for (int j=indexK+1; j<size; j++) {
+	        if (a.get(j).compareTo(t) > 0) {
+	            indexL = indexL > j ? indexL : j;
+	        }
+	    }
+	    a.set(indexK,a.get(indexL));
+	    a.set(indexL,t);
+	    reverse(a,indexK+1,size-1);
+	    return;
+	}
+	
+	public <T extends Comparable<T>> ArrayList<T> reverse(ArrayList<T> l, int i, int j) {
+	    if (j > l.size()-1 || i < 0) return l;
+	    while (i<j) {
+	        T temp = l.get(i);
+	        l.set(i,l.get(j));
+	        l.set(j,temp);
+	        i++;
+	        j--;
+	    }
+	    return l;
+	}
+	
+	/**
+	 * Given a positive integer n and a string s consisting only of letters D or I, you have to find any permutation
+	 *  of first n positive integer that satisfy the given input string.
+	 *  D means the next number is smaller, while I means the next number is greater.
+	 *  
+	 *  Notes:
+	 *  	Length of given string s will always equal to n - 1
+	 *  	Your solution should run in linear time and space.
+	 *  
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public ArrayList<Integer> findPerm(final String A, int B) {
+        ArrayList<Integer> l = new ArrayList<Integer>();
+        int max = B;
+        int min = 1;
+        for (int i=0; i<B-1; i++) {
+            if (A.charAt(i) == 'D') {
+                l.add(max);
+                max--;
+            } else {
+                l.add(min);
+                min++;
+            }
+        }
+        if (min == 0) {
+            l.add(max);
+        } else {
+            l.add(min);
+        }
+        return l;
+    }
+	
+	/**
+	 * Kth Row of pascal triangle;
+	 * 
+	 * @param A
+	 * @return
+	 */
+	public ArrayList<Integer> getRow(int A) {
+        ArrayList<Integer> l = new ArrayList<Integer>();
+        l.add(1);
+        int x = 1; 
+        for (int a = A, b = 1; b <= A; --a, ++b) {
+            x = (x * a) / b;
+            l.add(x);
+        }
+        return l;
+    }
+	
+	/**
+	 * Intersection of two sets;
+	 * 
+	 * 1) This approach optimizes when one array is much bigger than the other
+	 * otherwise -
+	 * 2) Simple solution is iterate over both together O(m+n);
+
+		  while (i < m && j < n) {
+	       	if(arr1[i] < arr2[j]) i++;          		
+	        else if(arr1[i] > arr2[j]) j++;          
+	        else {
+	          list.add(arr1[i]);
+	          i++;j++;
+	        }
+	      }
+	      
+	 * 3) use Hashing for unsorted array, use HashSet - Iterate through the first array and put every element of the first array in the set S.
+	 * 													For every element x of the second array, do the following :
+	 * 														Search x in the set hs. If x is present, then print it.
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public ArrayList<Integer> intersection(final List<Integer> A, final List<Integer> B) {
+        ArrayList<Integer> list = new ArrayList<Integer>();
+        int lenA = A.size();
+        int lenB = B.size();
+        Integer minA = A.get(0);
+        Integer maxA = A.get(lenA-1);
+        Integer minB = B.get(0);
+        Integer maxB = B.get(lenB-1);
+        if (minA > maxB || minB > maxA || lenA == 0 || lenB == 0) return list;
+        if (lenB <= lenA) {
+            int index = -1;
+            for (int i=0; i<lenB && B.get(i)<=maxA; i++) {
+                Integer temp = B.get(i);
+                int in = binarySearch(A,index+1,lenA-1,temp);
+                if (in != -1) {
+                    list.add(temp);
+                    index = in;
+                }
+                if (index == lenA-1) break;
+            }
+        } else {
+            int index = -1;
+            for (int i=0; i<lenA && A.get(i)<=maxB; i++) {
+                Integer temp = A.get(i);
+                int in = binarySearch(B,index+1,lenB-1,temp);
+                if (in != -1) {
+                    list.add(temp);
+                    index = in;
+                }
+                if (index == lenB-1) break;
+            }
+        }
+        return list;
+    }
+    
+    int binarySearch(List<Integer> list, int start, int end, Integer num) {
+        while (start<=end) {
+            int mid = start + (end-start)/2;
+            if (list.get(mid).intValue() == num.intValue()) return mid;
+            else if (num<list.get(mid)) end = mid -1;
+            else start = mid+1;
+        }
+        return -1;
+    }
+	
+    /**
+     * Given a read only array of n + 1 integers between 1 and n, 
+     * find one number that repeats in linear time using 
+     * less than O(n) space and traversing the stream sequentially O(1) times
+     * 
+     * {@link https://www.geeksforgeeks.org/find-the-two-repeating-elements-in-a-given-array/}
+     * 
+     * 1) XOR
+     * 2) While traversing, use absolute value of every element as index and make the value at this index as negative to mark it visited. 
+     * 	  If something is already marked negative then this is the repeating element. 
+     * 	  To find missing, traverse the array again and look for a positive value. CANT BE USED IF MODIFYING ARRAY IS NOT PERMITTED.
+     * 3) Make two equations {@link IBitArray#repeatedAndMissingNumber}
+     * 4) Use O(n) space. temp Array. or count array
+     * 
+     * 
+     * 
+     * @param a
+     * @return
+     */
+    public int reapeatedNum(List<Integer> a) {
+    	final int n = a.size() - 1;
+	    int x = 0;
+	    for (int i = 1; i <= n; i++) {
+	        x = x ^ i; // take xor of numbers from 1 to n;
+	    }
+	    for (int e : a) {
+	        x = x ^ e;
+	    }
+	    if (x == 0) return -1;
+	    else return x;
+	    
+	    // -or- not working
+	    /*for (int e : a) {
+	        x = x ^ e;
+	        if (x == 0) {
+	        	return e;
+	        }
+	    }
+	    return -1;*/
+    }
+    
+	/**
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public int findCount(final int[] A, int B) {
+        int len = A.length;
+        int index = binarySearch(A,B,0,len-1);
+        if (index == -1) return 0;
+        int neg = index;
+        int count = 1;
+        neg--;
+        index++;
+        while (neg>=0 || index<len) {
+            if (neg != -1 && A[neg] == B) {
+                count++;
+                neg--;
+            } else {
+                neg = -1;
+            }
+            if (index < len && A[index] == B) {
+                count++;
+                index++;
+            } else {
+                index = len;
+            }
+        }
+        return count;
+    }
+    
+    private int binarySearch(int[] A, int num, int indexI, int indexJ) {
+        if (A[indexI] == num) {
+            return indexI;
+        } else if (A[indexJ] == num) {
+            return indexJ;
+        } else if (indexJ == indexI) {
+            return A[indexI] == num ? indexI : -1;
+        } else {
+            int mid = (indexI + indexJ)/2;
+            if (A[mid] >= num) {
+                return binarySearch(A,num,indexI,mid);
+            } else {
+                return binarySearch(A,num,mid+1,indexJ);
+            }
+        }
+        
+        
+    }
+    
 	/**
 	 * 
 	 * Given an array of non negative integers A, and a range (B, C),
@@ -117,7 +649,14 @@ public class IBitArray {
 	 * Continuous subsequence is defined as all the numbers A[i], A[i + 1], .... A[j]
 	 * where 0 <= i <= j < size(A)
 	 * 
+	 * https://www.quora.com/Given-an-array-having-positive-integers-how-do-I-find-a-continuous-subarray-which-sums-to-a-given-number
+	 * http://www.zrzahid.com/contiguous-subarray-with-sum-in-a-range/
 	 *  
+	 *  
+	 * A : [10, 5, 1, 0, 2]
+	 * (B, C) : (6, 8)
+	 * 
+	 * 
 	 * @param arr
 	 * @param x
 	 * @param y
@@ -125,24 +664,172 @@ public class IBitArray {
 	 */
 	public int sumInRange(int[] arr, int x, int y) {
 		int len = arr.length;
-		int sum = arr[0];
-		int j = 1, i = 0;
 		int count = 0;
-		for (int k=1; k<len; k++) {
-			sum += arr[k];
-			if (sum > y) {
+		int indexI = 0, indexJ = -1;
+		long sum = arr[0];
+		for (int i = 1; i<len; i++) {
+			if (sum >= x && sum <=y) {
+				indexJ = i-1;
+				count++;
+				break;
+			} else if (sum > y) {
+				indexI = i;
+				indexJ = -1;
 				sum = 0;
-				i = k;
-				j = k;
-				k--;
-			} else if (sum < x){
-				j++;				
+			}
+			sum += arr[i];
+		}
+		if (indexJ == -1) return 0;
+		indexJ++;
+		while (indexJ < len-1 && indexI < len-1) {
+			long s = sum+arr[indexJ];
+			if (s >= x && s <= y) {
+				count++;
+				for (int i=indexI+1; i<indexJ; i++) {
+					if (s-arr[i] >= x && s-arr[i] <= y) {
+						count++;
+					}
+				}
+				sum = s;
+				indexJ++;
+			} else if (s > y) {
+				sum -= arr[indexI];
+				indexI++;
+				indexJ--;
 			} else {
-				if (j-i != 0) count++;
-				j++;
+				sum = s;
+				indexJ++;
 			}
 		}
 		return count;
+	}
+	
+	/**
+	 * Given an array of integers eg [1, 2, -3, 1] find whether there is a continuous sub-sequence that sums to 0 
+	 * and return it (eg [1, 2, -3] or [2, -3, 1]).
+	 * 
+	 * https://stackoverflow.com/questions/14865688/subsequence-sum
+	 * 
+	 * 1)
+	 * Make a new array with each element equal to the sum of the previous elements plus that one.
+	 * Then look for elements that match in the resulting array.
+	 * Since these represent locations where the overall change in the function is zero, 
+	 * 		you will find that if their position is i and k then the subsequence (i+1, k) 
+	 * 		is a zero-sum subsequence. (In this case, [2:6]).
+	 * Additionally, any zeros in the table indicate that the subsequence (0, k) is a zero-sum subsequence. For the lookup, 
+	 * 		a hash table or other fast collision locator makes this O(N) to perform
+	 * 
+	 * 2)
+	 * Do a running sum, storing sum values in a hash table along with array index
+	 * 	If you ever get a sum value you’ve already seen, return 1+the index in the hash table, 
+	 * 	and the current index. This solution is O(n) time complexity.
+	 * 	No need for a new array. Space complexity is O(N) because of the hash.
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public List<madr.sp.emira.array.Pair<Integer>> continuousSubSequenceSum_zero(int[] arr) {
+		return null;
+	}
+	
+	/**
+	 * Given an array having positive integers, how do I find a continuous subarray which sums to a given number?
+	 * 
+	 * https://www.quora.com/Given-an-array-having-positive-integers-how-do-I-find-a-continuous-subarray-which-sums-to-a-given-number
+	 * http://www.zrzahid.com/contiguous-subarray-with-sum-in-a-range/
+	 * http://blog.gainlo.co/index.php/2016/06/01/subarray-with-given-sum/?utm_campaign=quora&utm_medium=Given+an+array+having+positive+integers%2C+how+do+I+find+a+continuous+subarray+which+sums+to+a+given+number%3F&utm_source=quora
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public List<madr.sp.emira.array.Pair<Integer>> contiguousSubArrSum_equals_k(int[] arr, int target) {
+		int N = arr.length;
+		List<madr.sp.emira.array.Pair<Integer>> ans = new ArrayList<madr.sp.emira.array.Pair<Integer>>();
+		for(int i = 0, j = 0, sum = 0; i < N; i++) {
+			  for(; j < N && sum < target; j++) sum += arr[j];
+			  if(sum == target) ans.add(new madr.sp.emira.array.Pair<Integer>(i, j-1));
+			  sum -= arr[i];
+			}
+		return ans;
+	}
+	
+	/**
+	 * Given an array having any kind of integers, how do I find a continuous subarray which sums to a given number?
+	 * 
+	 * https://www.quora.com/Given-an-array-having-positive-integers-how-do-I-find-a-continuous-subarray-which-sums-to-a-given-number
+	 * http://www.zrzahid.com/contiguous-subarray-with-sum-in-a-range/
+	 * http://blog.gainlo.co/index.php/2016/06/01/subarray-with-given-sum/?utm_campaign=quora&utm_medium=Given+an+array+having+positive+integers%2C+how+do+I+find+a+continuous+subarray+which+sums+to+a+given+number%3F&utm_source=quora
+	 * 
+	 * 
+	 *  map<int, vector<int> > S_pos;
+		S_pos[0].push_back(0);
+		for(int i = 1, S = 0; i <= N; i++) {
+		  S += A[i - 1];
+		  const vector<int>& V = S_pos[S - target];
+		  for(int j = 0; j < V.size(); j++) {
+		    output(V[j], i);
+		  }
+		  S_pos[S].push_back(i);
+		}
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public List<Pair<Integer>> contiguousSubArrSum_equals_k_includesNegative(int[] arr, int target) {
+		int N = arr.length;
+		List<Pair<Integer>> ans = new ArrayList<Pair<Integer>>();
+		Map<Integer,List<Integer>> map = new HashMap<Integer,List<Integer>>();
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(0);
+		map.put(0, list);
+		int sum = 0;
+		for (int i=1; i< N; i++) {
+			sum += arr[i-1];
+			List<Integer> l = map.get(sum-target);
+			if (l != null) {
+				for (int j=0; j<l.size(); j++) {
+					ans.add(new Pair<Integer>(l.get(j), i-1));
+				}
+			}
+			if (map.get(sum) == null) {
+				List<Integer> temp = new ArrayList<Integer>();
+				temp.add(i);
+				map.put(sum, temp);
+			} else {
+				map.get(sum).add(i);
+			}
+		}
+		return ans;
+	}
+	
+	public List<Pair<Integer>> recursive_777LineUtil(int[] arr, int target){
+		List<Pair<Integer>> ans = new ArrayList<Pair<Integer>>();
+		Map<Integer,List<Integer>> map = new HashMap<Integer,List<Integer>>();
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(0);
+		map.put(0, list);
+		int sum = 0;
+		recursive_777Line(ans, target, sum, 1, arr, map);
+		return ans;
+	}
+	
+	public void recursive_777Line(List<Pair<Integer>> ans, int target, int sum_j, int j, int[] arr, Map<Integer,List<Integer>> hash) {
+		if (j >= arr.length) return;
+		sum_j += arr[j-1];
+		if (hash.containsKey(sum_j - target)) {
+			List<Integer> l = hash.get(sum_j-target);
+			for (Integer in : l) {
+				ans.add(new Pair<Integer>(in, j-1));
+			}
+		}
+		if (hash.get(sum_j) == null) {
+			List<Integer> temp = new ArrayList<Integer>();
+			temp.add(j);
+			hash.put(sum_j, temp);
+		} else {
+			hash.get(sum_j).add(j);
+		}
+		recursive_777Line(ans, target, sum_j, j+1, arr, hash);
 	}
 	
 	/**
@@ -181,6 +868,24 @@ public class IBitArray {
         return small[B-1];
     }
 	
+	/**
+	 * MUST READ
+	 * 
+	 * https://www.geeksforgeeks.org/k-largestor-smallest-elements-in-an-array/
+	 * {@link https://www.quora.com/What-is-the-most-efficient-algorithm-to-find-the-kth-smallest-element-in-an-array-having-n-unordered-elements}
+	 * {@link https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array/}
+	 * https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-2-expected-linear-time/
+	 * https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-3-worst-case-linear-time/
+	 * https://ocw.mit.edu/courses/electrical-engineering-and-computer-science/6-046j-introduction-to-algorithms-sma-5503-fall-2005/video-lectures/lecture-6-order-statistics-median/
+	 * http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap10.htm
+	 * https://www.cs.rit.edu/~ib/Classes/CS515_Spring12-13/Slides/022-SelectMasterThm.pdf
+	 * http://www.ics.uci.edu/~eppstein/161/960125.html
+	 * http://www.cse.ust.hk/~dekai/271/notes/L05/L05.pdf
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
 	public int kthsmallestWithHeap(final int[] A, int B) {
 		int len = A.length;
 		BinaryMaxHeap m = new IBitArray.BinaryMaxHeap(Arrays.copyOfRange(A, 0, B));
@@ -402,6 +1107,50 @@ public class IBitArray {
             }
         }
     }
+    
+    /**
+     * MUST READ - https://www.geeksforgeeks.org/?p=2457
+     * 
+     * You are given a read only array of n integers from 1 to n.
+     * Each integer appears exactly once except A which appears twice and B which is missing.
+     * 
+     * Check this link
+     * {@link https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number}
+     * 
+     * 1) XOR - VERY TRICKY, MUST READ - https://www.geeksforgeeks.org/?p=2457
+     * 2) While traversing, use absolute value of every element as index and make the value at this index as negative to mark it visited. 
+     * 	  If something is already marked negative then this is the repeating element. 
+     * 	  To find missing, traverse the array again and look for a positive value.
+     * 3) Make two equations {@link IBitArray#repeatedAndMissingNumber}
+     * 4) Use O(n) space. temp Array.
+     * 
+     */
+    public int[] repeatedAndMissingNumber(final int[] A) {
+        int[] arr = A;
+        long len = arr.length;
+		int[] result = new int[2];
+		Long a = 0L;
+		Long b = 0L;
+		long expectedSum = len*(len+1)/2;
+		long calculatedSum = 0;
+		long expectedSquareSum = ((2*len+1)*expectedSum)/3;
+		long calcultedSquareSum = 0;
+		for (int i : arr) {
+			calculatedSum += i;
+			Long temp = new Long(i);
+			calcultedSquareSum += temp*temp;
+		}
+		long b_a = expectedSum - calculatedSum;
+		long b2_a2 = expectedSquareSum - calcultedSquareSum;
+		/*long b_dividedBy_a = expectedSquareSum/calcultedSquareSum;
+		a = (int) (b_a*calcultedSquareSum/(expectedSquareSum - calcultedSquareSum));
+		b = (int) (b_a*expectedSquareSum/(expectedSquareSum - calcultedSquareSum));*/
+		a = ((b2_a2 - (b_a*b_a))/(2*b_a));
+		b = ((b2_a2 + (b_a*b_a))/(2*b_a));
+		result[0] = a.intValue();
+		result[1] = b.intValue();
+		return result;
+    }
 	
 	/**
 	 * You’re given a read only array of n integers. Find out if any integer occurs 
@@ -416,7 +1165,7 @@ public class IBitArray {
 	 * @param a
 	 * @return
 	 */
-	public int repeatedNumber(final List<Integer> a) {
+	public int repeatedNumber_n_divideBy_k_times(final List<Integer> a) {
 		int len = a.size();
 	    Map<Integer, Integer> map = new HashMap<Integer, Integer>(3);
 	    for (Integer i : a) {
@@ -665,6 +1414,11 @@ public class IBitArray {
 		return -1;
 	}
 	
+	/**
+	 * Formula for generating k_th row without the help of (k-1)th row ==> x=1,a=row_num,b=1; x = x*a/b; a--; b++;
+	 * @param A
+	 * @return
+	 */
 	public int[][] generatePascalTriangle(int A) {
 		if (A < 1) {
 			return new int[0][];
@@ -686,7 +1440,7 @@ public class IBitArray {
 	int firstMissingPositive(int[] arr) {
 		int maxPositiveNum = Integer.MIN_VALUE;
 		long sumOfAllPositiveNum = 0;
-		int len = arr.length;
+		//int len = arr.length;
 		Set<Integer> set = new HashSet<Integer>();
 		for (int i : arr) {
 			if (i>0) {
@@ -748,7 +1502,7 @@ public class IBitArray {
 		float listCmin = Float.MAX_VALUE;
 		float listAmax = Float.MIN_VALUE;
 		float listBmin = Float.MAX_VALUE;
-		float max = 2.0f;
+		//float max = 2.0f;
 		for (String s : arr) {
 			float f = Float.parseFloat(s);
 			if (f >= 2f) {
@@ -975,6 +1729,7 @@ public class IBitArray {
 		printArr(result);
 		return result;
 	}
+	
 	/**
 	 * You are given a read only array of n integers from 1 to n.
 	 * Each integer appears exactly once except A which appears twice and B which is missing.
@@ -1007,7 +1762,7 @@ public class IBitArray {
 		return result;
 	}
 	
-	private long factorial(int len) {
+	public long factorial(int len) {
 		if (len == 1) {
 			return 1;
 		}
@@ -1075,8 +1830,8 @@ public class IBitArray {
 	 * @return
 	 */
 	public int maxArr(int[] A) {
-        int len = A.length;
-        int max = Integer.MIN_VALUE;
+//        int len = A.length;
+//        int max = Integer.MIN_VALUE;
         /*for(int i=0;i<len;i++) {
             for(int j=i+1;j<len;j++){
                 int sum = (A[i]>A[j]?A[i]-A[j]:A[j]-A[i]) + (j-i);
@@ -1506,6 +2261,11 @@ public class IBitArray {
 			buildHeap();
 		}
 
+		/**
+		 * https://stackoverflow.com/questions/9755721/how-can-building-a-heap-be-on-time-complexity
+		 * http://www.cs.umd.edu/~meesh/351/mount/lectures/lect14-heapsort-analysis-part.pdf
+		 * 
+		 */
 		private void buildHeap() {
 			percolateUp();
 		}
