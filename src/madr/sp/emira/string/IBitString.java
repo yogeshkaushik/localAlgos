@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import madr.sp.emira.array.BinarySearchClass;
+
 /**
  * 
  * Substring   : A pattern P is called a substring of Text T if the pattern appears in the Text in a continuous fashion.
@@ -54,8 +56,328 @@ public class IBitString {
 		
 		//System.out.println(cl.charReuiredForPalindrome("babb"));
 		
-		System.out.println(cl.buildString('M', 3));
+		//System.out.println(cl.buildString('M', 3));
+		
+		//System.out.println(cl.addBinary("11","1"));
+		
+		//System.out.println(cl.compareVersion("1.0e10", "1"));
+		
+		//System.out.println(cl.convert("PAYPALISHIRING", 3));
+		
+		/*String[] str = {"What", "must", "be", "shall", "be."};
+		System.out.println(cl.fullJustify(BinarySearchClass.createListWrapper(str), 12));*/
 	}
+	
+	
+	/**
+	 * Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.
+		You should pack your words in a greedy approach; that is, pack as many words as you can in each line.
+		
+		Pad extra spaces ‘ ‘ when necessary so that each line has exactly L characters.
+		Extra spaces between words should be distributed as evenly as possible.
+		If the number of spaces on a line do not divide evenly between words, the empty slots on the left will be assigned more spaces than the slots on the right.
+		For the last line of text, it should be left justified and no extra space is inserted between words.
+		
+		Your program should return a list of strings, where each string represents a single line.
+		
+		Example:
+		
+		words: ["This", "is", "an", "example", "of", "text", "justification."]
+		
+		L: 16.
+		
+		[
+		   "This    is    an",
+		   "example  of text",
+		   "justification.  "
+		]
+	 * 
+	 * 
+	 * @param strArr
+	 * @param allowedLength
+	 * @return
+	 */
+	public List<String> fullJustify(List<String> strArr, int allowedLength) {
+        if (strArr == null) return strArr;
+        ArrayList<String> ans = new ArrayList<String>();
+        for (int i=0; i<strArr.size();) {
+            ArrayList<String> sb = new ArrayList<String>();
+            sb.add(strArr.get(i));
+            int len = strArr.get(i).length();
+            i++;
+            while(i<strArr.size() && 1+len+strArr.get(i).length()<=allowedLength) {
+            	sb.add(strArr.get(i));
+            	len += 1+strArr.get(i).length();
+            	i++;
+            }
+            if (i == strArr.size()) {
+            	StringBuilder ss = new StringBuilder();
+            	for (String s : sb) {
+            		ss.append(s+" ");
+            	}
+            	String str = ss.toString().trim();
+            	int num = allowedLength-str.length();
+            	str = str + multipleWhiteSpaces(num);
+            	ans.add(str);
+            } else {
+            	if (len<allowedLength) {
+            		ans.add(evenlyDistributeSpaces(sb,len,allowedLength));
+            	} else if(len == allowedLength){
+            		StringBuilder ss = new StringBuilder();
+            		for (String s : sb) {
+            			ss.append(s+" ");
+            		}
+            		ans.add(ss.toString().trim());
+            	}
+            }
+            sb.clear();
+        }
+        return ans;
+    }
+	
+	private String evenlyDistributeSpaces(ArrayList<String> sb, int len, int allowedLength) {
+		int paddingSpaces = allowedLength-len;
+		int words = sb.size();
+		if (words == 1) {
+			return sb.get(0)+multipleWhiteSpaces(paddingSpaces);
+		}
+		if (words == 2) {
+			return sb.get(0) + multipleWhiteSpaces(paddingSpaces+1) + sb.get(1); 
+		}
+		int div = words - 1;
+		int possible = paddingSpaces/div;
+		int remainder = paddingSpaces%div;
+		StringBuilder ss = new StringBuilder();
+		for (int i=0; i<words-1; i++) {
+			int num = possible;
+			num += remainder > 0 ? 1 : 0;
+			remainder--;
+			ss.append(sb.get(i)+multipleWhiteSpaces(num+1));
+		}
+		ss.append(sb.get(words-1));
+		return ss.toString();		
+	}
+	
+	private String multipleWhiteSpaces(int num) {
+		char[] arr = new char[num];
+	    Arrays.fill(arr, ' ');
+	    return new String(arr);
+	}
+
+	/**
+	 * The string "PAYPALISHIRING" is written in a zigzag pattern on a given number of rows like this: 
+	 * (you may want to display this pattern in a fixed font for better legibility)
+	 * 
+	 * And then read line by line: PAHNAPLSIIGYIR
+	 * Write the code that will take a string and make this conversion given a number of rows:
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public String convert(String A, int B) {
+        if (A == null || B <= 1) return A;
+        int len = A.length();
+        int window = (B-2)*2+1;
+        StringBuilder sb = new StringBuilder();
+        for (int i=0; i<len; i=i+window+1) {
+            sb.append(A.charAt(i));
+        }
+        int i = 1, j = window;
+        int start = i;
+        int end = j;
+        while (i<=j) {
+            while(start<len || end<len) {
+                if (start == end) {
+                    sb.append(A.charAt(start));
+                    start += window+1;
+                    end += window+1;
+                } else {
+                    if (start<len) {
+                        sb.append(A.charAt(start));
+                        start += window+1;
+                    }
+                    if (end<len) {
+                        sb.append(A.charAt(end));
+                        end += window+1;
+                    }
+                }
+            }
+            start = ++i;
+            end = --j;
+        }
+        return sb.toString();
+    }
+	
+	/**
+	 * Compare two version numbers version1 and version2.
+	 * 
+	 * @param A
+	 * @param B
+	 * @return
+	 */
+	public int compareVersion(String A, String B) {
+        if (A.indexOf(".") == -1 || B.indexOf(".") == -1) {
+        	try {
+        		long a = Long.parseLong((A.indexOf(".") == -1) ? A : A.substring(0,A.indexOf(".")));
+            	long b = Long.parseLong((B.indexOf(".") == -1) ? B : B.substring(0,B.indexOf(".")));
+            	if (a>b) return 1;
+        		else if (a<b) return -1;
+        		else {
+        			if (A.indexOf(".") == -1 && B.indexOf(".") == -1) {
+                		return 0;
+                	} else if (A.indexOf(".") == -1) {
+                		String tempB = B.substring(B.indexOf(".")+1);
+                		return compareVersion("0", tempB);
+                	} else {
+                		String tempA = A.substring(A.indexOf(".")+1);
+                		return compareVersion(tempA, "0");
+                	}
+        		}
+        	} catch (Throwable e) {
+        		String s1 = (A.indexOf(".") == -1) ? A : A.substring(0,A.indexOf("."));
+        		String s2 = (B.indexOf(".") == -1) ? B : B.substring(0,B.indexOf("."));
+        		if (s1.startsWith("0")) {
+        			s1 = s1.substring(s1.lastIndexOf('0')+1);
+        		}
+        		if (s2.startsWith("0")) {
+        			s2 = s2.substring(s2.lastIndexOf('0')+1);
+        		}
+        		if (s1.length() > s2.length()) return 1;
+                else if (s1.length() < s2.length()) return -1;
+                else {
+                	for (int i=0; i<s1.length(); i++) {
+                		if (s1.charAt(i) > s2.charAt(i)) return 1;
+                		if (s1.charAt(i) < s2.charAt(i)) return -1;
+                	}
+                	return compareVersion(A.substring(A.indexOf(".")+1),B.substring(B.indexOf(".")+1));
+                }
+        	}
+        }
+        long temp1 = 0;
+        long temp2 = 0;
+        try {
+        	temp1 = Long.parseLong(A.substring(0,A.indexOf(".")));
+            temp2 = Long.parseLong(B.substring(0,B.indexOf(".")));
+            if (temp1 > temp2) return 1;
+            else if (temp1 < temp2) return -1;
+            else return compareVersion(A.substring(A.indexOf(".")+1),B.substring(B.indexOf(".")+1));
+        } catch (Exception e) {
+        	String s1 = A.substring(0,A.indexOf("."));
+        	String s2 = B.substring(0,B.indexOf("."));
+        	if (s1.startsWith("0")) {
+    			s1 = s1.substring(s1.lastIndexOf('0')+1);
+    		}
+    		if (s2.startsWith("0")) {
+    			s2 = s2.substring(s2.lastIndexOf('0')+1);
+    		}
+        	if (s1.length() > s2.length()) return 1;
+            else if (s1.length() < s2.length()) return -1;
+            else {
+            	for (int i=0; i<s1.length(); i++) {
+            		if (s1.charAt(i) > s2.charAt(i)) return 1;
+            		if (s1.charAt(i) < s2.charAt(i)) return -1;
+            	}
+            	return compareVersion(A.substring(A.indexOf(".")+1),B.substring(B.indexOf(".")+1));
+            }
+        }
+    }
+	
+	/**
+	 * Multiply Strings as numbers
+	 * @param a
+	 * @param b
+	 * @return
+	 */
+	public String multiply(String a, String b) {
+        int[] res = new int[a.length() + b.length()];
+        for (int i = 0; i < a.length(); i++) {
+            for (int j = 0; j < b.length(); j++) {
+                res[i + j + 1] += (a.charAt(i) - '0') * (b.charAt(j) - '0');
+            }
+        }
+        int carry = 0;
+        for (int i = res.length-1; i >= 0; i--) {
+            int val = res[i] + carry;
+            res[i] = val % 10;
+            carry = val / 10;
+        }
+        StringBuilder sb = new StringBuilder();
+        int i = 0;
+        while (i < res.length-1 && res[i] == 0) {
+            i++;
+        }
+        while (i < res.length) {
+            sb.append( (char) (res[i] + '0') );
+            i++;
+        }
+        return sb.toString();
+    }
+	
+	public String addBinary(String A, String B) {
+        /*int a = Integer.parseInt(A, 2);
+        int b = Integer.parseInt(B, 2);
+        int sum = a + b;
+        return Integer.toBinaryString(sum);*/
+        int lenA = A.length();
+        int lenB = B.length();
+        StringBuilder sb = new StringBuilder();
+        int i = lenA-1, j = lenB-1;
+        char carry = '0';
+        while (i>=0 && j>=0) {
+            if (carry == '0') {
+                if (A.charAt(i) == '1' && B.charAt(j) == '1') {
+                    carry = '1';
+                    sb.append('0');
+                } else if (A.charAt(i) == '0' && B.charAt(j) == '0') {
+                    sb.append('0');
+                } else sb.append('1');
+            } else {
+                if (A.charAt(i) == '1' && B.charAt(j) == '1') {
+                    carry = '1';
+                    sb.append('1');
+                } else if (A.charAt(i) == '0' && B.charAt(j) == '0') {
+                    sb.append('1');
+                    carry = '0';
+                } else {
+                    sb.append('0');
+                }
+            }
+            i--;
+            j--;
+        }
+        if (i == -1 && j == -1) {
+            if (carry == '1') sb.append('1');
+            return sb.reverse().toString();
+        }
+        else {
+            sb.reverse();
+            String s = (i == -1 ? B.substring(0,j+1) : A.substring(0,i+1));
+            if (carry == '0') return s+sb.toString();
+            else {
+                StringBuilder ssbb = new StringBuilder();
+                int len = s.length()-1;
+                while (len>=0) {
+                    if (carry == '1') {
+                        if (s.charAt(len) == '1') {
+                            ssbb.append(0);
+                        } else {
+                            ssbb.append(1);
+                            carry = '0';
+                        }
+                    } else break;
+                    len--;
+                }
+                if (len == -1 && carry == '1') {
+                    ssbb.append('1');
+                    return ssbb.reverse().toString()+sb.toString();
+                }
+                if (len == -1 && carry == '0') return ssbb.reverse().toString()+sb.toString();
+                return s.substring(0,len+1) + ssbb.reverse().toString()+sb.toString();
+            }
+        }
+    }
+	
 	
 	String buildString(char c, int n) {
 	    char[] arr = new char[n];

@@ -60,7 +60,16 @@ public class IBitBitOpsAndMath {
 		List<Integer> l2 = new ArrayList<>();l2.add(-29);l2.add(18);l2.add(46);//l2.add(-48);l2.add(-31);l2.add(-15);l2.add(-6);l2.add(1);l2.add(8);
 		System.out.println(cl.findMedianSortedArrays(l1, l2));*/
 		
-		System.out.println(cl.pow(71045970, 41535484, 64735492));
+		//System.out.println(cl.pow(71045970, 41535484, 64735492));
+		
+		/*System.out.println(cl.isPrime(2147483647));
+		System.out.println(Integer.MAX_VALUE);*/
+		
+		//System.out.println(cl.gcd(-1, -1));
+		
+		System.out.println(cl.isPrime(67));
+		System.out.println(cl.isPrime(71));
+		
 	}
 	
 	/**
@@ -218,7 +227,7 @@ public class IBitBitOpsAndMath {
             for (int j = 1; j < B; j++)
   
             // By uncommenting the last part the 
-            // code calculatest he total possible paths 
+            // code calculates t he total possible paths 
             // if the diagonal Movements are allowed
             memo[i][j] = memo[i-1][j] + memo[i][j-1]; //+ count[i-1][j-1];
   

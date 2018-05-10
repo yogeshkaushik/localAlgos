@@ -21,14 +21,78 @@ public class MainDPClass {
 //		System.out.println(clazz.maxContiguosSubsequence(res));
 //		System.out.println(clazz.maxContiguosSubsequenceOwnAlgo(res));
 //		System.out.println(clazz.maxContiguousSumFromBook(res));
-		System.out.println(clazz.maxContiguousSumDP(res));
+		//System.out.println(clazz.maxContiguousSumDP(res));
 		
 		/*int n = 21;
 		clazz.memo = new int[n+1];
 		clazz.memo[0] = 1;
 		System.out.println(clazz.catalanNumberDP(n));*/
+		
+		System.out.println(clazz.numOfSubsequenceWithRepeated("ggg"));
 	}
 	
+	/**
+	 * Find total number of unique subsequences for a string if repeated chars are there.
+	 * 
+	 * Total number of subsequence in an "n" char string  ==> 2^n;
+	 * which is nC0 + nC1 + nC2 + nC3 .... = 2^n;
+	 * 
+	 * count(n) = 2 * count(n-1) == 2*2^(n-1) = 2^(n-1+1) = 2^n;
+	 *  if repeated char at some point then that means whatever subsequences we have calculate till that point, we don't need them
+	 *  them so just subtract that ==== let's say we encountered same char at i and j 
+	 *  
+	 *  till 'i' subsequences will be 2^i;
+	 *  till 'j' unique subsequences will be 2^j - 2^i;
+	 *  
+	 *
+	 */
+	public int numOfSubsequenceWithRepeated(String str) {
+		int len = str.length();
+		Map<Character, Integer> charVsIndex = new HashMap<Character, Integer>();
+		int[] dp = new int[len+1];
+		dp[0] = 1; // when no char is there, still empty set will be there, so 1
+		
+		for (int i=1; i<=len; i++) {
+			char c = str.charAt(i-1);
+			if (charVsIndex.containsKey(c)) {
+				dp[i] = 2*dp[i-1] - dp[charVsIndex.get(c)];
+			} else dp[i] = 2*dp[i-1];
+			charVsIndex.put(c, i-1);
+		}
+		return dp[len];
+	}
+
+	/**
+	 * A wall is made of 2 types of bricks, find out if water reaches to ground
+	 * Opaque- will block movement of Water - 0
+	 * Porous- will let flow the water - 1
+	 * Ex :: [ 0 1 0 0
+	 *   	   1 0 0 1
+	 *         0 1 1 0
+	 *   	   0 0 0 1 ]
+	 *   result = true;  Flow :: (0,1 -> 1,0 -> 2,1 -> 2,2 -> 3,3 )
+	 * 
+	 * @param wall
+	 * @return
+	 */
+	public boolean possibleWayToBottom(int[][] wall, int r, int c) {
+		int lastPorousBrick = -1;
+		for(int i=0; i<c; i++) {
+			if (wall[r-1][i] == 1) {
+				lastPorousBrick = i;
+				boolean bool = isWaterHitsGround(wall,r,c,lastPorousBrick);
+				if (bool) return true;				
+			}
+		}
+		return false;
+	}
+	
+	private boolean isWaterHitsGround(int[][] wall, int r, int c, int lastPorousBrick) {
+		//Use Graph Theory may be Djikstra's
+		//https://www.geeksforgeeks.org/minimum-cost-path-left-right-bottom-moves-allowed/
+		return false;
+	}
+
 	/**
 	 * Get maximum value contiguous subsequence
 	 * 	-Brute Force :
@@ -150,6 +214,11 @@ public class MainDPClass {
 		return maxSum;
 	}
 	
+	/**
+	 * Karumanchi book
+	 * @param n
+	 * @return
+	 */
 	public int catalanNumberDP(int n) {
 		if(memo[n] != 0) return memo[n];
 		for (int i=1; i<=n; i++) {
@@ -158,14 +227,14 @@ public class MainDPClass {
 		return memo[n];
 	}
 
-	private int getMaxInArr(int[] sumArr) {
+	public int getMaxInArr(int[] sumArr) {
 		int max = Integer.MIN_VALUE;
 		for (int i : sumArr)
 			max = max < i ? i : max;
 		return max;
 	}
 
-	private int[] getSumArr(int[] arr) {
+	public int[] getSumArr(int[] arr) {
 		int len = arr.length;
 		int[] sum = new int[len];
 		sum[0] = arr[0];
@@ -241,7 +310,7 @@ public class MainDPClass {
 		return f;
 	}
 
-	private void printMatrix(int[][] matrix) {
+	public static void printMatrix(int[][] matrix) {
 		int i=0;
 		int x=matrix.length;
 		int y=matrix[0].length;

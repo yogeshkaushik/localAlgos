@@ -5,7 +5,9 @@ import java.util.Map;
 
 public class MainClass {
 	
+	Node headNode;
 	public static void main(String[] args) {
+		MainClass cl = new MainClass();
 		/*LinkedNode<Integer> head = LinkedNode.createLinkedList(1,2,3,4,5,6,7);
 		head.print();
 		System.out.println("Count == "+ head.getCount());
@@ -49,8 +51,28 @@ public class MainClass {
 		/*Node n = createLinkedList(8,9,1,4,3,2,1,3,5,1,7,0);
 		printLL(partition(n, 3));*/
 		
-		Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
-		printLL(swapPairs(n));
+		/*Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
+		printLL(swapPairs(n));*/
+		
+		Node n = createLinkedList(1,2,3);
+		printLL(cl.reverseRecursive(n));
+	}
+	
+	
+	Node reverseRecursive(Node node) {
+		//if (node == null) return node;
+		reverseLLRecursive(node);
+		return headNode;
+	}
+	Node reverseLLRecursive(Node A) {
+		if (A == null || A.next == null) {
+            headNode = A;
+            return A;
+        }
+        Node head = reverseLLRecursive(A.next);
+        A.next = null;
+        head.next = A;
+        return A;
 	}
 	
 	/**

@@ -142,9 +142,29 @@ public class IBitArray {
 		//int[] arr = {80, 97, 78, 45, 23, 38, 38, 93, 83, 16, 91, 69, 18, 82, 60, 50, 61, 70, 15, 6, 52, 90};//{10, 5, 1, 0, 2};
 		//System.out.println(cl.sumInRange(arr, 99, 269));
 		
-		int[] a = {-3,1,2,-4,-1,7,8,-9,11,-6,3};
+		/*int[] a = {-3,1,2,-4,-1,7,8,-9,11,-6,3};
 		System.out.println(cl.contiguousSubArrSum_equals_k_includesNegative(a, 5));
-		System.out.println(cl.recursive_777LineUtil(a, 5));
+		System.out.println(cl.recursive_777LineUtil(a, 5));*/
+		
+		int[] a = {1,2,2,3,4,1};//{-3,1,2,-4,-1,7,8,-9,11,-6,3};
+		System.out.println(cl.numOfEvenSubArray(a));
+	}
+	
+	/**
+	 * Find subarrays whose sum is even.
+	 *
+	 * @param arr
+	 * @return
+	 */
+	public int numOfEvenSubArray(int[] arr) {
+		int evenSumCount = 1; //because even a single even item will generate one array
+		int oddSumCount = 0;
+		int sum = 0;
+		for (int i : arr) {
+			sum = ((sum+i)%2 + 2)%2; //handle negative cases;
+			evenSumCount = (sum == 0) ? evenSumCount+1 : evenSumCount+(oddSumCount++)*0;
+		}
+		return (evenSumCount*(evenSumCount-1)/2) + (oddSumCount*(oddSumCount-1)/2);
 	}
 	
 	/**
@@ -728,8 +748,32 @@ public class IBitArray {
 	 * @param arr
 	 * @return
 	 */
-	public List<madr.sp.emira.array.Pair<Integer>> continuousSubSequenceSum_zero(int[] arr) {
-		return null;
+	public List<Integer> continuousSubSequenceSum_zero(List<Integer> A) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+        ArrayList<Integer> dup = new ArrayList<Integer>(A);
+        map.put(0,-1);
+        int indexI = -1, indexJ = -1;
+        int sum = 0;
+        for (int i=0; i<A.size(); i++) {
+        	sum += A.get(i);
+            if (map.containsKey(sum)) {
+                if (indexJ == -1) {
+                    indexI = map.get(sum) + 1;
+                    indexJ = i;
+                } else if (indexJ - indexI < i - map.get(sum) -1) {
+                    indexI = map.get(sum) + 1;
+                    indexJ = i;
+                }
+            } else {
+            	map.put(sum,i);
+            }
+        }
+        ArrayList<Integer> ans = new ArrayList<Integer>();
+        if (indexI == -1 || indexJ == -1) return ans;
+        while (indexI<=indexJ) {
+        	ans.add(dup.get(indexI++));
+        }
+        return ans;
 	}
 	
 	/**
@@ -1165,6 +1209,7 @@ public class IBitArray {
 	 * @param a
 	 * @return
 	 */
+	@SuppressWarnings("unlikely-arg-type")
 	public int repeatedNumber_n_divideBy_k_times(final List<Integer> a) {
 		int len = a.size();
 	    Map<Integer, Integer> map = new HashMap<Integer, Integer>(3);
