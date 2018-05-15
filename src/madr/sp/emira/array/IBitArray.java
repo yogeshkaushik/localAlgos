@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import madr.sp.emira.string.IBitString;
+
 public class IBitArray {
 	
 	static int stackCount = 0;
@@ -147,7 +149,11 @@ public class IBitArray {
 		System.out.println(cl.recursive_777LineUtil(a, 5));*/
 		
 		int[] a = {1,2,2,3,4,1};//{-3,1,2,-4,-1,7,8,-9,11,-6,3};
-		System.out.println(cl.numOfEvenSubArray(a));
+//		System.out.println(cl.numOfEvenSubArray(a));
+		
+		int[] ar = {0,0,0,0,0,1,0,0, 2, -3,0,0,0, 1,0};
+		System.out.println(cl.continuousSubSequenceSum_zero(BinarySearchClass.createList(ar)));
+		
 	}
 	
 	/**
@@ -750,7 +756,7 @@ public class IBitArray {
 	 */
 	public List<Integer> continuousSubSequenceSum_zero(List<Integer> A) {
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        ArrayList<Integer> dup = new ArrayList<Integer>(A);
+        //ArrayList<Integer> dup = new ArrayList<Integer>(A);
         map.put(0,-1);
         int indexI = -1, indexJ = -1;
         int sum = 0;
@@ -771,7 +777,7 @@ public class IBitArray {
         ArrayList<Integer> ans = new ArrayList<Integer>();
         if (indexI == -1 || indexJ == -1) return ans;
         while (indexI<=indexJ) {
-        	ans.add(dup.get(indexI++));
+        	ans.add(A.get(indexI++));
         }
         return ans;
 	}

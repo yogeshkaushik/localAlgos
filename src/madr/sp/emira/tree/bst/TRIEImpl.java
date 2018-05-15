@@ -1,10 +1,12 @@
 package madr.sp.emira.tree.bst;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class TRIEImpl {
-	
+	int i;
 	private Trie<Character, Integer> root;
+	private boolean b;
 	
 	public TRIEImpl() {
 		root = new Trie<Character, Integer>();	
@@ -23,8 +25,6 @@ public class TRIEImpl {
 		int i = 0;
 		while (i<keys.length() && temp.checkKey(keys.charAt(i))) temp = temp.next(keys.charAt(i++));
 
-		if(i == keys.length()) return; // reached End;
-		//Insert All except last;
 		for (int in=i; in< keys.length(); in++) {
 			Character k = keys.charAt(in);
 			temp.add(k);
@@ -69,10 +69,56 @@ public class TRIEImpl {
 	public String toString() {
 		return root.toString();
 	}
+
+	/**************************************** Not So specific Impl **********************************************/
+	
+	public String longestPrefixMatching(String keys) {
+		Trie<Character, Integer> temp = root;
+		int i = 0;
+		String pref = null;
+		while (i<keys.length() && temp.checkKey(keys.charAt(i))) {
+			temp = temp.next(keys.charAt(i++));
+			if(temp.checkKey(null)) pref = keys.substring(0, i);
+		}
+		/*if (i==keys.length()) return temp.checkKey(null) ? keys : null;
+		return i==0 ? null : temp.checkKey(null) ? keys.substring(0, i) : null;*/
+		return pref;
+	}
+
+	public void buildTrie(String[] strArr) {
+		for (String str : strArr) insertKey(str, null);
+	}
+
+	public void buildTrie(List<String> strArr) {
+		for (String str : strArr) insertKey(str, null);
+	}
+	
+	public void buildTrie(String[] strArr, Integer[] values) {
+		if (strArr.length != values.length) throw new IllegalArgumentException("input array length should always be same.");
+		for (int i=0; i<strArr.length; i++) insertKey(strArr[i], values[i]);
+	}
+
+	public String shortestUniquePrefixFor(String s) {
+		i = 0;
+		b = true;
+		Trie<Character, Integer> temp = root.next(s.charAt(0));
+		shortestUniquePrefixForHelper(temp,s,1);
+		return s.substring(0, i+1);
+	}
+
+	private void shortestUniquePrefixForHelper(Trie<Character, Integer> temp, String s, int i) {
+		if (i==s.length()) return;
+		shortestUniquePrefixForHelper(temp.next(s.charAt(i)), s, i+1);
+		if (temp.size() > 1 && b) {
+			this.b = false;
+			this.i = i;
+		}
+	}
 }
 
 class Trie<K extends Comparable<K>, V extends Comparable<V>> {
-	HashMap<K, Trie<K, V>> trie = new HashMap<K, Trie<K, V>>();
+	HashMap<K, Trie<K, V>> children = new HashMap<K, Trie<K, V>>();
+	//LinkedHashMap<K, Trie<K, V>> children = new LinkedHashMap<K, Trie<K, V>>();
 	private V value;
 	private boolean end;
 	
@@ -82,19 +128,19 @@ class Trie<K extends Comparable<K>, V extends Comparable<V>> {
 	}
 	
 	public Trie<K, V> next(K key) {
-		return trie.get(key);
+		return children.get(key);
 	}
 	
 	public boolean checkKey(K key) {
-		return trie.containsKey(key);
+		return children.containsKey(key);
 	}
 	
 	public int size() {
-		return trie.size();
+		return children.size();
 	}
 	
 	public Trie<K, V> deleteNode(K k) {
-		return trie.remove(k);
+		return children.remove(k);
 	}
 	
 	public void add(K key) {
@@ -107,14 +153,14 @@ class Trie<K extends Comparable<K>, V extends Comparable<V>> {
 	
 	protected void add(V val, boolean isEnd) {
 		Trie<K, V> temp = new Trie<>();
-		trie.put(null, temp);
-		trie.get(null).setValue(val);
-		trie.get(null).setEnd(isEnd);
+		children.put(null, temp);
+		children.get(null).setValue(val);
+		children.get(null).setEnd(isEnd);
 	}
 	
 	public void add(K key, V val, boolean end) {
 		Trie<K, V> temp = new Trie<>();
-		trie.put(key, temp);
+		children.put(key, temp);
 		setValue(val);
 		setEnd(end);
 	}
@@ -143,6 +189,6 @@ class Trie<K extends Comparable<K>, V extends Comparable<V>> {
 	public String toString() {
 		String s = "";
 		if(end) s+="(isEnd-"+end+", value-"+value+")";
-		return trie.keySet().toString() + s;
+		return children.keySet().toString() + s;
 	}
 }
