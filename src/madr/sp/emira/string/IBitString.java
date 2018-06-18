@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import madr.sp.emira.array.BinarySearchClass;
-
 /**
  * 
  * Substring   : A pattern P is called a substring of Text T if the pattern appears in the Text in a continuous fashion.
@@ -66,9 +64,76 @@ public class IBitString {
 		
 		/*String[] str = {"What", "must", "be", "shall", "be."};
 		System.out.println(cl.fullJustify(BinarySearchClass.createListWrapper(str), 12));*/
+		
+		//cl.allPermutationNoDup("ABCD");
+		String s = "hifi".substring(0, 2);
+		String s1 = "hi";
+		System.out.println(s.equals(s1));
+		//System.out.println(cl.KthPermutation(4, "ABCD"));
+	}
+	
+	/**
+	 * https://ashprakasanblog.wordpress.com/2017/02/16/find-lexicographically-nth-permutation-of-an-ordered-string/
+	 * 
+	 * @param k
+	 * @param str
+	 * @return
+	 */
+	public String KthPermutation(int k, String str) {
+		if (k==0) return str;
+		if (k > factorial(str.length())-1) throw new RuntimeException("Invalid input");
+		String factoradicRepresentation = getFactoradicRep(k);
+		StringBuilder sb = new StringBuilder(str);
+		StringBuilder ans = new StringBuilder();
+		if (factoradicRepresentation.length() < str.length()) {
+			int len = str.length()-factoradicRepresentation.length();
+			ans.append(str.substring(0, len));
+			sb.delete(0, len);
+		}
+		for (int i=0; i<factoradicRepresentation.length(); i++) {
+			int index = Integer.valueOf(factoradicRepresentation.charAt(i)-'0');
+			char c = sb.charAt(index);
+			sb.deleteCharAt(index);
+			ans.append(c);
+		}
+		return ans.toString();
+	}
+
+	public static String getFactoradicRep(int num) {
+		int dividend = 1;
+		StringBuilder sb = new StringBuilder();
+		while (num != 0) {
+			sb.append(""+num%dividend);
+			num /= dividend++;
+		}
+		return sb.reverse().toString();
+	}
+	
+	public void allPermutationNoDup(String str) {
+		permutationHelper(str,0,str.length()-1);
 	}
 	
 	
+	int permCount = 1;
+	private void permutationHelper(String str, int start, int end) {
+		if (start == end) System.out.println(permCount++ + " : " + str);
+		else {
+			for (int i=start; i<=end; i++) {
+				str = swap(str,start,i);
+				permutationHelper(str, start+1, end);
+				str = swap(str,start,i);
+			}
+		}
+	}
+
+	private String swap(String str, int i, int j) {
+		char tmp = str.charAt(i);
+		char[] arr = str.toCharArray();
+		arr[i] = arr[j];
+		arr[j] = tmp;
+		return String.valueOf(arr);
+	}
+
 	/**
 	 * Given an array of words and a length L, format the text such that each line has exactly L characters and is fully (left and right) justified.
 		You should pack your words in a greedy approach; that is, pack as many words as you can in each line.

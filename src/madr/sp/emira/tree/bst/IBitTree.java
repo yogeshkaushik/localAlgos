@@ -54,7 +54,30 @@ public class IBitTree {
 		
 		//System.out.println(cl.recoverTree(t));
 		
-		System.out.println(cl.widthOfTree(t));
+		//System.out.println(cl.widthOfTree(t));
+		
+		cl.convertTreeToDLL(t);
+		while (cl.head!=null) {
+			System.out.print(cl.head.val+" ");
+			cl.head = cl.head.right;
+		}
+	}
+	
+	/*########################################### Tree to DLL #######################################################*/
+	//think about making it circular doubly linked list
+	TreeNode head = null;
+	TreeNode prevNode = null;
+	public void convertTreeToDLL(TreeNode root) {
+		if (root == null) return;
+		convertTreeToDLL(root.left);
+		if (prevNode == null) {
+			head = root;
+		} else {
+			root.left = prevNode;
+			prevNode.right = root;
+		}
+		prevNode = root;
+		convertTreeToDLL(root.right);
 	}
 	
 	/*########################################### Diameter, Width #######################################################*/
@@ -70,7 +93,14 @@ public class IBitTree {
 	 * @return
 	 */
 	public int diameterOfTree(TreeNode root) {
-		return 0;
+		if (root==null) return 0;
+		int left = heightOfATree(root.left);
+		int right = heightOfATree(root.right);
+		
+		int lDia = diameterOfTree(root.left);
+		int rDia = diameterOfTree(root.right);
+		
+		return Math.max(left+right+1, Math.max(lDia, rDia));
 	}
 	
 	
@@ -865,13 +895,17 @@ public class IBitTree {
 	
 	/**
 	 * Inorder Successor of a given Node of BST in BST
+	 * Given a BST node, return the node which has value just greater than the given node.
+	 * 
+	 * Inorder Successor of a node in binary tree is the next node in Inorder traversal of the Binary Tree. 
+	 * Inorder Successor is NULL for the last node in Inoorder traversal.
 	 * 
 	 * @param a
 	 * @param b
 	 * @return
 	 */
 	public TreeNode getSuccessor(TreeNode a, int b) {
-	    List<TreeNode> lefts = new LinkedList<TreeNode>();
+	    /*List<TreeNode> lefts = new LinkedList<TreeNode>();
 	    TreeNode curr = a;
 	    while (curr.val != b) {
 	        if (b < curr.val) {
@@ -888,21 +922,36 @@ public class IBitTree {
 	    } else {
 	        if (lefts.size() == 0) return null;
 	        return lefts.get(lefts.size()-1);
-	    }
+	    }*/
+		TreeNode prev = null;
+		TreeNode curr = a;
+		while (curr!=null) {
+			if (curr.val == b) {
+				if (curr.right != null) {
+					curr = curr.right;
+					while (curr.left != null) curr = curr.left;
+					return curr;
+				} else return prev;
+			} else if (curr.val > b) {
+				prev = curr;
+				curr = curr.left;
+			} else curr = curr.right;
+		}
+		return prev;
 	}
 	
 	public TreeNode getSuccessor2(TreeNode root, int data) {
 		if( root == null ) return null;
-	    TreeNode temp = null ;
+	    TreeNode prev = null ;
 	    while( root != null ){
 	        if(data < root.val)
 	        {
-	            temp = root;
+	            prev = root;
 	            root = root.left;
 	        }
 	        else root = root.right;
 	    }
-	    return temp;
+	    return prev;
 	}
 	
 	/*########################################### ZigZag printing #######################################################*/

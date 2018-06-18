@@ -32,6 +32,7 @@ public class MainDPClass {
 	}
 	
 	/**
+	 * Important
 	 * Find total number of unique subsequences for a string if repeated chars are there.
 	 * 
 	 * Total number of subsequence in an "n" char string  ==> 2^n;

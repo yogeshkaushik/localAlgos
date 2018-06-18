@@ -20,8 +20,8 @@ public class IBitArray {
 	public static void main(String[] args) {
 		IBitArray cl = new IBitArray();
 		
-		/*int[] arr = {1, 34, 3, 98, 9, 76, 45, 4}; //{54, 546, 548, 60}; //{3,5,30,9,34};
-		System.out.println(cl.createMaxPossibleNo(arr));*/
+		int[] arrr = {0, 34, 3, 98, 9, 76, 45, 4}; //{54, 546, 548, 60}; //{3,5,30,9,34};
+		System.out.println(cl.largestNumberFromArray(arrr));
 		
 		/*int[] arr = {1, 34, 3, 98, 9, 76, 45, 4};
 		cl.shiftRight(arr, 0, 4);*/
@@ -89,19 +89,19 @@ public class IBitArray {
 		
 		//int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
 		//cl.diagonal(arr);
-		/*ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
+		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> row = new ArrayList<Integer>();
-		row.add(0,1); row.add(1,0); //row.add(2,3);
+		row.add(0,1); row.add(1,2); row.add(2,3);
 		list.add(0,row);
 		ArrayList<Integer> row1 = new ArrayList<Integer>();
-		row1.add(0,1); row1.add(1,0); //row1.add(2,6);
+		row1.add(0,4); row1.add(1,5); row1.add(2,6);
 		list.add(1,row1);
-		//ArrayList<Integer> row2 = new ArrayList<Integer>();
-		//row2.add(0,7); row2.add(1,8); row2.add(2,9);
-		//list.add(2,row2);
-		//cl.rotate2DArrayBy90Degree(list);
-		cl.setZeroes(list);
-		System.out.println(list);*/
+		ArrayList<Integer> row2 = new ArrayList<Integer>();
+		row2.add(0,7); row2.add(1,8); row2.add(2,9);
+		list.add(2,row2);
+		cl.rotate2DArrayBy90Degree(list);
+		//cl.setZeroes(list);
+		System.out.println(list);
 		
 		/*ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr.add(3);arr.add(0);arr.add(1);arr.add(4);arr.add(2); //4,3,0,2,1
@@ -151,11 +151,47 @@ public class IBitArray {
 		int[] a = {1,2,2,3,4,1};//{-3,1,2,-4,-1,7,8,-9,11,-6,3};
 //		System.out.println(cl.numOfEvenSubArray(a));
 		
-		int[] ar = {0,0,0,0,0,1,0,0, 2, -3,0,0,0, 1,0};
-		System.out.println(cl.continuousSubSequenceSum_zero(BinarySearchClass.createList(ar)));
+		/*int[] ar = {0,0,0,0,0,1,0,0, 2, -3,0,0,0, 1,0};
+		System.out.println(cl.continuousSubSequenceSum_zero(BinarySearchClass.createList(ar)));*/
 		
+		int[] arr = {3,2,5,1,6,9,8,4};
+		cl.mergeSort(arr);
 	}
 	
+	public int[] mergeSort(int[] arr) {
+		if (arr.length<2) return arr;
+		int mid = arr.length/2;
+		int[] left = new int[mid];
+		int[] right = new int[arr.length-mid];
+		System.arraycopy(arr, 0, left, 0, mid);
+		System.arraycopy(arr, mid, right, 0, arr.length-mid);
+		int[] l = mergeSort(left);
+		int[] r = mergeSort(right);
+		int i=0,j=0,k=0;
+		while (i<l.length && j<r.length) {
+			if (l[i]<r[j]) arr[k++] = l[i++];
+			else arr[k++] = r[j++];
+		}
+		if (j<r.length) while (j!=r.length) arr[k++] = r[j++];
+		if (i<l.length) while (i!=l.length) arr[k++] = l[i++];
+		return arr;
+	}
+	
+	private void mergeSortHelper(int[] arr, int i, int j) {
+		if (i==j) return;
+		int mid = i + (j-i)/2;
+		mergeSortHelper(arr, i, mid);
+		mergeSortHelper(arr, mid+1, j);
+		int k=0;
+		int jj=mid+1;
+		while (i<=mid && jj<=j) {
+			if (arr[i]<arr[jj]) arr[k++] = arr[i++];
+			else arr[k++] = arr[jj++];
+		}
+		if (jj<j) while (jj!=j) arr[k++] = arr[jj++];
+		if (i<mid) while (i!=mid) arr[k++] = arr[i++];
+	}
+
 	/**
 	 * Find subarrays whose sum is even.
 	 *
@@ -1161,13 +1197,21 @@ public class IBitArray {
     /**
      * MUST READ - https://www.geeksforgeeks.org/?p=2457
      * 
+     * RELATED::
+     * 		https://www.geeksforgeeks.org/find-two-missing-numbers-set-2-xor-based-solution/
+     * 		https://www.geeksforgeeks.org/find-two-missing-numbers-set-1-an-interesting-linear-time-solution/
+     * 		****2nd Method**** https://www.geeksforgeeks.org/find-the-element-that-appears-once/
+     * 		https://www.careercup.com/question?id=7902674
+     * 
+     * 		
+     * 
      * You are given a read only array of n integers from 1 to n.
      * Each integer appears exactly once except A which appears twice and B which is missing.
      * 
      * Check this link
      * {@link https://www.geeksforgeeks.org/find-a-repeating-and-a-missing-number}
      * 
-     * 1) XOR - VERY TRICKY, MUST READ - https://www.geeksforgeeks.org/?p=2457
+     * 1) VERY_GOOD - XOR - VERY TRICKY, MUST READ - https://www.geeksforgeeks.org/?p=2457 
      * 2) While traversing, use absolute value of every element as index and make the value at this index as negative to mark it visited. 
      * 	  If something is already marked negative then this is the repeating element. 
      * 	  To find missing, traverse the array again and look for a positive value.
@@ -1488,6 +1532,22 @@ public class IBitArray {
 		return arr;
     }
 	
+	/**
+	 * Given an unsorted integer array, find the first missing positive integer.
+
+		Example:
+		
+		Given [1,2,0] return 3,
+		
+		[3,4,-1,1] return 2,
+		
+		[-8, -7, -6] returns 1
+		
+		Your algorithm should run in O(n) time and use constant space.
+		
+	 * @param arr
+	 * @return
+	 */
 	int firstMissingPositive(int[] arr) {
 		int maxPositiveNum = Integer.MIN_VALUE;
 		long sumOfAllPositiveNum = 0;
@@ -2158,13 +2218,14 @@ public class IBitArray {
 	 * @param arr
 	 * @return
 	 */
-	public String createMaxPossibleNo(final int[] arr) {
+	public String largestNumberFromArray(final int[] arr) {
 		String[] str = new String[arr.length];
 		int j=0;
 		for (int a : arr) {
 			str[j] = a + "";
 			j++;
 		}
+		//sort in descending order;
 		Arrays.sort(str,new Comparator<String>() {
 
 			@Override
@@ -2172,19 +2233,21 @@ public class IBitArray {
 				String o1o2 = o1 + o2;
 				String o2o1 = o2 + o1;
 				if (Integer.parseInt(o1o2) > Integer.parseInt(o2o1)) {
-					return 1;
+					return -1;//1; //descending
 				} else if (Integer.parseInt(o2o1) > Integer.parseInt(o1o2)) {
-					return -1;
+					return 1;//-1;
 				}
 				return 0;
 			}
 		});
-		int i = 0;
+		/*int i = 0; // was meant to handle case where output should be "0" in place of "0000" if all are 0;
+		 * but it was a bug think about it.
 		while (i < (str.length - 1) && Integer.parseInt(str[i]) == 0) {
 		    i++;		    
-		}
+		}*/
+		if (str[0].equals("0")) return "0"; //if most significant itself is 0 then all will be 0, as it is sorted in ascending order.
 		StringBuilder result = new StringBuilder();
-		for (int k = str.length -1; k >= i; k--)
+		for (int k = 0; k <str.length; k++)
 			result.append(str[k]);
 		return result.toString();
 	}

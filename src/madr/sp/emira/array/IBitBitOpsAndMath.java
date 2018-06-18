@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane.MaximizeAction;
+
 /**
  * 1. Right Shift :: A >> x is equal to division by pow(2, x). Think why. ==== A >> x == A/2^x; 
  * 2. A << x is equal to multiplication by pow(2, x).
@@ -69,7 +71,34 @@ public class IBitBitOpsAndMath {
 		
 		System.out.println(cl.isPrime(67));
 		System.out.println(cl.isPrime(71));
+		System.out.println(cl.maxProbability());
 		
+	}
+	
+	/**
+	 * You have 50 red, 50 blue marbles, and 2 jars. You must place all 100 marbles in the two jars.
+	 * Your friend will be randomly grabbing one marble from one of the jars.
+	 * How would you maximize the chance of your friend picking a red marble?
+	 * 
+	 * algo ==>
+	 * m = 1/2; choosing jar randomly, one out of two.
+	 * placing i red ball and j blue ball in one, and 100- i-j in other.
+	 * probability of picking red from first jar is == i/i+j;
+	 * probability of picking red frm second jar is == 50-i/100 -i -j;
+	 * 
+	 * 
+	 * wherever you get max > m*( i/i+j + 50-i/100-i-j);
+	 * @return
+	 */
+	public double maxProbability() {
+		double max = 0f;
+		for (float i=0; i<50; i++)
+			for (float j=0; j<50; j++) {
+				if (i+j==0) max = Math.max(max, 0.5*((50f-i)/(100f-i-j)));
+				else if (i+j==100) max = Math.max(max, 0.5*(i/(i+j)));
+				else max = Math.max(max, 0.5*(i/(i+j)+(50f-i)/(100f-i-j)));
+			}
+		return max;
 	}
 	
 	/**
