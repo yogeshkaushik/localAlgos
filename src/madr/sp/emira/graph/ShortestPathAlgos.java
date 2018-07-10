@@ -11,7 +11,7 @@ import java.util.Set;
 import madr.sp.emira.tree.bst.BinaryMinHeap;
 
 /**
- * 1. Shortest Path from source 's' to any vertices in DAGs ==> First get topological order {@link ShortestPathAlgos#topologicalSort}, 
+ * 1. Shortest Path from source 's' to any vertices in DAGs O(E+V) ==> First get topological order {@link ShortestPathAlgos#topologicalSort}, 
  * 		(works with -ve edges as well)							then iterate from left->right.{@link ShortestPathAlgos#shortestPathForTopologicalOrder}
  * 2. Shortest Path in un-weighted directed graph ==> Use BFS {@link MainClass#bfsQeue}
  * 													 refer method {@link ShortestPathAlgos#shortestPathUnweighted}
@@ -81,7 +81,7 @@ public class ShortestPathAlgos {
 		graph.addEdge('C', 'D', 4);
 		graph.addEdge('D', 'E', 4);
 		graph.addEdge('E', 'F', 1);
-		graph.addEdge('F', 'B', 3);
+		//graph.addEdge('F', 'B', 3);
 		no = 6;
 	}
 	

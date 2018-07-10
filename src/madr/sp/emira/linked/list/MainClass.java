@@ -54,11 +54,31 @@ public class MainClass {
 		/*Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
 		printLL(swapPairs(n));*/
 		
-		Node n = createLinkedList(1,2,3);
-		printLL(cl.reverseRecursive(n));
+		Node n = createLinkedList(9,9,1);
+		//printLL(cl.reverseRecursive(n));
+		n = cl.addOne(n);
+		printLL(n);
 	}
 	
+	public Node addOne(Node root) {
+		int c = addOneUtil(root,1);
+		if (c != 0) {
+			Node node = new Node(c);
+			node.next = root;
+			return node;
+		}
+		return root;
+	}
 	
+	private int addOneUtil(Node root, int i) {
+		if (root == null) return i;
+		int carry = addOneUtil(root.next, i);
+		if (carry == 0) return 0;
+		int val = root.data + carry;
+		root.data = val%10;
+		return val/10;
+	}
+
 	Node reverseRecursive(Node node) {
 		//if (node == null) return node;
 		reverseLLRecursive(node);
@@ -651,9 +671,6 @@ public class MainClass {
 	  }
 	*/
 	Node Reverse(Node head) {
-	    if (head == null || head.next == null) {
-	        return head;
-	    }
 	    Node curr = head;
 	    Node prev = null;
 	    while(curr != null) {
@@ -867,6 +884,14 @@ public class MainClass {
 		int data;
 		Node next;
 		
+		public Node(int d) {
+			data = d;
+		}
+
+		public Node() {
+			// TODO Auto-generated constructor stub
+		}
+
 		@Override
 		public String toString() {
 			StringBuilder s = new StringBuilder();

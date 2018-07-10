@@ -1,6 +1,7 @@
 package madr.sp.emira.array;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,8 +20,13 @@ public class IBitStackAndQueue {
 		/*String[] arr = {"5", "1", "2", "+", "4", "*", "+", "3", "-"};
 		System.out.println(cl.evalRPN(arr));
 		System.out.println(cl.evalRPN(BinarySearchClass.createListWrapper(arr)));*/
-		int[] a = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
-		System.out.println(cl.trappedWater3(BinarySearchClass.createList(a)));
+		
+		/*int[] a = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+		System.out.println(cl.trappedWater3(BinarySearchClass.createList(a)));*/
+		
+		int[] arr = {120,8,5,10,7,9,4,15,12,90,13};
+		System.out.println(cl.slidingWindowMaximum(BinarySearchClass.createList(arr), 1));
+		System.out.println(cl.slidingWindowMaximumDeque(BinarySearchClass.createList(arr), 1));
 	}
 	
 	/**
@@ -133,7 +139,7 @@ public class IBitStackAndQueue {
 	}
 	
 	/**
-	 * Amazon;
+	 * Amazon :: USING QUEUE
 	 * A long array A[] is given to you. There is a sliding window of size w which is moving from the very 
 	 * left of the array to the very right. You can only see the w numbers in the window. 
 	 * Each time the sliding window moves rightwards by one position.
@@ -143,12 +149,30 @@ public class IBitStackAndQueue {
 	 * @param B
 	 * @return
 	 */
-	public ArrayList<Integer> slidingWindowMaximum2(final List<Integer> A, int B) {
-		return null;
+	public ArrayList<Integer> slidingWindowMaximumDeque(final List<Integer> A, int B) {
+		ArrayList<Integer> answer = new ArrayList<>();
+		Deque<Integer> dq = new LinkedList<Integer>();
+		dq.add(0);
+		int i=1;
+		while (i < B) {
+			while (!dq.isEmpty() && A.get(dq.peekLast()) < A.get(i)) dq.pollLast();
+			dq.addLast(i++);
+		}
+		answer.add(A.get(dq.peekFirst()));
+		int j = 0;
+		while (i<A.size()) {
+			if (j++ == dq.peekFirst()) dq.removeFirst();
+			while (!dq.isEmpty() && A.get(dq.peekLast()) < A.get(i)) dq.pollLast();
+			dq.addLast(i++);
+			answer.add(A.get(dq.peekFirst()));
+		}
+		return answer;
 	}
 	
 	/**
-	 * Amazon;
+	 * https://stackoverflow.com/questions/8031939/finding-maximum-for-every-window-of-size-k-in-an-array
+	 * 
+	 * Amazon :: USING TRICK -> L2R max in k gaps, R2L max in k gaps, max of 0 and k-1
 	 * A long array A[] is given to you. There is a sliding window of size w which is moving from the very 
 	 * left of the array to the very right. You can only see the w numbers in the window. 
 	 * Each time the sliding window moves rightwards by one position.

@@ -52,3 +52,20 @@ Trie operations:
 
         -Remove:
           Remove something from the trie, given its key.
+          
+About Suffix Tree::
+	- http://courses.csail.mit.edu/6.851/spring12/lectures/L16.html
+
+	- https://stackoverflow.com/questions/9452701/ukkonens-suffix-tree-algorithm-in-plain-english/9513423#9513423
+	
+	- http://marknelson.us/1996/08/01/suffix-trees/
+
+	- Tushar video
+	- ukkonen's algo - https://www.cs.helsinki.fi/u/ukkonen/SuffixT1withFigs.pdf
+	- suffix array
+	- suffix link
+
+	- https://www.hackerearth.com/practice/notes/trie-suffix-tree-suffix-array/
+	- http://web.cs.elte.hu/~berkri/Theses/Vasarhelyi_2.pdf
+	
+Refer the Note As well.

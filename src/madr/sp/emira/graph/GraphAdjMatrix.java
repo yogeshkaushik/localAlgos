@@ -9,10 +9,9 @@ public class GraphAdjMatrix {
 		v = noOfNodes;
 		matrix = new Integer[v][v];
 		
-		for (int i=0; i<v; i++) {
+		for (int i=0; i<v; i++)
 			for (int j=0; j<v; j++)
 				matrix[i][j] = initializeWith;
-		}
 	}
 	
 	public void addEdge(Integer weight, int i, int j) {

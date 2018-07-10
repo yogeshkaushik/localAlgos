@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import madr.sp.emira.string.IBitString;
+import Utilities.GenericAlgorithms;
 
 public class IBitArray {
 	
@@ -20,8 +20,8 @@ public class IBitArray {
 	public static void main(String[] args) {
 		IBitArray cl = new IBitArray();
 		
-		int[] arrr = {0, 34, 3, 98, 9, 76, 45, 4}; //{54, 546, 548, 60}; //{3,5,30,9,34};
-		System.out.println(cl.largestNumberFromArray(arrr));
+		/*int[] arrr = {0, 34, 3, 98, 9, 76, 45, 4}; //{54, 546, 548, 60}; //{3,5,30,9,34};
+		System.out.println(cl.largestNumberFromArray(arrr));*/
 		
 		/*int[] arr = {1, 34, 3, 98, 9, 76, 45, 4};
 		cl.shiftRight(arr, 0, 4);*/
@@ -29,9 +29,10 @@ public class IBitArray {
 		/*int[] arr = {8,6,2,0,7,4,5};//{3,5,4,2};
 		System.out.println(maxGap(arr));*/
 		
-		/*int[] arr = {1,2,3,4,5,6,7,8,9};
+		int[] arr = {2,3,6,7,9,11,12};
 		cl.rotateArrByD(arr, 3);
-		cl.reverseArray(arr);
+		cl.printArr(arr);
+		/*cl.reverseArray(arr);
 		System.out.println(cl.findRotatingPivot(arr, 0, arr.length - 1));
 		System.out.println(cl.searchInRotatedArray(arr, arr.length, 4));*/
 		
@@ -89,7 +90,8 @@ public class IBitArray {
 		
 		//int[][] arr = {{1,2,3},{4,5,6},{7,8,9}};
 		//cl.diagonal(arr);
-		ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
+		
+		/*ArrayList<ArrayList<Integer>> list = new ArrayList<ArrayList<Integer>>();
 		ArrayList<Integer> row = new ArrayList<Integer>();
 		row.add(0,1); row.add(1,2); row.add(2,3);
 		list.add(0,row);
@@ -101,18 +103,18 @@ public class IBitArray {
 		list.add(2,row2);
 		cl.rotate2DArrayBy90Degree(list);
 		//cl.setZeroes(list);
-		System.out.println(list);
+		System.out.println(list);*/
 		
 		/*ArrayList<Integer> arr = new ArrayList<Integer>();
-		arr.add(3);arr.add(0);arr.add(1);arr.add(4);arr.add(2); //4,3,0,2,1
+		arr.add(5);arr.add(3);arr.add(0);arr.add(1);arr.add(2);arr.add(4);//5,3,0,1,2,4 //4,3,0,2,1
 		cl.arrange_arr_i_At_arr_arr_i(arr);
 		System.out.println(arr);*/
 		
 		/*int[] arr = {8, 16, 80, 55, 32, 8, 38, 40, 65, 18, 15, 45, 50, 38, 54, 52, 23, 74, 81, 42, 28, 16, 66, 35, 91, 36, 44, 9, 85, 58, 59, 49, 75, 20, 87, 60, 17, 11, 39, 62, 20, 17, 46, 26, 81, 92};
 		System.out.println(cl.kthsmallestWithHeap(arr, 9));*/
 		
-		/*int[] a = {4, 7, 7, 7, 8, 10, 10};
-		System.out.println(cl.findCount(a, 7));*/
+		/*int[] a = {1,1,1,1,1,1, 2,2,2,3,3,3,3,3,3,3, 4,4,4, 7, 7, 7, 7,7,7,7,7,7, 8,8,8,8,8,8,8, 8, 9,9,9,9,9, 10, 10};
+		System.out.println(cl.findCount(a, 3));*/
 		
 		
 		
@@ -123,8 +125,8 @@ public class IBitArray {
 		System.out.println(cl.intersect(l1, l2));*/
 		/*stackCount = 0;
 		int n = 7;
+		System.out.println(cl.stepsRequiredNoRecurr(5));
 		System.out.println(cl.stepsRequired(n));
-		System.out.println(cl.stepsRequiredNoRecurr(n));
 		System.out.println(stackCount);*/
 		
 		
@@ -146,18 +148,150 @@ public class IBitArray {
 		
 		/*int[] a = {-3,1,2,-4,-1,7,8,-9,11,-6,3};
 		System.out.println(cl.contiguousSubArrSum_equals_k_includesNegative(a, 5));
+		System.out.println(cl._contiguousSubArrSum_equals_k_includesNegative(a, 5));
 		System.out.println(cl.recursive_777LineUtil(a, 5));*/
 		
-		int[] a = {1,2,2,3,4,1};//{-3,1,2,-4,-1,7,8,-9,11,-6,3};
+		//int[] a = {1,2,2,3,4,1};//{-3,1,2,-4,-1,7,8,-9,11,-6,3};
 //		System.out.println(cl.numOfEvenSubArray(a));
 		
 		/*int[] ar = {0,0,0,0,0,1,0,0, 2, -3,0,0,0, 1,0};
 		System.out.println(cl.continuousSubSequenceSum_zero(BinarySearchClass.createList(ar)));*/
 		
-		int[] arr = {3,2,5,1,6,9,8,4};
-		cl.mergeSort(arr);
+		/*
+		int[] array = {3,2,5,1,6,9,8,4};
+		//cl.quickSort(array, 0, array.length-1);
+		cl.selectionSort(array);
+		for (int i : array) {
+			System.out.print(i+" ");
+		}
+		//cl.mergeSort(arr);*/
+		
+		/*int[] arrr = {10, 8, 12, 6, 9, 14, 5, 4, 20};
+		int[] ar = cl.nextGreaterElement(arrr);
+		for (int i : ar) {
+			System.out.print(i+" ");
+		}*/		
+		
+		//int[] arrr = {10, 8, 12, 6, 9, 14, 5, 4, 20}; //4,5,6,8,9,10,12,14,20
+		//System.out.println(cl.kthSmallestQuickSort(arrr, 0, arrr.length-1, 7));
+		//System.out.println(cl.kthSmallestMedianOfMedian(arrr, 0, 8, 5));
+		
+		int len = 22229999;
+		int[] arrr = new int[len];
+		for (int i=0; i<len; i++)
+			arrr[i] = (int)(Math.random()*len*100);
+		int[] arr2 = new int[len];
+		int k = len/2;
+		System.arraycopy(arrr, 0, arr2, 0, len);
+		
+		long t11 = System.currentTimeMillis();
+		int res2 = cl.kthSmallestMedianOfMedian(arr2, 0, len-1, k);
+		long t22 = System.currentTimeMillis();
+		System.out.println("1.Sec : "+(t22-t11)+", Answer : "+res2);
+		
+		long t1 = System.currentTimeMillis();
+		int res = cl.kthsmallestWithHeap(arrr, k);
+		long t2 = System.currentTimeMillis();
+		System.out.println("2.Sec : "+(t2-t1)+", Answer : "+res);		
+		
+		//sortingComparisonTest(cl);
 	}
 	
+	/**
+	 * Next greater element in array
+	 * 10  8 12 6  9 14  5  4 20
+	 * 12 12 14 9 14 20 20 20 -1
+	 * 
+	 * Similar Question - https://www.geeksforgeeks.org/find-maximum-difference-between-nearest-left-and-right-smaller-elements/
+	 * {@link IBitStackAndQueue#slidingWindowMaximumDeque(List, int)}
+ 	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int[] nextGreaterElement(int[] arr) {
+		int[] ans = new int[arr.length];
+		Arrays.fill(ans, -1);
+		Stack<Integer> st = new Stack<Integer>();
+		for (int i=0; i<arr.length; i++) {
+			while (!st.isEmpty() && arr[i]>arr[st.peek()]) {
+				ans[st.pop()] = arr[i];
+			}
+			st.push(i);				
+		}
+		return ans;
+	}
+	
+	public static void sortingComparisonTest(IBitArray cl) {
+		int len = 100000;
+		int[] arrr = new int[len];
+		for (int i=0; i<len; i++)
+			arrr[i] = (int)(Math.random()*100000000);
+		
+		for (int i=0; i<20; i++) System.out.print(arrr[i]+" ");
+		System.out.println();
+		
+		int[] arr2 = new int[len];
+		System.arraycopy(arrr, 0, arr2, 0, len);
+		
+		long t1 = System.currentTimeMillis();
+		cl.selectionSort(arr2);
+		long t2 = System.currentTimeMillis();
+		System.out.println("Sec : "+(t2-t1)/1000);
+		for (int i=0; i<20; i++) System.out.print(arr2[i]+" ");
+		
+		long t11 = System.currentTimeMillis();
+		cl.quickSort(arrr, 0, len-1);;
+		long t22 = System.currentTimeMillis();
+		System.out.println("Sec : "+(t22-t11)/1000);
+		for (int i=0; i<20; i++) System.out.print(arrr[i]+" ");
+		System.out.println();
+		
+		/*long t111 = System.currentTimeMillis();
+		cl.mergeSort(arr2);
+		long t222 = System.currentTimeMillis();
+		System.out.println("Sec : "+(t222-t111)/1000);
+		for (int i=0; i<20; i++) System.out.print(arrr[i]+" ");
+		System.out.println();*/
+	}
+	
+	public void selectionSort(int[] arr) {
+		for (int i=0; i<arr.length-1; i++) {
+			int k = i;
+			for (int j=i+1; j<arr.length; j++) {
+				if (arr[k]>=arr[j]) k=j;
+			}
+			swap(arr, i, k);
+		}
+	}
+	
+	public void quickSort(int[] arr, int lo, int hi) {
+		if (lo>=hi) return;
+		int part = doPartition(arr,lo,hi);
+		quickSort(arr,lo,part-1);
+		quickSort(arr, part+1, hi);
+	}
+	
+	private int doPartition(int[] arr, int lo, int hi) {
+		int i = lo-1;
+		int j = lo;
+		int pivot = arr[hi];
+		for (;j<=hi-1;j++) {
+			if (arr[j]<=pivot) {
+				++i;
+				swap(arr, i, j);
+			}
+		}
+		swap(arr, ++i, hi);
+		return i;
+	}
+	
+	private int doRandomPartition(int[] arr, int lo, int hi, int randomElement) {
+		int index = lo;
+		for(; index<hi; index++) if (arr[index]==randomElement) break;
+		swap(arr, index, hi);
+		return doPartition(arr, lo, hi);
+	}
+
 	public int[] mergeSort(int[] arr) {
 		if (arr.length<2) return arr;
 		int mid = arr.length/2;
@@ -177,7 +311,7 @@ public class IBitArray {
 		return arr;
 	}
 	
-	private void mergeSortHelper(int[] arr, int i, int j) {
+	public void mergeSortHelper(int[] arr, int i, int j) {
 		if (i==j) return;
 		int mid = i + (j-i)/2;
 		mergeSortHelper(arr, i, mid);
@@ -194,7 +328,7 @@ public class IBitArray {
 
 	/**
 	 * Find subarrays whose sum is even.
-	 *
+	 * Handshake Problem
 	 * @param arr
 	 * @return
 	 */
@@ -204,7 +338,8 @@ public class IBitArray {
 		int sum = 0;
 		for (int i : arr) {
 			sum = ((sum+i)%2 + 2)%2; //handle negative cases;
-			evenSumCount = (sum == 0) ? evenSumCount+1 : evenSumCount+(oddSumCount++)*0;
+			if (sum == 0) evenSumCount++;
+			else oddSumCount++;
 		}
 		return (evenSumCount*(evenSumCount-1)/2) + (oddSumCount*(oddSumCount-1)/2);
 	}
@@ -334,7 +469,7 @@ public class IBitArray {
 	 * 			   Then for each x in array A, use binary search to look for T-x. This will take O(nlogn).
 	 * 			   (or keep two pointer and converge to middle)
 	 * 			   So, overall search is  O(n log n)
-	 * Approach 3 : The best way would be to insert every element into a hash table (without sorting).
+	 * Approach 3 : The best way would be to insert every element into a hash table (without sorting).( // never do this - i.e inserting all elements at once. insert while iterating and check then, this gives false positives.)
 	 * 				This takes O(n) as constant time insertion.
 	 * 				Then for every x, we can just look up its complement, T-x, which is O(1).
 	 * 				Overall the run time of this approach is O(n).
@@ -343,8 +478,18 @@ public class IBitArray {
 	 * @param arr
 	 * @return
 	 */
-	public int[][] pairsWithSum_k(int[] arr) {
-		return null;
+	public int[] pairsWithSum_k(int[] arr, int sum) {
+		int[] ans = new int[2];
+		Set<Integer> set = new HashSet<>();
+		for (int in : arr) {
+			if (set.contains(sum-in)) {
+				ans[0] = in;
+				ans[1] = sum-in;
+				return ans;
+			}
+			set.add(in);
+		}
+		return ans;
 	}
 	/**
 	 * sort the array O(n^2)
@@ -534,7 +679,7 @@ public class IBitArray {
 	 * @param A
 	 * @return
 	 */
-	public ArrayList<Integer> getRow(int A) {
+	public ArrayList<Integer> getKthRowOfPascal(int A) {
         ArrayList<Integer> l = new ArrayList<Integer>();
         l.add(1);
         int x = 1; 
@@ -643,18 +788,10 @@ public class IBitArray {
 	    }
 	    if (x == 0) return -1;
 	    else return x;
-	    
-	    // -or- not working
-	    /*for (int e : a) {
-	        x = x ^ e;
-	        if (x == 0) {
-	        	return e;
-	        }
-	    }
-	    return -1;*/
     }
     
 	/**
+	 * Find occurrence of a number in sorted Array. scanning full array is not allowed.
 	 * 
 	 * @param A
 	 * @param B
@@ -664,6 +801,15 @@ public class IBitArray {
         int len = A.length;
         int index = binarySearch(A,B,0,len-1);
         if (index == -1) return 0;
+        
+        /** Think Abouot it....  if 1,1,1,2,2,2,3,3,3 --- no of 2's will come wrong, will work only
+         * if B-1 and B+1 are not present or only present with one occuurence.
+         * But this solution can be extended to find lower to upper search index. which is exactly this method was doing since starting.
+        int lowIn = Arrays.binarySearch(A, B-1);
+        int highIn = Arrays.binarySearch(A, B+1);
+        if (true) return Math.abs(highIn) - Math.abs(lowIn);
+        */
+        
         int neg = index;
         int count = 1;
         neg--;
@@ -828,12 +974,12 @@ public class IBitArray {
 	 * @param arr
 	 * @return
 	 */
-	public List<madr.sp.emira.array.Pair<Integer>> contiguousSubArrSum_equals_k(int[] arr, int target) {
+	public List<Pair<Integer>> contiguousSubArrSum_equals_k(int[] arr, int target) {
 		int N = arr.length;
-		List<madr.sp.emira.array.Pair<Integer>> ans = new ArrayList<madr.sp.emira.array.Pair<Integer>>();
+		List<Pair<Integer>> ans = new ArrayList<Pair<Integer>>();
 		for(int i = 0, j = 0, sum = 0; i < N; i++) {
 			  for(; j < N && sum < target; j++) sum += arr[j];
-			  if(sum == target) ans.add(new madr.sp.emira.array.Pair<Integer>(i, j-1));
+			  if(sum == target) ans.add(new Pair<Integer>(i, j-1));
 			  sum -= arr[i];
 			}
 		return ans;
@@ -888,6 +1034,42 @@ public class IBitArray {
 		return ans;
 	}
 	
+	/**
+	 * This method only checks if there is any such pair or not
+	 * 
+	 * s(j) - s(i) = target;
+	 * S(i) = S(j) - target;
+	 * 
+	 * {@link #contiguousSubArrSum_equals_k_includesNegative(int[], int)}
+	 * 
+	 * @param arr
+	 * @param target
+	 * @return
+	 */
+	public boolean _contiguousSubArrSum_equals_k_includesNegative(int[] arr, int target) {
+		//HashSet<Integer> set = new HashSet<>();
+		HashMap<Integer,Integer> map = new HashMap<>();
+		int sum = 0;
+		for (int i = 1; i<arr.length; i++) {
+			sum += arr[i-1];
+			if (map.containsKey(sum - target)) {
+				System.out.println("["+map.get(sum-target)+":"+(i-1)+"]");
+				return true;
+			}
+			//set.add(sum);
+			map.put(sum, i); // because till i-1 all the elements are in sum variable. i till j(next sum - target) will be the answer
+		}
+		return false;
+	}
+	
+	/**
+	 * {@link #contiguousSubArrSum_equals_k_includesNegative(int[], int)}
+	 * contiguousSubArrSum_equals_k_includesNegative
+	 * 
+	 * @param arr
+	 * @param target
+	 * @return
+	 */
 	public List<Pair<Integer>> recursive_777LineUtil(int[] arr, int target){
 		List<Pair<Integer>> ans = new ArrayList<Pair<Integer>>();
 		Map<Integer,List<Integer>> map = new HashMap<Integer,List<Integer>>();
@@ -919,6 +1101,8 @@ public class IBitArray {
 	}
 	
 	/**
+	 * Find Kth smallest element.
+	 * 
 	 * O(k*n)
 	 * O(k+(n-k)logk) -- > {@link IBitArray#kthsmallestWithHeap}
 	 * 
@@ -983,15 +1167,90 @@ public class IBitArray {
 		}
 		return m.heap[0];		
 	}
+	
+	/**
+	 *  In QuickSort, we pick a pivot element, then move the pivot element to its correct position and partition the array around it. 
+	 *  The idea is, not to do complete quicksort, but stop at the point where pivot itself is k’th smallest element. 
+	 *  Also, not to recur for both left and right sides of pivot, but recur for one of them according to the position of pivot. 
+	 *  The worst case time complexity of this method is O(n2), but it works in O(n) on average.
+	 *  
+	 *  RANDOMIZED-SELECT :: An extension of the following method (QuickSelect) would be, to randomly pick a pivot element. 
+	 *  To implement randomized partition, we use a random function, rand() to generate index between l and r, swap the element 
+	 *  at randomly generated index with the last element, and finally call the standard partition process which uses last element as pivot.
+	 * 
+	 * @param arr
+	 * @param k
+	 * @return
+	 */
+	public int kthSmallestQuickSort(int[] arr, int lo, int hi, int k) {
+		if (hi>=lo && k>0 && k <= hi-lo+1) {
+			int partition = doPartition(arr, lo, hi);
+			if (partition-lo == k-1) return arr[partition];
+			else if (partition-lo > k-1) return kthSmallestQuickSort(arr, lo, partition-1, k);
+			else return kthSmallestQuickSort(arr, partition+1, hi, k-partition-1+lo);
+		}
+		return Integer.MAX_VALUE;
+	}
+	
+	/**
+	 * https://www.cs.rit.edu/~ib/Classes/CS515_Spring12-13/Slides/022-SelectMasterThm.pdf
+	 * http://staff.ustc.edu.cn/~csli/graduate/algorithms/book6/chap10.htm
+	 * https://www.geeksforgeeks.org/kth-smallestlargest-element-unsorted-array-set-3-worst-case-linear-time/
+	 * 
+	 * Note that this algorithm is linear in worst case, but the constants are very high for this algorithm. 
+	 * Therefore, this algorithm doesn't work well in practical situations, randomized quickSelect works much better and preferred.
+	 * 
+	 * T(n) = T([n/5]) + T((7n/10)+6) + O(n);
+	 * 
+	 * T(n)  <= cn/5 + c(7n/10 + 6) + O(n)
+		     <= cn/5 + c + 7cn/10 + 6c + O(n)
+		     <= 9cn/10 + 7c + O(n)
+		     <= cn,
+	 * 
+	 * 
+	 * @param arr
+	 * @param lo
+	 * @param hi
+	 * @param k
+	 * @return
+	 */
+	public int kthSmallestMedianOfMedian(int[] arr, int lo, int hi, int k) {
+		if (hi>=lo && k>0 && k<=hi-lo+1) {
+			int num = hi - lo + 1;
+			int grps = (num+4)/5;//divide into group of 5s
+			int[] median = new int[grps];
+			int i=0;
+			for (; i<grps; i++) {
+				median[i] = getMedian(arr,lo+i*5);
+			}
+			int medianOfMedian = grps == 1 ? median[0] : kthSmallestMedianOfMedian(median, lo, grps-1, grps/2);
+			int partition = doRandomPartition(arr, lo, hi, medianOfMedian);
+			if (partition - lo == k-1) return arr[partition];
+			else if (partition-lo > k-1) return kthSmallestMedianOfMedian(arr, lo, partition-1, k);
+			else return kthSmallestMedianOfMedian(arr, partition+1, hi, k-partition-1+lo);
+		}
+		return Integer.MAX_VALUE;
+	}
+
+	private int getMedian(int[] arr, int start) {
+		int len = arr.length - start >= 5 ? 5 : arr.length - start;
+		/*int[] temp = new int[len];
+		System.arraycopy(arr, start, temp, 0, len);
+		Arrays.sort(temp);
+		return temp[temp.length/2];*/ //only because of this it was taking almost 100 times more time.
+		Arrays.sort(arr, start, start+len-1);
+		return arr[start+(len/2)];
+	}
 
 	/**
+	 * might be same - {@link #rearrangeArray(ArrayList)}
 	 * 
 	 * @param a
 	 */
 	public void arrange_arr_i_At_arr_arr_i(ArrayList<Integer> a) {
 		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
 	    int index = 0;
-	    int indexValue = 0;
+	    Integer indexValue = 0;
 	    int i = 0;
 	    map.put(i, a.get(i));
 	    int j = 0;
@@ -1250,6 +1509,8 @@ public class IBitArray {
 	 * You’re given a read only array of n integers. Find out if any integer occurs 
 	 * more than n/3 times in the array in linear time and constant additional space.
 	 * 
+	 * {@link GenericAlgorithms#repeatedMoreThanN_By_3_times(int[])}
+	 * 
 	 * https://www.quora.com/Given-an-array-of-n-elements-what-is-a-linear-time-algorithm-that-finds-all-elements-that-appear-more-than-n-3-times
 	 * 
 	 * https://www.sciencedirect.com/science/article/pii/0167642382900120#
@@ -1315,7 +1576,7 @@ public class IBitArray {
 	 * @param arr
 	 * @return
 	 */
-	int getMaximumSuccesiveGap2(int[] arr) {
+	public int getMaximumSuccesiveGap2(int[] arr) {
 		int len = arr.length;
 		if (len<2) {
             return 0;
@@ -1356,10 +1617,17 @@ public class IBitArray {
 	/**
 	 * Given an unsorted array, find the maximum difference between the successive elements in its sorted form.
 	 * 
+	 * if max - min is not too big, then take min as reference point, and check the distance of each element from it.
+	 * create a boolean list = list     int possibleLength = max-min+1;
+										boolean[] space = new boolean[possibleLength]; 
+									********	(OMG, in place of array try bit array) ****
+	 * space[(arr[i]-min)] = true;
+	 * now iterate over created list and find max subarray of "false" values;
+	 * 
 	 * @param arr
 	 * @return
 	 */
-	int getMaximumSuccesiveGap(int[] arr) {
+	public int getMaximumSuccesiveGap(int[] arr) {
 		int len = arr.length;
 		if (len<2) {
             return 0;
@@ -2148,7 +2416,7 @@ public class IBitArray {
 	 * @param searchNum
 	 * @return
 	 */
-	boolean searchInRotatedArray(int[] arr, int len, int searchNum) {
+	public boolean searchInRotatedArray(int[] arr, int len, int searchNum) {
 		int pivotIndex = findRotatingPivot(arr,0,len-1);
 		if (pivotIndex == -1) {
 			int searchedIndex = binarySearch(arr, searchNum);
@@ -2256,6 +2524,12 @@ public class IBitArray {
 	 * Given an array A of integers, find the maximum of j - i subjected to the constraint of A[i] <= A[j].
 	 * If there is no solution possible, return -1.
 	 * 
+	 * https://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/
+	 * https://www.geeksforgeeks.org/maximum-difference-between-two-elements/
+	 * https://www.geeksforgeeks.org/find-the-element-before-which-all-the-elements-are-smaller-than-it-and-after-which-all-are-greater-than-it/
+	 * https://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
+	 * 
+	 * 
 	 * A : [3 5 4 2]
 	 * Output : 2
 	 * for the pair (3, 4)
@@ -2266,12 +2540,12 @@ public class IBitArray {
 	public static int maxGap(int[] arr) {
 		int len = arr.length;
 		int max = -1;
-		int[] leftMax = new int[len];
+		int[] leftMin = new int[len];
 		int[] rightMax = new int[len];
 		
-		leftMax[0] = arr[0];
+		leftMin[0] = arr[0];
 		for(int i=1; i<len; i++)
-			leftMax[i] = leftMax[i-1] < arr[i] ? leftMax[i-1] : arr[i];
+			leftMin[i] = leftMin[i-1] < arr[i] ? leftMin[i-1] : arr[i];
 		
 		rightMax[len-1] = arr[len-1];
 		for(int i=len-2; i>-1; i--)
@@ -2279,7 +2553,7 @@ public class IBitArray {
 		
 		int i=0, j=0;
 		while (i < len && j < len) {
-			if (leftMax[i] < rightMax[j]) {
+			if (leftMin[i] < rightMax[j]) {
 				max = max > j-i ? max : j-i;
 				j++;
 			} else {
@@ -2290,7 +2564,10 @@ public class IBitArray {
 	}
 	
 	/**
+	 * Wrong - test case {2,3,6,7,9,11,12} // wrong implementation
 	 * 
+	 * Juggling Algo it is called an GCD is used, refer link
+	 * https://www.geeksforgeeks.org/array-rotation/
 	 * 
 	 * @param arr
 	 * @return

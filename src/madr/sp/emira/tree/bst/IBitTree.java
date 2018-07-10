@@ -39,15 +39,18 @@ public class IBitTree {
 		//cl.buildTree(arr);
 		cl.buildTree(arr, arr1);*/
 		
-		TreeNode t = new TreeNode(92);
-		t.left = new TreeNode(82);
-		t.left.left = new TreeNode(81);
-		t.left.left.left = new TreeNode(70);
-		t.left.right = new TreeNode(83);
-		t.right = new TreeNode(85);
-		t.right.right = new TreeNode(88);
-		t.right.right.left = new TreeNode(86);
-		t.right.right.right = new TreeNode(84);
+		TreeNode t = new TreeNode(9);
+		t.left = new TreeNode(8);
+		t.left.left = new TreeNode(7);
+		t.left.left.left = new TreeNode(6);
+		t.left.right = new TreeNode(8);
+		t.right = new TreeNode(15);
+		t.right.left = new TreeNode(9);
+		t.right.right = new TreeNode(18);
+		t.right.right.left = new TreeNode(16);
+		t.right.right.right = new TreeNode(24);
+		
+		//System.out.println(cl.lca3(t, 86, 84));
 		
 		//System.out.println(cl.kthsmallest(t, 5));
 		//System.out.println(cl.pairSumEqualsKLogNSpace(t, 1250));
@@ -56,13 +59,242 @@ public class IBitTree {
 		
 		//System.out.println(cl.widthOfTree(t));
 		
-		cl.convertTreeToDLL(t);
+		/*cl.convertTreeToDLL(t);
 		while (cl.head!=null) {
 			System.out.print(cl.head.val+" ");
 			cl.head = cl.head.right;
+		}*/
+		
+		/*System.out.println(cl.printNodesAtDistK(t, t.right.left, 4));
+		System.out.println(cl.distanceBetweenTwoNodes(t, 90, 83));
+		System.out.println(cl.nodesAtDistKfromLeaf(t, 0));*/
+		
+		/*cl.sumChildrenInNode(t);
+		System.out.println(t.toString());*/
+		
+		cl.constructAllPossibleBSTFrom1toN(1,5);
+	}
+	
+	/*########################################### Misc #######################################################*/
+	
+	public List<TreeNode> constructAllPossibleBSTFrom1toN(int start, int end) {
+		List<TreeNode> list = new ArrayList<>();
+		if (end<start) {
+			list.add(null);
+			return list;
+		}
+		if (end == start) {
+			list.add(new TreeNode(end));
+			return list;
+		}
+		for (int i=start; i<=end; i++) {
+			List<TreeNode> leftSubTrees = constructAllPossibleBSTFrom1toN(start, i-1);
+			List<TreeNode> rightSubTrees = constructAllPossibleBSTFrom1toN(i+1, end);
+			for (TreeNode left : leftSubTrees) {
+				for (TreeNode right : rightSubTrees) {
+					TreeNode temp = new TreeNode(i);
+					temp.left = left;
+					temp.right = right;
+					list.add(temp);
+				}
+			}
+		}
+		return list;
+	}
+	
+	/**
+	 * Total number of possible Binary Search Trees with n different keys 
+	 * 		countBST(n) = Catalan number Cn = (2n)!/(n+1)!*n!
+	 * For n = 0, 1, 2, 3, … values of Catalan numbers are 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, …. 
+	 * So are numbers of Binary Search Trees.
+	 * 
+	 * Total number of possible Binary Trees with n different keys 
+	 * 		countBT(n) = countBST(n) * n!
+	 * 
+	 * Also, the relationship countBT(n) = countBST(n) * n! holds. As for every possible BST, 
+	 * there can have n! binary trees where n is the number of nodes in BST. 
+	 * 
+	 * https://stackoverflow.com/questions/11724226/given-a-sorted-integer-array-how-may-binary-search-trees-can-be-formed-from-it
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int numOfBSTsFromSortedArray(int[] arr) {
+		return 0;
+	}
+	
+	/**
+	 * Given a binary tree, change the value in each node to sum of all the values in the subtree nodes.
+	 * 
+	 * @param root
+	 */
+	public void sumChildrenInNode(TreeNode root) {
+		if (root == null) return;
+		sumChildrenInNode(root.left);
+		sumChildrenInNode(root.right);
+		if (!(root.left == null && root.right == null)) {
+			root.val = (root.left!=null ? root.left.val : 0) + (root.right!=null ? root.right.val : 0);
 		}
 	}
 	
+	/**
+	 * Given a Binary Tree and a positive integer k, print all nodes that are distance k from a leaf node.
+	 * 
+	 * @param root
+	 * @param dist
+	 * @return
+	 */
+	public List<Integer> nodesAtDistKfromLeaf(TreeNode root, int dist) {
+		List<Integer> list = new ArrayList<>();
+		nodesAtDistKfromLeafUtil(root, dist, list);
+		return list;
+	}
+
+	/**
+	 * USING GRAPH YOU CAN DO IT.
+	 * 
+	 * @param root
+	 * @param dist
+	 * @param list
+	 * @param temp
+	 */
+	private List<Integer> nodesAtDistKfromLeafUtil(TreeNode root, int dist, List<Integer> list) {
+		if (root == null) return new ArrayList<Integer>();
+		if (root.left == null && root.right == null) {
+			List<Integer> ll = new ArrayList<Integer>();
+			ll.add(dist-1);
+			return ll;
+		}
+		List<Integer> lft = nodesAtDistKfromLeafUtil(root.left, dist, list);
+		if (lft.contains(0) && !list.contains(root.val)) {
+			list.add(root.val);
+		}
+		List<Integer> rgt = nodesAtDistKfromLeafUtil(root.right, dist, list);
+		if (rgt.contains(0) && !list.contains(root.val)) {
+			list.add(root.val);
+		}
+		lft.addAll(rgt);
+		for (int i=0; i<lft.size(); i++) lft.set(i, lft.get(i)-1);
+		return lft;
+	}
+
+	/**
+	 * Given two nodes and root of a tree, find distance between them.
+	 * 
+	 * method1 : dist(root, n1) + dist(root, n2) - 2*dist(lca(n1,n2));
+	 * method2 : dist(lca,n1) + dist(lca,n2); {@link IBitTree#distanceBetweenTwoNodes}
+	 * 
+	 * @param root
+	 * @param n1
+	 * @param n2
+	 * @return
+	 */
+	public int distanceBetweenTwoNodes(TreeNode root, int n1, int n2) {
+		TreeNode lca = findLeastCommonAncestor(root, n1, n2);
+		return distanceFromRootToNode(lca,n1,0) + distanceFromRootToNode(lca,n2,0);
+	}
+	
+	/**
+	 * Find distance of a Node from the root.
+	 * 
+	 * @param root
+	 * @param n1
+	 * @param dist
+	 * @return
+	 */
+	public int distanceFromRootToNode(TreeNode root, int n1, int dist) {
+		if (root == null) return -1;
+		if (root.val == n1) return dist;
+		int l = distanceFromRootToNode(root.left, n1, dist+1);
+		int r = distanceFromRootToNode(root.right, n1, dist+1);
+		if (l == -1 && r == -1) return -1;
+		return l == -1 ? r : l;
+	}
+
+	/**
+	 * Least Common Ancestor of two nodes in a given Tree.
+	 * 
+	 * other Implementations - {@link #lca}, {@link #lca2}, {@link #lca3}
+	 * 
+	 * @param root
+	 * @param n1
+	 * @param n2
+	 * @return
+	 */
+	public TreeNode findLeastCommonAncestor(TreeNode root, int n1, int n2) {
+		if (root == null) return null;
+		if (root.val == n1 || root.val == n2) return root;
+		TreeNode lft = findLeastCommonAncestor(root.left, n1, n2);
+		TreeNode rgt = findLeastCommonAncestor(root.right, n1, n2);
+		if (lft != null && rgt != null) return root;
+		return lft == null ? rgt : lft;
+	}
+
+	/**
+	 * Given a binary tree, a target node in the binary tree, and an integer value k, print all the nodes that 
+	 * are at distance k from the given target node. No parent pointers are available.
+	 * 
+	 * @param root
+	 * @param node
+	 * @param dist
+	 * @return
+	 */
+	public List<Integer> printNodesAtDistK(TreeNode root, TreeNode node, int dist) {
+		List<Integer> ans = new ArrayList<>();
+		printNodesAtDistKUtil(root, node, dist, ans);
+		return ans;
+	}
+	
+	private int printNodesAtDistKUtil(TreeNode root, TreeNode node, int dist, List<Integer> ans) {
+		if (root == null) return -1;
+		if (root == node) {
+			printNodesAtDistKFromRootUtil(root, dist, ans);
+			return 0;
+		}
+		int diffLeft = printNodesAtDistKUtil(root.left, node, dist, ans);
+		if (diffLeft != -1) {
+			if (diffLeft + 1 == dist) {
+				ans.add(root.val);
+			} else {
+				printNodesAtDistKFromRootUtil(root.right, dist-diffLeft-2, ans);
+			}
+			return diffLeft + 1;
+		}
+		int diffRight = printNodesAtDistKUtil(root.right, node, dist, ans);
+		if (diffRight != -1) {
+			if (diffRight+1 == dist) {
+				ans.add(root.val);
+			} else {
+				printNodesAtDistKFromRootUtil(root.left, dist-diffRight-2, ans);
+			}
+			return diffRight + 1;
+		}
+		return -1;
+	}
+
+	/**
+	 * Given a binary tree, and an integer value k, print all the nodes 
+	 * that are at distance k from root node.
+	 * @param root
+	 * @param k
+	 * @return
+	 */
+	public List<Integer> printNodesAtDistKFromRoot(TreeNode root, int k) {
+		List<Integer> ans = new ArrayList<>();
+		printNodesAtDistKFromRootUtil(root, k, ans);
+		return ans;
+	}
+	
+	private void printNodesAtDistKFromRootUtil(TreeNode root, int k, List<Integer> ans) {
+		if (root == null || k < 0) return;
+		if (k == 0) {
+			ans.add(root.val);
+			return;
+		}
+		printNodesAtDistKFromRootUtil(root.left, k-1, ans);
+		printNodesAtDistKFromRootUtil(root.right, k-1, ans);
+	}
+
 	/*########################################### Tree to DLL #######################################################*/
 	//think about making it circular doubly linked list
 	TreeNode head = null;

@@ -34,5 +34,43 @@ Graph:->
 			Let the array be array[]. An entry array[i] represents the linked list of vertices adjacent to the ith vertex.
 
 			This representation can also be used to represent a weighted graph. The weights of edges can be stored in nodes of linked lists.
+			
+			
+Traversal:: (https://www.ics.uci.edu/~eppstein/161/960215.html)
+	For Trees - 
+    	Breadth First Traversal 
+    		Level Order Traversal
+		Depth First Traversals
+		    Inorder Traversal (Left-Root-Right)
+		    Preorder Traversal (Root-Left-Right)
+		    Postorder Traversal (Left-Right-Root)
 
+Topological Sorting::
+	 - topological sort or topological ordering of a directed graph is a linear ordering of its vertices such that for every directed edge uv 
+	 from vertex u to vertex v, u comes before v in the ordering. For instance, the vertices of the graph may represent tasks to be performed, 
+	 and the edges may represent constraints that one task must be performed before another; in this application, a topological ordering is 
+	 just a valid sequence for the tasks. A topological ordering is possible if and only if the graph has no directed cycles, that is, if it 
+	 is a directed acyclic graph (DAG).
+	 - Any DAG has at least one topological ordering
 
+Minimum Spanning Tree::
+	- A minimum spanning tree (MST) or minimum weight spanning tree is a subset of the edges of a connected, 
+	edge-weighted (un)directed graph that connects all the vertices together, without any cycles and with 
+	the minimum possible total edge weight. 
+	- That is, it is a spanning tree whose sum of edge weights is as small as possible.
+	- Algos - reverse-delete algorithm, Kruskal's, Prim's[O(m log n) or O(m + n log n), depending on the data-structures used.]
+
+Shortest Path::The shortest path problem can be defined for graphs whether undirected, directed, or mixed.
+
+	1. Shortest Path from source 's' to any vertices in DAGs O(V+E) ==> First get topological order {@link ShortestPathAlgos#topologicalSort}, 
+		(works with -ve edges as well)							then iterate from left->right.{@link ShortestPathAlgos#shortestPathForTopologicalOrder}
+	2. Shortest Path in un-weighted directed graph ==> Use BFS {@link MainClass#bfsQeue}
+	 													 refer method {@link ShortestPathAlgos#shortestPathUnweighted}
+	3. Dijkstra's Algo (It's a greedy algo) ==> for all kind of graphs except those with -ve edges.
+			For any implementation of the vertex set Q, the running time is in
+			O (|E|*T(k) + |V|*T(m)), where T(d) and T(m) are the complexities of the {@value : decrease-key} and {@value: extract-minimum}} operations in Q,
+			respectively. The simplest implementation of Dijkstra's algorithm stores the vertex set Q as an ordinary linked list or array, and extract-minimum
+			is simply a linear search through all vertices in Q. 
+			In this case, the running time is O(|E| + |V|^2) = O(|V|^2);
+			
+	4. Bellman-Ford Algo ====>  Richard Bellman gave the name Dynamic programming to DP.

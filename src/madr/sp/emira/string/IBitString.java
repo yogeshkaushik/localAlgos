@@ -1,10 +1,17 @@
 package madr.sp.emira.string;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  * 
@@ -17,10 +24,61 @@ import java.util.Map;
  *
  */
 public class IBitString {
+	
+	/**
+	 * Convert IP address to Decimal.
+	 * https://www.mkyong.com/java/java-convert-ip-address-to-decimal-number/
+	 * https://stackoverflow.com/questions/12130464/ip-address-conversion-to-decimal-and-vice-versa
+	 * 
+	 * The IP address is “base 256”, to convert 192.168.1.2 to decimal (base 10) the formula is
+	 * 192 x (256)^3 + 168 x (256)^2 + 1 x (256)^1 + 2 x (256)^0 = ?
+	 * 3221225472 + 11010048 + 256 + 2 = 3232235778
+	 * 
+	 * 
+	 *  long result = 0;
+		String[] ipAddressInArray = ipAddress.split("\\.");
+		for (int i = 3; i >= 0; i--) {
+			long ip = Long.parseLong(ipAddressInArray[3 - i]);
 
-	public static void main(String[] args) {
+			//left shifting 24,16,8,0 and bitwise OR
+			//1. 192 << 24
+			//1. 168 << 16
+			//1. 1   << 8
+			//1. 2   << 0
+
+			result |= ip << (i * 8);
+		}
+		return result;
+	 * 
+	 * @param ip
+	 * @return
+	 */
+	public long ipToDecimal(String ip) {
+		String[] ipAddressInArray = ip.split("\\.");
+		long result = 0;
+		for (int i = 0; i < ipAddressInArray.length; i++) {
+			int power = 3 - i;
+			int num = Integer.parseInt(ipAddressInArray[i]);
+			result += num * Math.pow(256, power);
+		}
+		return result;
+	}
+	
+	public String decimalToIPAddress(long dec) {
+		StringBuilder sb = new StringBuilder();
+		for (int i=0; i<4; i++) {
+			long divisor = (long)Math.pow(256, 3-i);
+			sb.append(dec/divisor).append('.');
+			dec = dec%divisor;
+		}
+		return sb.substring(0, sb.length()-1).toString();
+	}
+
+	public static void main(String[] args) throws IOException {
 		IBitString cl = new IBitString();
-		
+		/*long decimal = cl.ipToDecimal("79.47.57.198");
+		System.out.println(decimal);
+		System.out.println(cl.decimalToIPAddress(decimal));*/
 		/*String s = "A man, a plan, a canal: Panama";
 		System.out.println(clazz.isPalindrome(s));*/
 		
@@ -64,23 +122,157 @@ public class IBitString {
 		
 		/*String[] str = {"What", "must", "be", "shall", "be."};
 		System.out.println(cl.fullJustify(BinarySearchClass.createListWrapper(str), 12));*/
-		
 		//cl.allPermutationNoDup("ABCD");
-		String s = "hifi".substring(0, 2);
+		
+		/*String s = "hifi".substring(0, 2);
 		String s1 = "hi";
-		System.out.println(s.equals(s1));
+		System.out.println(s.equals(s1));*/
+		
 		//System.out.println(cl.KthPermutation(4, "ABCD"));
+		
+		//cl.firstNonRepeatingCharacterInStream();
+		//cl.firstNonRepeatingCharQueue("geeksforgeek");
+		
+		long i = cl.rankPermUsingFactoradicBase("ZCSFLVHXRYJQKWABGT");
+		System.out.println(i);
+		System.out.println(cl.KthPermutation(2, "aab"));
+		//System.out.println(cl.KthPermutation((int)i-1, "abcde"));
 	}
 	
 	/**
+	 * Given an continuous input stream of characters, find a method to get the earliest/oldest non repeated character at any time in O(1)
+	 * 
+	 * https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/
+	 * 
+	 * Given a string, find its first non-repeating character
+	 * For example, if the input string is “GeeksforGeeks”, then output should be ‘f’ and 
+	 * if input string is “GeeksQuiz”, then output should be ‘G’
+	 * 
+	 * @param str
+	 * @return
+	 */
+	public char firstNonRepeatingCharacter(String str) {
+		return '\0';
+	}
+	
+	public void firstNonRepeatingCharQueue(String str) {
+		Set<Character> set = new HashSet<Character>();
+		Queue<Character> q = new LinkedList<Character>();
+		for (int i=0; i<str.length(); i++) {
+			char c = str.charAt(i);
+			System.out.println("Reading : " + c);
+			if (!set.contains(c)) {
+				q.offer(c);
+				set.add(c);
+			} else {
+				q.remove((Character)c); //o(n);
+			}
+			if (!q.isEmpty()) System.out.println("First Non Repeating : "+q.peek());
+		}
+	}
+	
+	/**
+	 * Given an continuous input stream of characters, find a method to get the earliest/oldest non repeated character at any time in O(1)
+	 * 
+	 * @param str
+	 * @return
+	 * @throws IOException 
+	 */
+	public void firstNonRepeatingCharacterInStream() throws IOException {
+		DLL head = null;
+		DLL tail = head;
+		boolean[] arr = new boolean[Character.MAX_VALUE+1];
+		DLL[] pntr = new DLL[256];
+		InputStream is = new BufferedInputStream(System.in);
+		int b = 0;
+		while ((b=is.read()) != -1) {
+			System.out.println("Read Char : "+(char)b);
+			if (!arr[b]) {
+				if (pntr[b]==null) {
+					if (head==null) {
+						head = new DLL((char)b);
+						tail = head;
+						pntr[b] = head;
+					} else {
+						DLL tmp = new DLL((char)b);
+						tmp.prev = tail;
+						tail.next = tmp;
+						tail = tail.next;
+						pntr[b] = tmp;
+					}
+				} else {
+					arr[b] = true;
+					DLL tmp = pntr[b];
+					if (tmp == head) {
+						head = head.next;
+						if (head!=null) head.prev = null;
+						tmp.next = null;
+					}
+					else if (tmp == tail) {
+						tail = tail.prev;
+						tail.next = null;
+						tmp.prev = null;
+					} else {
+						tmp.prev.next = tmp.next;
+						tmp.next.prev = tmp.prev;
+						tmp.next = null;
+						tmp.prev = null;
+					}
+					tmp = null;
+					pntr[b] = null;
+				}
+			}
+			if (head != null) System.out.println("First Non Repeating Char is : "+head.c);
+		}
+	}
+	
+	class DLL {
+		char c;
+		DLL prev;
+		DLL next;
+		public DLL(char c){
+			this.c = c;
+		}
+	}
+	
+	/**
+	 * VERY IMPORTANT AND TRICKY
 	 * https://ashprakasanblog.wordpress.com/2017/02/16/find-lexicographically-nth-permutation-of-an-ordered-string/
+	 * 
+	 * you can make it work with repeated numbers. ==> for aab ==> {aab, aba, baa}
+	 * 														consider same chars as one entity with count,
+	 * 														so 2nd permutation of the above string will be == 
+	 * 														2 ==factoradic==> 100, now pick one by one from => (aa)b;
+	 *														100 === (a,a),b , ans = "";
+	 * 														for 1 ==> pick 1th index value(b) and delete char at 1 ==> left -(a,a) ,ans = "b"; 
+	 * 														for 0 ==> pick 0th, ==> left -(a) , ans = "ba";
+	 * 														for 0 ==> left - none, ans = "baa";
+	 * Factoradic base - 									
+	 * 		The place values (base) are –
+	 *		5!= 120    4!= 24    3!=6    2!= 2    1!=1    0!=1 etc..
+	 *
+	 * The digit in the zeroth place is always 0. The digit in the first place (with base = 1!) can be 0 or 1. 
+	 * The digit in the second place (with base 2!) can be 0,1 or 2 and so on. Generally speaking, the digit 
+	 * at nth place can take any value between 0-n.
+	 * 
+	 * For eg, to convert 349 to factoradic,
+	 * 		              
+		              Quotient        Reminder        Factorial Representation
+		349/1            349               0                             0
+		349/2            174               1                            10
+		174/3            58                0                           010
+		58/4             14                2                          2010
+		14/5             2                 4                         42010
+		2/6              0                 2                        242010
+		
+		349 ==> 242010;
 	 * 
 	 * @param k
 	 * @param str
 	 * @return
 	 */
 	public String KthPermutation(int k, String str) {
-		if (k==0) return str;
+		if (k==0) return str; //0 base - as in 0 to 5 for string of length 3;
 		if (k > factorial(str.length())-1) throw new RuntimeException("Invalid input");
 		String factoradicRepresentation = getFactoradicRep(k);
 		StringBuilder sb = new StringBuilder(str);
@@ -567,6 +759,34 @@ public class IBitString {
 	        suffixPermCount /= xCount;
 	    }
 	    return rank;
+	}
+	
+	/**
+	 * Find Rank of a given permutation of a String
+	 * @param perm
+	 * @return
+	 */
+	public long rankPermUsingFactoradicBase(String perm) {
+	    String orig = new String(perm);
+	    char[] ch = orig.toCharArray();
+	    Arrays.sort(ch);
+	    orig = String.valueOf(ch);
+	    StringBuilder original = new StringBuilder(orig);
+	    int[] sb = new int[perm.length()];
+	    for (int i=0; i<perm.length(); i++) {
+	    	char c = perm.charAt(i);
+	    	int in = original.indexOf(c+"");
+	    	sb[i] = in;
+	    	original.deleteCharAt(in);
+	    }
+	    long count = 0;
+	    long fact = 1;
+	    int in = 1;
+	    for (int i=sb.length-2; i>=0; i--) {
+	    	count += fact*(sb[i]);
+	    	fact = fact*(++in);
+	    }
+	    return count+1;
 	}
 	
 	/**

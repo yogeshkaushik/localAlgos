@@ -28,7 +28,12 @@ public class MainDPClass {
 		clazz.memo[0] = 1;
 		System.out.println(clazz.catalanNumberDP(n));*/
 		
-		System.out.println(clazz.numOfSubsequenceWithRepeated("ggg"));
+		//System.out.println(clazz.numOfSubsequenceWithRepeated("ggg"));
+		
+		clazz.memo = new int[5+1];
+		clazz.memo[0] = 1;
+		System.out.println(clazz.catalanNumberDP(5));
+		System.out.println(clazz.catalan(5));
 	}
 	
 	/**
@@ -217,6 +222,13 @@ public class MainDPClass {
 	
 	/**
 	 * Karumanchi book
+	 * https://en.wikipedia.org/wiki/Catalan_number
+	 * 
+	 * Catalan numbers satisfy the following recursive formula.
+	 * 		C(0)=1  and C(n+1) =  Σ(i=0ton) C(i)*C(n-i) for all n>=0
+	 * 
+	 * The first few Catalan numbers for n = 0, 1, 2, 3, … are 1, 1, 2, 5, 14, 42, 132, 429, 1430, 4862, …
+	 * 
 	 * @param n
 	 * @return
 	 */
@@ -227,6 +239,18 @@ public class MainDPClass {
 		}
 		return memo[n];
 	}
+	public int catalan(int n) {
+        int res = 0;
+         
+        // Base case
+        if (n <= 1) {
+            return 1;
+        }
+        for (int i = 0; i < n; i++) {
+            res += catalan(i) * catalan(n - i - 1);
+        }
+        return res;
+    }
 
 	public int getMaxInArr(int[] sumArr) {
 		int max = Integer.MIN_VALUE;

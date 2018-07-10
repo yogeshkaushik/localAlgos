@@ -126,7 +126,7 @@ public class IBitBitOpsAndMath {
 	    return (int)result%d;*/
 	}
 	
-	long power(int x, int y, int d) {
+	public long power(int x, int y, int d) {
 	    if(y == 0) return 1;
         long temp = power(x, y/2, d);
         if (y%2 == 0) return ((temp)*(temp))%d;
