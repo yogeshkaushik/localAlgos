@@ -227,7 +227,7 @@ public class BinarySearchClass {
 	    return -1*i;
 	}
 	
-	static List<Integer> createList(int... arr) {
+	public static List<Integer> createList(int... arr) {
 		List<Integer> l = new ArrayList<Integer>();
 		for (int a : arr) l.add(a);
 		return l;

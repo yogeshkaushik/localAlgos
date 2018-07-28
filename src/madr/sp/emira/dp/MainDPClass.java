@@ -86,14 +86,14 @@ public class MainDPClass {
 		for(int i=0; i<c; i++) {
 			if (wall[r-1][i] == 1) {
 				lastPorousBrick = i;
-				boolean bool = isWaterHitsGround(wall,r,c,lastPorousBrick);
+				boolean bool = isWaterHittingGround(wall,r,c,lastPorousBrick);
 				if (bool) return true;				
 			}
 		}
 		return false;
 	}
 	
-	private boolean isWaterHitsGround(int[][] wall, int r, int c, int lastPorousBrick) {
+	private boolean isWaterHittingGround(int[][] wall, int r, int c, int lastPorousBrick) {
 		//Use Graph Theory may be Djikstra's
 		//https://www.geeksforgeeks.org/minimum-cost-path-left-right-bottom-moves-allowed/
 		return false;

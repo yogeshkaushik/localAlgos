@@ -1,6 +1,7 @@
 package madr.sp.emira.array;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -24,9 +25,90 @@ public class IBitStackAndQueue {
 		/*int[] a = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
 		System.out.println(cl.trappedWater3(BinarySearchClass.createList(a)));*/
 		
-		int[] arr = {120,8,5,10,7,9,4,15,12,90,13};
+		/*int[] arr = {120,8,5,10,7,9,4,15,12,90,13};
 		System.out.println(cl.slidingWindowMaximum(BinarySearchClass.createList(arr), 1));
-		System.out.println(cl.slidingWindowMaximumDeque(BinarySearchClass.createList(arr), 1));
+		System.out.println(cl.slidingWindowMaximumDeque(BinarySearchClass.createList(arr), 1));*/
+		
+		/*int[] arr = {12, -1, -7, 8, -15, 30, 16, 28};
+		cl.firstNegativeInWindowK(arr, 3);*/
+		
+		/*int[] arr = {100, 80, 60, 70, 60, 75, 85};
+		cl.stockSpanProblem(arr);*/
+		
+		int[] arr = {6,2,5,4,5,1,6};//{2,1,2,3,1};//{10, 8, 6, 7, 6, 7, 8};
+		System.out.println(cl.largestRectangleArea(arr));
+	}
+	
+	/**
+	 * Largest Rectangle Area
+	 * 
+	 * https://www.geeksforgeeks.org/largest-rectangle-under-histogram/
+	 * 
+	 * Approach: 
+	 * 		1. We can use Divide and Conquer to solve this in O(nLogn) time. The idea is to find the minimum value in the given array.
+	 * 		   Once we have index of the minimum value, the max area is maximum of following three values.
+				a) Maximum area in left side of minimum value (Not including the min value)
+				b) Maximum area in right side of minimum value (Not including the min value)
+				c) Number of bars multiplied by minimum value.
+			  The areas in left and right of minimum value bar can be calculated recursively. If we use linear search to find the minimum value, 
+			  then the worst case time complexity of this algorithm becomes O(n^2).
+			  How to find the minimum efficiently? Range Minimum Query using Segment Tree can be used for this. 
+			  We build segment tree of the given histogram heights. Once the segment tree is built, all range minimum queries take O(Logn) time. 
+			  So over all complexity of the algorithm becomes O(nLogn)
+			
+			2.Stack Base Solution. https://www.youtube.com/watch?v=ZmnqCZp9bBs&t=647s
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int largestRectangleArea(int[] arr) {
+		Stack<Integer> st = new Stack<Integer>();
+		int maxArea = -1;
+		int i=0;
+		for (; i< arr.length; i++) {
+			while (!st.isEmpty() && arr[i] < arr[st.peek()]) {
+				int in = st.pop();
+				if (st.isEmpty()) maxArea = Math.max(maxArea, arr[in]*i);
+				else maxArea = Math.max(maxArea, arr[in]*(i-1-st.peek()));
+			}
+			st.push(i);
+		}
+		while (!st.isEmpty()) {
+			int in = st.pop();
+			if (st.isEmpty()) maxArea = Math.max(maxArea, arr[in]*i);
+			else maxArea = Math.max(maxArea, arr[in]*(i-1-st.peek()));
+		}
+		return maxArea;
+	}
+	
+	/**
+	 * Stock Span Problem.
+	 * https://www.geeksforgeeks.org/the-stock-span-problem/
+	 * 
+	 * 		//Another Approach.
+	 * 		while (!st.empty() && price[st.peek()] <= price[i]) {
+                st.pop();
+            }
+     
+            // If stack becomes empty, then price[i] is greater than all elements
+            // on left of it, i.e., price[0], price[1],..price[i-1]. Else price[i]
+            // is greater than elements after top of stack
+            ans[i] = (st.empty())? (i + 1) : (i - st.peek());
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int[] stockSpanProblem(int[] arr) {
+		int[] ans = new int[arr.length];
+		Arrays.fill(ans, 1);
+		Stack<Integer> st = new Stack<Integer>();
+		for (int i=0;i<arr.length;i++) {
+			while (!st.isEmpty() && arr[i]>=arr[st.peek()]) {
+				ans[i] += ans[st.pop()];
+			}
+			st.push(i);
+		}
+		return ans;
 	}
 	
 	/**
@@ -136,6 +218,33 @@ public class IBitStackAndQueue {
 	    }
 	    return max;
 
+	}
+	
+	/**
+	 * Given an array and a positive integer k, find the first negative integer for each and every window(contiguous subarray) of size k. 
+	 * If a window does not contain a negative interger, then print 0 for that window.
+	 * 
+	 * https://www.geeksforgeeks.org/first-negative-integer-every-window-size-k/
+	 * @param arr
+	 * @return
+	 */
+	public int[] firstNegativeInWindowK(int[] arr, int k) {
+		if (arr.length<=k) {
+			//return first -ve
+			int j = 0;
+			while (j<arr.length && arr[j]>=0) j++;
+			return new int[] {j == arr.length ? 0 : arr[j]};
+		}
+		Deque<Integer> dq = new LinkedList<>();
+		int[] ans = new int[arr.length-k+1];
+		int in=0;
+		while (in<k) if (arr[in++] < 0) dq.addLast(in-1);
+		for (int i=0; in<arr.length; i++,in++) {
+			ans[i] = dq.isEmpty() ? 0 : arr[dq.getFirst()];
+			if (i==dq.getFirst()) dq.removeFirst();
+			if (arr[in]<0) dq.addLast(in);
+		}
+		return ans;
 	}
 	
 	/**

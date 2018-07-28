@@ -54,12 +54,78 @@ public class MainClass {
 		/*Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
 		printLL(swapPairs(n));*/
 		
-		Node n = createLinkedList(9,9,1);
+		/*Node n = createLinkedList(9,9,1);
 		//printLL(cl.reverseRecursive(n));
 		n = cl.addOne(n);
-		printLL(n);
+		printLL(n);*/
+		
+		Node n = createLinkedList(1,2,3,4,5,6,7,8,9,0);
+		//cl.modifyHalfList(n);
+		printLL(cl.reverseEveryKNode(n, 3));
 	}
 	
+	/**
+	 * Reverse Every k nodes.
+	 * 
+	 * This method achieved it in one scan
+	 * 
+	 * @param root
+	 * @param k
+	 * @return
+	 */
+	public Node reverseEveryKNode(Node root, int k) {
+		if (root == null || root.next == null || k == 1) return root;
+		int c = 1;
+		Node ans = null;
+		Node prevGlobal = null;
+		while (root != null) {
+			Node node = root;
+			Node prev = null;
+			while (c%(k+1) != 0 && node != null) {
+				Node temp = node.next;
+				node.next = prev;
+				prev = node;
+				node = temp;
+				c++;
+			}
+			root.next = node;
+			if (prevGlobal != null) {
+				prevGlobal.next = prev;
+			}
+			if (ans == null) ans = prev;
+			prevGlobal = root;
+			root = node;
+			c++;
+		}
+		return ans;
+	}
+
+	/**
+	 * https://www.geeksforgeeks.org/amazon-interview-experience-set-392-sde-2/
+	 * 
+	 * Given a Singly Linked list, Update the second half of the list such that n-th element becomes sum(1st + nth) element, 
+	 * (n-1)st element becomes sum(2nd + n-1st) element and so on. Eg: 2->3->4->5->6 => 2->3->(4+4)->(5+3)->(6+2)
+	 * @param root
+	 */
+	Node start;
+	int len;
+	public void modifyHalfList(Node root) {
+		start = root;
+		len = lengthOfList(root)/2;
+		modifyHalfListUtil(root);
+	}
+	
+	private void modifyHalfListUtil(Node root) {
+		if (root == null) return;
+		modifyHalfListUtil(root.next);
+		if (len != 0) {
+			root.data = root.data + start.data;
+			start = start.next;
+			len--;
+		}
+	}
+
+
 	public Node addOne(Node root) {
 		int c = addOneUtil(root,1);
 		if (c != 0) {
@@ -453,8 +519,8 @@ public class MainClass {
 	    if (headA == null || headA.next == null || headB ==null || headB.next == null) {
 	        return -1;
 	    }
-	    int countA = getCountNew(headA);
-	    int countB = getCountNew(headB);
+	    int countA = lengthOfList(headA);
+	    int countB = lengthOfList(headB);
 	    int diff = 0;
 	    if (countA > countB) {
 	        diff = countA - countB;
@@ -604,7 +670,7 @@ public class MainClass {
 		DoubleNode prev;
 	}
 
-	public static int getCountNew(Node node) {
+	public static int lengthOfList(Node node) {
 	    int count = 0;
 	    while(node != null) {
 	        count++;
@@ -881,8 +947,8 @@ public class MainClass {
 	}
 	
 	public static class Node {
-		int data;
-		Node next;
+		public int data;
+		public Node next;
 		
 		public Node(int d) {
 			data = d;

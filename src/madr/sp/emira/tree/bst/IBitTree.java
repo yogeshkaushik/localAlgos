@@ -1,7 +1,9 @@
 package madr.sp.emira.tree.bst;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -9,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.Stack;
 
@@ -44,11 +47,21 @@ public class IBitTree {
 		t.left.left = new TreeNode(7);
 		t.left.left.left = new TreeNode(6);
 		t.left.right = new TreeNode(8);
+		t.left.right.left = new TreeNode(1);
+		t.left.right.left.left = new TreeNode(2);
+		t.left.right.left.left.left = new TreeNode(3);
+		t.left.right.left.left.left.left = new TreeNode(51);
 		t.right = new TreeNode(15);
 		t.right.left = new TreeNode(9);
 		t.right.right = new TreeNode(18);
 		t.right.right.left = new TreeNode(16);
 		t.right.right.right = new TreeNode(24);
+		
+		TreeNode t1 = new TreeNode(1);
+		t1.left = new TreeNode(2);
+		t1.right = new TreeNode(3);
+		t1.right.left = new TreeNode(4);
+		t1.right.left.right = new TreeNode(5);
 		
 		//System.out.println(cl.lca3(t, 86, 84));
 		
@@ -72,11 +85,55 @@ public class IBitTree {
 		/*cl.sumChildrenInNode(t);
 		System.out.println(t.toString());*/
 		
-		cl.constructAllPossibleBSTFrom1toN(1,5);
+		//cl.constructAllPossibleBSTFrom1toN(1,5);
+		
+		/*System.out.println(cl.printTopView(t1));
+		
+		System.out.println(cl.printBoundaryEnclosure(t1));
+		System.out.println(cl.printLeftView(t1));*/
+		System.out.println(cl.maxSumOfAnyPath(t1));
 	}
 	
 	/*########################################### Misc #######################################################*/
 	
+	/**
+	 * connect the siblings using extra  next pointer.
+	 * 			5 --> null
+	 * 		6 ----> 7
+	 *    8-->9   2-->3
+	 * @param root
+	 */
+	public void connectNextPointer(TreeLinkNode root) {
+        if (root == null || (root.left == null && root.right == null)) return;
+        TreeLinkNode prev = root;
+        if (root.left != null) root = root.left;
+        else root = root.right;
+        while (root != null) {
+            TreeLinkNode temp = root;
+            while (temp != null) {
+                if (temp == prev.left && prev.right != null) temp.next = prev.right;
+                else {
+                    prev = getNext(prev, temp);
+                    if (prev == null) break;
+                    if (prev.left != null) temp.next = prev.left;
+                    else temp.next = prev.right;
+                }
+                temp = temp.next;
+            }
+            while (root != null && root.left == null && root.right == null) root = root.next;
+            if (root == null) break;
+            prev = root;
+            if (root.left != null) root = root.left;
+            else root = root.right;
+        }
+    }
+    
+    private TreeLinkNode getNext(TreeLinkNode prev, TreeLinkNode child) {
+        prev = prev.next;
+        while (prev != null && (prev.left == null && prev.right == null)) prev = prev.next;
+        return prev;
+    }
+    
 	public List<TreeNode> constructAllPossibleBSTFrom1toN(int start, int end) {
 		List<TreeNode> list = new ArrayList<>();
 		if (end<start) {
@@ -201,6 +258,16 @@ public class IBitTree {
 	 * @param n1
 	 * @param dist
 	 * @return
+	 *
+	 *  if (root == null) return -1;
+		if (root.val == node) return 0;
+		int l = distanceRootToNode(root.left, node);
+		if (l!=-1) return l+1;
+		int r = distanceRootToNode(root.right, node);
+		if (r!=-1) return r+1;
+		return -1;
+	 *
+	 *
 	 */
 	public int distanceFromRootToNode(TreeNode root, int n1, int dist) {
 		if (root == null) return -1;
@@ -209,6 +276,18 @@ public class IBitTree {
 		int r = distanceFromRootToNode(root.right, n1, dist+1);
 		if (l == -1 && r == -1) return -1;
 		return l == -1 ? r : l;
+	}
+	
+	public int distanceFromRootToNodeBST(TreeNode root, int node) {
+		if (root == null) return -1;
+		if (root.val == node) return 0;
+		int temp = -1;
+		if (root.val>node) {
+			temp = distanceFromRootToNodeBST(root.left, node);
+		} else {
+			temp = distanceFromRootToNodeBST(root.right, node);
+		}
+		return temp != -1 ? temp+1 : -1;
 	}
 
 	/**
@@ -293,6 +372,109 @@ public class IBitTree {
 		}
 		printNodesAtDistKFromRootUtil(root.left, k-1, ans);
 		printNodesAtDistKFromRootUtil(root.right, k-1, ans);
+	}
+	
+	/*########################################### @Print Views #######################################################*/
+	
+	
+	public List<Integer> printLeftView(TreeNode root) {
+		List<Integer> list = new ArrayList<>();
+		printLeftViewUtil(root,0,new HashSet<Integer>(),list);
+		return list;
+	}
+	private void printLeftViewUtil(TreeNode root, int dist, HashSet<Integer> hashSet, List<Integer> list) {
+		if (root == null) return;
+		if (dist<=0 && !hashSet.contains(dist)) {
+			list.add(root.val);
+			hashSet.add(dist);
+		}
+		printLeftViewUtil(root.left, dist-1, hashSet, list);
+		printLeftViewUtil(root.right, dist+1, hashSet, list);
+	}
+
+	/**
+	 * Print a tree enclosure, boundary of a tree.
+	 * Given a binary tree, print boundary nodes of the binary tree Anti-Clockwise starting from the root.
+	 * 
+	 * https://www.geeksforgeeks.org/boundary-traversal-of-binary-tree/
+	 * 
+	 * @param root
+	 * @return
+	 */
+	public List<Integer> printBoundaryEnclosure(TreeNode root) {
+		List<Integer> list = new ArrayList<Integer>();
+		list.add(root.val);
+		printLeftSide(root.left,list);
+		printLeafL2R(root,list);
+		printRightSideUpsideDown(root.right,list);
+		return list;
+	}
+
+	private boolean isLeaf(TreeNode leaf) {
+		return leaf.left == null && leaf.right == null;
+	}
+	
+	private void printRightSideUpsideDown(TreeNode root, List<Integer> list) {
+		if (root == null) return;
+		if (isLeaf(root)) return;
+		printRightSideUpsideDown(root.right, list);
+		list.add(root.val);
+	}
+	
+	private void printLeafL2R(TreeNode root, List<Integer> list) {
+		if (root == null) return;
+		if (isLeaf(root)) list.add(root.val);
+		printLeafL2R(root.left, list);
+		printLeafL2R(root.right, list);
+	}
+
+	private void printLeftSide(TreeNode root, List<Integer> list) {
+		if (root == null) return;
+		if (isLeaf(root)) return;
+		list.add(root.val);
+		printLeftSide(root.left, list);		
+	}
+
+	/**
+	 * Top view of a binary tree is the set of nodes visible when the tree is viewed from the top. Given a binary tree, print the top view of it. 
+	 * The output nodes can be printed in any order. Expected time complexity is O(n)
+	 * @param root
+	 * @return
+	 */
+	public List<Integer> printTopView(TreeNode root) {
+		class Pair {
+			TreeNode t;
+			Integer d;
+			Pair(TreeNode tt, Integer dd) {
+				t = tt; d = dd;
+			}
+		}
+		List<Integer> left = new ArrayList<>();
+		List<Integer> right = new ArrayList<>();
+		Queue<Pair> q = new LinkedList<Pair>();
+		HashSet<Integer> set = new HashSet<>();
+		q.add(new Pair(root,0));
+		while (!q.isEmpty()) {
+			int len = q.size();
+			while (len-- > 0) {
+				TreeNode key = q.peek().t;
+				Integer dist = q.peek().d;
+				if (!set.contains(dist) && dist <= 0) {
+					left.add(key.val);
+					set.add(dist);
+				}
+				if (!set.contains(dist) && dist > 0) {
+					right.add(key.val);
+					set.add(dist);
+				}
+				if (key.left != null) q.add(new Pair(key.left, dist-1));
+				if (key.right != null) q.add(new Pair(key.right, dist+1));
+				q.poll();
+			}
+		}
+		Collections.reverse(left);
+		left.addAll(right);
+		return left;
 	}
 
 	/*########################################### Tree to DLL #######################################################*/
@@ -381,6 +563,31 @@ public class IBitTree {
 	/*########################################### Search in Tree #######################################################*/
 
 	/**
+	 * Given a Binary Tree you need to  find maximum value which you  can get by subtracting value of node B from value of node A, 
+	 * where A and B are two nodes of the binary tree and A is an ancestor of B . You are required to complete the function maxDiff
+	 * 
+	 * https://practice.geeksforgeeks.org/problems/maximum-difference-between-node-and-its-ancestor/1
+	 * 
+	 * @param root
+	 * @return
+	 */
+	int maxDiff;
+	public int maxDiffNodeAncestor(TreeNode root) {
+		maxDiff = Integer.MIN_VALUE;
+		maxDiffNodeAncestorUtil(root);
+		return maxDiff;
+	}
+	
+	private int maxDiffNodeAncestorUtil(TreeNode root) {
+		if (root == null) return Integer.MAX_VALUE;
+		if (root.left == null && root.right == null) return root.val;
+		int left = maxDiffNodeAncestorUtil(root.left);
+		int right = maxDiffNodeAncestorUtil(root.right);
+		maxDiff = Integer.max(maxDiff, root.val-Integer.min(left, right));
+		return Math.min(root.val,Math.min(left, right));
+	}
+
+	/**
 	 * IMPORTANT : LEARN RECURSIVE APPROACH
 	 * 
 	 * Two elements of a binary search tree (BST) are swapped by mistake.
@@ -396,7 +603,7 @@ public class IBitTree {
 	TreeNode start,end;
 	TreeNode prev;
 	public ArrayList<Integer> recoverTree(TreeNode A) {
-		recoverTreeRec(A);
+		recoverTreeRecUtil(A);
 		ArrayList<Integer> ans = new ArrayList<Integer>();
 		ans.add(start.val);
 		if (end!=null) ans.add(end.val);
@@ -405,15 +612,15 @@ public class IBitTree {
 		return ans;
 	}
 	
-	void recoverTreeRec(TreeNode root) {
+	void recoverTreeRecUtil(TreeNode root) {
 		if (root == null) return;
-		recoverTreeRec(root.left);
+		recoverTreeRecUtil(root.left);
 		if (prev!=null && prev.val > root.val) {
 			if (start == null) start = prev;
 			end = root;
 		}
 		prev = root;
-		recoverTreeRec(root.right);
+		recoverTreeRecUtil(root.right);
 	}
 	
 	public ArrayList<Integer> recoverTreeWithO_N_space(TreeNode A) {
@@ -1025,6 +1232,25 @@ public class IBitTree {
 
 	/*########################################### root-to-leaf path sum #######################################################*/
 	
+	int maxPath = Integer.MIN_VALUE;
+    public int maxSumOfAnyPath(TreeNode A) {
+    	maxPath = Integer.MIN_VALUE;
+    	int sum = maxSumOfAnyPathUtil(A);
+        return Math.max(maxPath,sum);
+    }
+    public int maxSumOfAnyPathUtil(TreeNode root) {
+        if (root == null) return 0;
+        if (root.left == null && root.right == null) return root.val;
+        int left = maxSumOfAnyPathUtil(root.left);
+        int right = maxSumOfAnyPathUtil(root.right);
+        int a = root.val;
+        int b = a + left;
+        int c = a + right;
+        if (maxPath < a + left + right) maxPath = a+left+right;
+        if (left != 0 && maxPath<left) maxPath = left;
+        if (right != 0 && maxPath<right) maxPath = right;
+        return Math.max(a,Math.max(b,c));
+    }
 	/**
 	 * Given a binary tree and a sum, determine if the tree has a root-to-leaf path such that 
 	 * adding up all the values along the path equals the given sum.
@@ -1384,4 +1610,15 @@ class TreeNode {
 	//equals
 	//compareTo
 	//hashCode
+}
+
+class TreeLinkNode {
+	int val;
+	TreeLinkNode left;
+	TreeLinkNode right;
+	TreeLinkNode next;
+	
+	public TreeLinkNode(int v) {
+		val = v;
+	}
 }

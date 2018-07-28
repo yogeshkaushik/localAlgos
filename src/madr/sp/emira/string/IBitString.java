@@ -133,11 +133,46 @@ public class IBitString {
 		//cl.firstNonRepeatingCharacterInStream();
 		//cl.firstNonRepeatingCharQueue("geeksforgeek");
 		
-		long i = cl.rankPermUsingFactoradicBase("ZCSFLVHXRYJQKWABGT");
+		/*long i = cl.rankPermUsingFactoradicBase("ZCSFLVHXRYJQKWABGT");
 		System.out.println(i);
 		System.out.println(cl.KthPermutation(2, "aab"));
 		//System.out.println(cl.KthPermutation((int)i-1, "abcde"));
+*/		
+		System.out.println(cl.compareVersion2("13.0", "13.0.8"));
 	}
+	
+	
+	/**
+	 * Compare versions
+	 * 
+	 * 13.0
+	 * 13.0.8
+	 * 
+	 * {@link #compareVersion(String, String)}
+	 * 
+	 * @param str1
+	 * @param str2
+	 * @return
+	 */
+	public int compareVersion2(String str1, String str2) {
+        String[] strs1 = str1.split("\\.");
+        String[] strs2 = str2.split("\\.");
+        int i = 0, j = 0;
+        while (i<strs1.length && j<strs2.length) {
+            int in1 = Integer.valueOf(strs1[i]);
+            int in2 = Integer.valueOf(strs2[j]);
+            if (in1 == in2) {
+                i++;
+                j++;
+            } else {
+                if (in1>in2) return 1;
+                else return -1;
+            }
+        }
+        if(i>=strs1.length && j<strs2.length) return -1;
+        if(i<strs1.length && j>=strs2.length) return 1;
+        return 0;
+    }
 	
 	/**
 	 * Given an continuous input stream of characters, find a method to get the earliest/oldest non repeated character at any time in O(1)
@@ -821,7 +856,15 @@ public class IBitString {
         return Math.abs(last-len);
     }
     
-    int[] computeLPSArray(String pat) {
+    /**
+     * Used in KMP algo for pattern searching. 
+     * 
+     * https://www.youtube.com/watch?v=GTJr8OvyEVQ
+     * 
+     * @param pat
+     * @return
+     */
+    public int[] computeLPSArray(String pat) {
         int[] lps = new int[pat.length()];
         int len = 0;
         int i = 1;

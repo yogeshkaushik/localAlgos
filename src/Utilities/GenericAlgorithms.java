@@ -1,13 +1,38 @@
 package Utilities;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 import madr.sp.emira.array.IBitArray;
 import madr.sp.emira.array.IBitBitOpsAndMath;
 import madr.sp.emira.array.IBitStackAndQueue;
 import madr.sp.emira.array.TwoPointers;
+import madr.sp.emira.dp.IBitDP;
+import madr.sp.emira.dp.MainDPClass;
+import madr.sp.emira.linked.list.MainClass.Node;
 import madr.sp.emira.string.IBitString;
+
+ /*
+  * Famous Reads:
+  * 
+  * B-Tree : 
+  * 	https://www.cs.cornell.edu/courses/cs3110/2012sp/recitations/rec25-B-trees/rec25.html
+  * 	https://www.youtube.com/watch?v=TOb1tuEZ2X4
+  * 	https://stackoverflow.com/questions/870218/differences-between-b-trees-and-b-trees
+  * 	https://www.educative.io/page/5689413791121408/80001
+  * 
+  * A* Algo :
+  * 	http://theory.stanford.edu/~amitp/GameProgramming/AStarComparison.html
+  * 
+  * 
+  */
 
 /**
  * Tricky Question List
@@ -31,18 +56,24 @@ import madr.sp.emira.string.IBitString;
  * 14. {@link IBitBitOpsAndMath#allPrimeTill_N(int)}
  * 15. {@link IBitBitOpsAndMath#maxProbability()}
  * 
+ * 16. {@link IBitString#charReuiredForPalindrome(String)}
+ * 
  * 
  * 
  * Left to Right || Right to Left , build Array Trick
  * 1. {@link IBitStackAndQueue#slidingWindowMaximum(List, int)} ==another variant => {@link IBitStackAndQueue#slidingWindowMaximumDeque(List, int)}
+ * 			{@link IBitStackAndQueue#firstNegativeInWindowK(int[], int)}
  * 2. {@link IBitArray#maxGap(int[])} \
  * 3. {@link GenericAlgorithms#maxDiffInArrLargerAfterSmaller(int[])} https://www.geeksforgeeks.org/maximum-difference-between-two-elements/
  * 4. {@link IBitStackAndQueue#trappedWater2(List)}
+ * 5. {@link IBitStackAndQueue#stockSpanProblem(int[])}
  * 
  * Famous Question List
  * 0. {@link IBitArray#kthSmallestMedianOfMedian(int[], int, int, int)} {@link IBitArray#kthSmallestQuickSort(int[], int, int, int)} {@link IBitArray#kthsmallestWithHeap(int[], int)}
  * 1. {@link IBitArray#repeatedAndMissingNumber(int[])}
- * 2. {@link IBitArray#nextGreaterElement(int[])}
+ * 2. {@link IBitArray#nextGreaterElement(int[])} 
+ * 			{@link IBitStackAndQueue#stockSpanProblem(int[])} 
+ * 					{@link IBitStackAndQueue#largestRectangleArea(int[])}
  * 3. {@link IBitArray#repeatedAndMissingNumber(int[])}
  * 4. {@link IBitArray#reapeatedNum(List)}
  * 5. {@link GenericAlgorithms#majorityElement(int[])}
@@ -53,13 +84,29 @@ import madr.sp.emira.string.IBitString;
  * 10. ****{@link IBitArray#contiguousSubArrSum_equals_k(int[], int)}
  * 11. *******{@link IBitArray#contiguousSubArrSum_equals_k_includesNegative(int[], int)}
  * 12. ** {@link IBitArray#searchInRotatedArray}
+ * 13. {@link IBitString#firstNonRepeatingCharacterInStream()}
+ * 14. {@link #searchInSRA(int[], int)} {@link #minInSRA(int[])}
+ * 15. {@link #getLinkedListSortedInGivenOreder(int[], Node)}***********************
+ * 16. {@link #medianInStream}
+ *
+ * 
  * 
  * 13. {@link IBitBitOpsAndMath#reverse(long)}
  * 14. {@link IBitBitOpsAndMath#power(int, int, int)}
+ * 15. {@link #occurranceOfTargetInSortedArray(int[], int, int, int)}
+ * 
+ * 15. {@link IBitStackAndQueue#largestRectangleArea(int[])}
+ * 
+ * Dynamic Programming:
+ * 
+ * 1. {@link MainDPClass#LCS(String, String)} //Longest common subsequence.
+ * 2. {@link IBitDP#editDistance(String, String)}
+ * 3. //DO READ ==> Longest Palindromic Substring
  * 
  * Read and Implement List
  * 
- * 1. https://www.geeksforgeeks.org/count-smaller-elements-on-right-side/
+ * 1. https://www.geeksforgeeks.org/count-smaller-elements-on-right-side/  :: Self Balancing Binary Tree :: http://www.zrzahid.com/count-smaller-elements-on-the-right/
+ * 
  * 
  * @author yogeshk
  *
@@ -67,7 +114,7 @@ import madr.sp.emira.string.IBitString;
 public class GenericAlgorithms {
 	
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		GenericAlgorithms cl = new GenericAlgorithms();
 		
 		/*String str = "BCAD";
@@ -81,8 +128,95 @@ public class GenericAlgorithms {
 		System.out.println(cl.maxDiffInArrLargerAfterSmaller(arr));
 		System.out.println(cl.maxDiffInArrLargerAfterSmaller2(arr));*/
 		
-		int[] arr = {3, 3, 4, 2, 4, 4, 2, 4};
-		System.out.println(cl.majorityElement(arr));
+		/*int[] arr = {3, 3, 4, 2, 4, 4, 2, 4};
+		System.out.println(cl.majorityElement(arr));*/
+		
+		/*int[] arr = {-2,3,4,-2,0,3,6};
+		System.out.println(cl.maxproductSubarray(arr));*/
+		
+		/*int[] arr = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,5,5,5,5,6,6,6,6,6,7,7,7,7,7,7,7,8,8,8,8,8,8,8,8,8,9,9,9,9,9,9};
+		System.out.println(cl.occurranceOfTargetInSortedArray(arr, 3, 0, arr.length-1));
+		System.out.println(cl.occurranceOfTargetInSortedArray2(arr, 3, 0, arr.length-1));
+		System.out.println(cl.occurranceOfTargetInSortedArray3(arr, 3, 0, arr.length-1));*/
+		
+		/*int[] arr = {4,3};
+		System.out.println(cl.minInSRA(arr));*/
+		
+		//cl.medianInRunningStream();
+	}
+
+	/**
+	 * Find the running median of stream at any point in O(1);
+	 * 
+	 * https://stackoverflow.com/questions/10657503/find-running-median-from-a-stream-of-integers
+	 * 
+	 */
+	public void medianInRunningStream() throws IOException {
+		@SuppressWarnings("resource")
+		Scanner is = new Scanner(System.in);
+		PriorityQueue<Integer> min = new PriorityQueue<>();
+		PriorityQueue<Integer> max = new PriorityQueue<>(Collections.reverseOrder());
+		for (;;) {
+			int in = is.nextInt();
+			System.out.println("Read : "+in);
+			System.out.println("Medium is : " + getTheMedium(in,min,max));
+			if (in == 12725) break;
+		}
+	}
+	
+	
+	private int getTheMedium(int in, PriorityQueue<Integer> min, PriorityQueue<Integer> max) {
+		// handle base case, when only two elements are there, maximum one in Min Heap and min one in MaxHeap
+		if (min.size() == 0 || max.size() == 0) {
+			if (min.size() != 0) {
+				if (min.peek() < in) {
+					int t = min.remove();
+					min.add(in);
+					in  = t;
+				}
+				max.add(in);
+				return (min.peek()+max.peek())/2;
+			} else {
+				min.add(in);
+				return in;
+			}
+		}
+		
+		//adding element
+		if (in < max.peek()) max.add(in);
+		else min.add(in);
+		
+		//balancing;
+		if (min.size() !=  max.size()) {
+			if (min.size()>max.size()) max.add(min.poll());
+			else min.add(max.poll());
+		}
+		
+		//return Median
+		if (min.size() != max.size()) return min.size() > max.size() ? min.peek() : max.peek();			
+		else return (min.peek()+max.peek())/2;
+	}
+
+	/**
+	 * Find Max product subarray.
+	 * 
+	 * https://www.youtube.com/watch?v=vtJvbRlHqTA
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public int maxproductSubarray(int[] arr) {
+		int prevMax = arr[0];
+		int prevMin = arr[0];
+		int ans = arr[0];
+		for (int i=1; i<arr.length; i++) {
+			int currMax = Math.max(prevMax*arr[i], Math.max(prevMin*arr[i], arr[i]));
+			int currMin = Math.min(prevMax*arr[i], Math.min(prevMin*arr[i], arr[i]));
+			ans = Math.max(currMax, ans);
+			prevMax = currMax;
+			prevMin = currMin;
+		}
+		return ans;
 	}
 	
 	
@@ -327,6 +461,91 @@ public class GenericAlgorithms {
 	}
 	
 	/**
+	 * Given a target, find its frequency in the sorted array in (log n) time.
+	 * 
+	 * In this method eventually you are counting the number. so worst case it will be O(n) ==> {3,3,3,3,3,3,3,3,3,3,3,3,3};
+	 * 
+	 * @param arr
+	 * @param target
+	 * @param lo
+	 * @param hi
+	 * @return
+	 */
+	public int occurranceOfTargetInSortedArray(int[] arr, int target, int lo, int hi) {
+		if (lo > hi) return 0;
+		int mid = lo + (hi-lo)/2;
+		if (arr[mid] == target) return 1 + 
+				occurranceOfTargetInSortedArray(arr, target, lo, mid-1) + 
+				occurranceOfTargetInSortedArray(arr, target, mid+1, hi); 
+		else if (arr[mid] < target) return occurranceOfTargetInSortedArray(arr, target, mid+1, hi);
+		else return occurranceOfTargetInSortedArray(arr, target, lo, mid-1);
+	}
+	
+	/**
+	 * Slightly better;
+	 * @param arr
+	 * @param target
+	 * @param lo
+	 * @param hi
+	 * @return
+	 */
+	public int occurranceOfTargetInSortedArray2(int[] arr, int target, int lo, int hi) {
+		if (lo > hi) return 0;
+		if (arr[lo] == target && arr[hi] == target) return hi-lo+1;
+		int mid = lo + (hi-lo)/2;
+		if (arr[mid] == target) return 1 + 
+				occurranceOfTargetInSortedArray(arr, target, lo, mid-1) + 
+				occurranceOfTargetInSortedArray(arr, target, mid+1, hi); 
+		else if (arr[mid] < target) return occurranceOfTargetInSortedArray(arr, target, mid+1, hi);
+		else return occurranceOfTargetInSortedArray(arr, target, lo, mid-1);
+	}
+	
+	/**
+	 * This is actual O(log n) solution.
+	 * @param arr
+	 * @param target
+	 * @param lo
+	 * @param hi
+	 * @return
+	 */
+	public int occurranceOfTargetInSortedArray3(int[] arr, int target, int lo, int hi) {
+		//commented code is correct as well, its just another way.
+		/*int index = Arrays.binarySearch(arr, target);
+		if (index < 0) return 0;
+		int r = rightIndex(arr, target, index+1, arr.length);
+		int l = leftIndex(arr, target, 0, index-1);
+		return r-l+1;*/
+		int r = rightIndex(arr, target, 0, arr.length-1);
+		int l = leftIndex(arr, target, 0, arr.length-1);
+		return r - l + 1;
+	}
+	
+	private int leftIndex(int[] arr, int target, int lo, int hi) {
+		/*if (lo>hi) return hi+1;
+		int mid = lo + (hi-lo)/2;
+		if (arr[mid] == target) return leftIndex(arr, target, lo, mid-1);
+		else return leftIndex(arr, target, mid+1, hi);*/
+		if (lo>hi) return -1;
+		int mid = lo + (hi-lo)/2;
+		if ((mid == 0 || arr[mid-1]<target) && arr[mid]==target) return mid;
+		else if (arr[mid]<target) return leftIndex(arr, target, mid+1, hi);
+		else return leftIndex(arr, target, lo, mid-1);
+	}
+	
+	private int rightIndex(int[] arr, int target, int lo, int hi) {
+		/*if (lo>hi) return lo-1;
+		int mid = lo + (hi-lo)/2;
+		if (arr[mid] == target) return rightIndex(arr, target, mid+1, hi);
+		else return rightIndex(arr, target, lo, mid-1);*/
+		if (lo>hi) return -1;
+		int mid = lo + (hi-lo)/2;
+		if ((mid == arr.length-1 || arr[mid+1]>target) && arr[mid]==target) return mid;
+		else if (arr[mid]>target) return rightIndex(arr, target, lo, mid-1);
+		else return rightIndex(arr, target, mid+1, hi);
+	}
+		
+	
+	/**
 	 * You’re given a read only array of n integers. Find out if any integer 
 	 * occurs more than n/3 times in the array in linear time and constant additional space.
 	 * 
@@ -367,6 +586,77 @@ public class GenericAlgorithms {
             if (in == major2) count2++;
         }
         return (count1 > len/3) ? major1 : (count2 > len/3 ? major2 : -1);
+	}
+	
+	/**
+	 * ----Sorted and Rotated Array (SRA)----
+	 * find min in SRA, which is pivot;
+	 * 
+	 * catch -- repeated, only one element.
+	 * @param arr
+	 * @return
+	 */
+	public int minInSRA(int[] arr) {
+		int len = arr.length;
+		if (len == 1) return arr[0];
+		if (arr[0]<arr[len-1]) return arr[0];
+		int lo = 0, hi = len-1;
+		while (lo<=hi) {
+			int mid = lo + (hi-lo)/2;
+			if (mid>0 && arr[mid] < arr[mid-1]) return arr[mid];
+			else if (arr[mid] > arr[hi]) lo = mid+1;
+			else hi = mid-1;
+		}
+		return arr[0];
+	}
+	
+	/**
+	 * Search in sorted rotated array in one scan only.
+	 * 
+	 * alternate approach is find pivot point of rotation and then search in one of the two halves.
+	 * 
+	 * https://stackoverflow.com/questions/4773807/searching-in-an-sorted-and-rotated-array
+	 * 
+	 * @param arr
+	 * @param key
+	 * @return
+	 */
+	public int searchInSRA(int[] arr, int key) {
+		if (arr[0] < arr[arr.length-1]) return Arrays.binarySearch(arr, key); //in case array is not rotated.
+		int hi = arr.length;
+		int lo = 0;
+		while (lo<=hi) {
+			int mid = lo + (hi-lo)/2;
+			if (arr[mid] == key) return mid;
+			if (arr[lo] <= arr[mid]) {
+				if (key >= arr[lo] && key <= arr[mid]) hi = mid-1;
+				else lo = mid+1;
+			} else {
+				if (key >= arr[mid] && key <= arr[hi]) lo = mid+1;
+				else hi = mid-1;
+			}
+		}
+		return -(lo+1);
+	}
+	
+	/**
+	 * Given an array {5,1,3,2,8}
+	 * Sort the linked list in that order. LL contains elements from array, duplicate possible.
+	 * 
+	 * @param arr
+	 * @return
+	 */
+	public static Node getLinkedListSortedInGivenOreder(int[] arr, Node node) {
+		Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+		int i=0;
+		int len = arr.length;
+		for (;i<len;i++) map.put(arr[i], i);
+//		Node curr = node;
+//		Node head = node;
+		while (node != null && node.next != null) {
+			
+		}
+		return node;
 	}
 
 	static class Pair {

@@ -3,12 +3,61 @@ package madr.sp.emira.dp;
 import java.util.ArrayList;
 import java.util.List;
 
+import madr.sp.emira.array.BinarySearchClass;
+
 public class IBitGreedy {
 	
 	public static void main(String[] args) {
 		IBitGreedy cl = new IBitGreedy();
-		System.out.println(cl.seats(".........x.x"));
+		
+		//System.out.println(cl.seats(".........x.x"));
+		
+		int[] gas = {684, 57, 602, 987};//{2,3,4,1,5};
+		int[] dist = {909, 535, 190, 976};//{1,5,2,3,4};
+		System.out.println(cl.gasStation(BinarySearchClass.createList(gas), BinarySearchClass.createList(dist)));
 	}
+	
+	/**
+	 * Gas Station.
+	 * @param gas
+	 * @param dist
+	 * @return
+	 */
+	public int gasStation(final List<Integer> gas, final List<Integer> dist) {
+		if (gas.size()==1) return 0;
+        int left = 0;
+        int i = 0;
+        int count = gas.size()-1;
+        int len = gas.size();
+        while (i<=count) {
+            if (i>=len && left == 0) {
+            	return -1;
+            }
+            if (gas.get(i%len)+left >= dist.get(i%len)) {
+                left = gas.get(i%len) + left - dist.get(i%len);
+            } else {
+                count = i+len;
+                left = 0;
+            }
+            i++;
+        }
+        return i%len+1;
+        //return gasStationUtil(gas,dist,0,0,gas.size()-1);        
+    }
+    
+    private int gasStationUtil(final List<Integer> gas, final List<Integer> dist, int left, int index, int count) {
+        if (index==count) return index%gas.size()+1;
+        if (index>=gas.size()) return -1;
+        int len = gas.size();
+        for (int i=index; i<=count; i++) {
+            if (gas.get(i%len)+left >= dist.get(i%len)) {
+                left = gas.get(i%len) + left - dist.get(i%len);
+            } else {
+                return gasStationUtil(gas, dist, 0, i+1, i+len);
+            }
+        }
+        return index;
+    }
 	
 	/**
 	 * N light bulbs are connected by a wire. Each bulb has a switch associated with it, however due to faulty wiring, 
