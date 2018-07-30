@@ -44,7 +44,7 @@ public class MainDPClass {
 	 * which is nC0 + nC1 + nC2 + nC3 .... = 2^n;
 	 * 
 	 * count(n) = 2 * count(n-1) == 2*2^(n-1) = 2^(n-1+1) = 2^n;
-	 *  if repeated char at some point then that means whatever subsequences we have calculate till that point, we don't need them
+	 *  if repeated char at some point then that means whatever subsequences we have calculated till that point, we don't need them
 	 *  them so just subtract that ==== let's say we encountered same char at i and j 
 	 *  
 	 *  till 'i' subsequences will be 2^i;

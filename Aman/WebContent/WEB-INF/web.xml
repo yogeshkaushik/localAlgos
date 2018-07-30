@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
+                      http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+  metadata-complete="true" version="4.0"> -->
+<web-app xmlns="http://java.sun.com/xml/ns/j2ee" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	version="2.4" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd">
+
+
+    <description>
+      Servlet and JSP Examples. COPY
+    </description>
+    <display-name>Aman Example</display-name> 
+   <servlet> 
+      <servlet-name>RESTful</servlet-name> 
+      <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+      <!-- <init-param>
+			<param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
+			<param-value>true</param-value>
+	  </init-param> -->
+      <init-param> 
+         <param-name>com.sun.jersey.config.property.packages</param-name> 
+         <param-value>com.something;org.codehaus.jackson.jaxrs;</param-value> 
+      </init-param> 
+      <load-on-startup>4</load-on-startup>
+   </servlet> 
+   <servlet-mapping> 
+      <servlet-name>RESTful</servlet-name> 
+      <url-pattern>/api/*</url-pattern> 
+   </servlet-mapping>
+   
+   <welcome-file-list>
+      <welcome-file>index.html</welcome-file>
+      <welcome-file>index.xhtml</welcome-file>
+      <welcome-file>index.htm</welcome-file>
+      <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+</web-app>
