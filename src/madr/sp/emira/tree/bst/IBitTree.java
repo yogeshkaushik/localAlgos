@@ -1177,30 +1177,39 @@ public class IBitTree {
 	 * @return
 	 */
 	public int sumNumbers(TreeNode A) {
-        ArrayList<String> sums = new ArrayList<String>();
-        generateNumArrays(A,sums,new StringBuilder());
-        long sum = 0;
-        for (String s : sums) {
-            sum += Long.parseLong(s)%1003;
-            sum = sum%1003;
-        }
-        return (int)sum;
-    }
+		ArrayList<String> sums = new ArrayList<String>();
+		generateNumArrays(A,sums,new StringBuilder());
+		long sum = 0;
+		for (String s : sums) {
+		    sum += Long.parseLong(s)%1003;
+		    sum = sum%1003;
+		}
+		return (int)sum;
+		
+		// return helper(A, 0);
+	   }
     
     void generateNumArrays(TreeNode root, ArrayList<String> sums, StringBuilder sb) {
-        if (root == null) return;
-        if (root.left == null && root.right == null) {
-            if (sb.length() > 3 && Integer.parseInt(sb.toString()) > 1003) sb = new StringBuilder(Integer.parseInt(sb.toString())%1003+"");
-            sb.append(root.val);
-            sums.add(sb.toString());
-            sb.deleteCharAt(sb.length()-1);
-        }
-        if (sb.length() > 3 && Integer.parseInt(sb.toString()) > 1003) sb = new StringBuilder(Integer.parseInt(sb.toString())%1003+"");
-        sb.append(root.val);
-        generateNumArrays(root.left,sums,sb);
-        generateNumArrays(root.right,sums,sb);
-        sb.deleteCharAt(sb.length()-1);
+	if (root == null) return;
+	if (root.left == null && root.right == null) {
+	    if (sb.length() > 3 && Integer.parseInt(sb.toString()) > 1003) sb = new StringBuilder(Integer.parseInt(sb.toString())%1003+"");
+	    sb.append(root.val);
+	    sums.add(sb.toString());
+	    sb.deleteCharAt(sb.length()-1);
+	}
+	if (sb.length() > 3 && Integer.parseInt(sb.toString()) > 1003) sb = new StringBuilder(Integer.parseInt(sb.toString())%1003+"");
+	sb.append(root.val);
+	generateNumArrays(root.left,sums,sb);
+	generateNumArrays(root.right,sums,sb);
+	sb.deleteCharAt(sb.length()-1);
     }
+	
+	int helper(TreeNode root, int sum) {
+        	if (root == null) return 0;
+        	sum = ((10*sum)%1003 + root.val%1003)%1003;
+        	if (root.left == null && root.right == null) return sum%1003;
+        	return (helper(root.left, sum)%1003 + helper(root.right, sum)%1003)%1003;
+    	}
 	
 	/*########################################### Min & Max Depth #######################################################*/
 	
